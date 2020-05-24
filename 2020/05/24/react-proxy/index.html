@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>react-proxy | Hexo</title>
+  <title>react项目跨域配置代理 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="const { createProxyMiddleware } &#x3D; require(‘http-proxy-middleware’); create-react-app项目中跨域配置代理,2.0版本以上方法一:安装http-proxy-middleware,可以配置多个代理1.在src目录下新建setupProxy.js文件，配置如下123456789101112131415161718const">
+  <meta name="description" content="create-react-app项目中跨域配置代理,2.0版本以上 方法一:安装http-proxy-middleware,可以配置多个代理1.在src目录下新建setupProxy.js文件，配置如下 1234567891011121314151617181920const &amp;#123; createProxyMiddleware &amp;#125; &#x3D; require(&#39;http-proxy-mid">
 <meta property="og:type" content="article">
-<meta property="og:title" content="react-proxy">
+<meta property="og:title" content="react项目跨域配置代理">
 <meta property="og:url" content="http://yoursite.com/2020/05/24/react-proxy/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="const { createProxyMiddleware } &#x3D; require(‘http-proxy-middleware’); create-react-app项目中跨域配置代理,2.0版本以上方法一:安装http-proxy-middleware,可以配置多个代理1.在src目录下新建setupProxy.js文件，配置如下123456789101112131415161718const">
+<meta property="og:description" content="create-react-app项目中跨域配置代理,2.0版本以上 方法一:安装http-proxy-middleware,可以配置多个代理1.在src目录下新建setupProxy.js文件，配置如下 1234567891011121314151617181920const &amp;#123; createProxyMiddleware &amp;#125; &#x3D; require(&#39;http-proxy-mid">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-05-24T15:23:25.000Z">
-<meta property="article:modified_time" content="2020-05-24T15:35:23.423Z">
+<meta property="article:modified_time" content="2020-05-24T15:42:56.322Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
   
@@ -145,7 +145,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      react-proxy
+      react项目跨域配置代理
     </h1>
   
 
@@ -170,13 +170,15 @@
         
           
           
-            <p>const { createProxyMiddleware } = require(‘http-proxy-middleware’);</p>
-<h2 id="create-react-app项目中跨域配置代理-2-0版本以上"><a href="#create-react-app项目中跨域配置代理-2-0版本以上" class="headerlink" title="create-react-app项目中跨域配置代理,2.0版本以上"></a>create-react-app项目中跨域配置代理,2.0版本以上</h2><h3 id="方法一-安装http-proxy-middleware-可以配置多个代理"><a href="#方法一-安装http-proxy-middleware-可以配置多个代理" class="headerlink" title="方法一:安装http-proxy-middleware,可以配置多个代理"></a>方法一:安装http-proxy-middleware,可以配置多个代理</h3><pre><code>1.在src目录下新建setupProxy.js文件，配置如下</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const &#123; createProxyMiddleware &#125; = require(<span class="string">'http-proxy-middleware'</span>);</span><br><span class="line">module.exports = <span class="keyword">function</span>(app) &#123;</span><br><span class="line">  app.use(</span><br><span class="line">    <span class="string">'/api'</span>,</span><br><span class="line">    proxy(&#123;</span><br><span class="line">      target: <span class="string">'http://localhost:5000'</span>, // 配置实际的域名或ip</span><br><span class="line">      changeOrigin: <span class="literal">true</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">  app.use(</span><br><span class="line">    <span class="string">'/sys'</span>,</span><br><span class="line">    proxy(&#123;</span><br><span class="line">      target: <span class="string">'http://localhost:5001'</span>, // 配置实际的域名或ip</span><br><span class="line">      changeOrigin: <span class="literal">true</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+            <p>create-react-app项目中跨域配置代理,2.0版本以上</p>
+<h3 id="方法一-安装http-proxy-middleware-可以配置多个代理"><a href="#方法一-安装http-proxy-middleware-可以配置多个代理" class="headerlink" title="方法一:安装http-proxy-middleware,可以配置多个代理"></a>方法一:安装http-proxy-middleware,可以配置多个代理</h3><p>1.在src目录下新建setupProxy.js文件，配置如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const &#123; createProxyMiddleware &#125; = require(<span class="string">'http-proxy-middleware'</span>);</span><br><span class="line">module.exports = <span class="keyword">function</span>(app) &#123;</span><br><span class="line">  app.use(</span><br><span class="line">    <span class="string">'/api'</span>,</span><br><span class="line">    proxy(&#123;</span><br><span class="line">      target: <span class="string">'http://localhost:5000'</span>, // 配置实际的域名或ip</span><br><span class="line">      changeOrigin: <span class="literal">true</span>,  //默认<span class="literal">false</span>，是否需要改变原始主机头为目标URL</span><br><span class="line">      pathRewrite: &#123;<span class="string">"^/api"</span> : <span class="string">"/"</span>&#125;,  // 重写请求，比如我们源访问的是api，那么请求会被解析为/</span><br><span class="line">      secure: <span class="literal">false</span>,   //如果是https接口 需要配置这个参数为<span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">  app.use(</span><br><span class="line">    <span class="string">'/sys'</span>,</span><br><span class="line">    proxy(&#123;</span><br><span class="line">      target: <span class="string">'http://localhost:5001'</span>, // 配置实际的域名或ip</span><br><span class="line">      changeOrigin: <span class="literal">true</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<pre><code>2.关于http-proxy-middleware的引入配置</code></pre><h3 id="0-x-x版本的引用方式"><a href="#0-x-x版本的引用方式" class="headerlink" title="0.x.x版本的引用方式"></a>0.x.x版本的引用方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const proxy = require(<span class="string">'http-proxy-middleware'</span>);</span><br></pre></td></tr></table></figure>
+<p>2.关于http-proxy-middleware的引入配置</p>
+<h3 id="0-x-x版本的引用方式"><a href="#0-x-x版本的引用方式" class="headerlink" title="0.x.x版本的引用方式"></a>0.x.x版本的引用方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const proxy = require(<span class="string">'http-proxy-middleware'</span>);</span><br></pre></td></tr></table></figure>
 <h3 id="1-0-0版本的引入方式"><a href="#1-0-0版本的引入方式" class="headerlink" title="1.0.0版本的引入方式"></a>1.0.0版本的引入方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const &#123; createProxyMiddleware &#125; = require(<span class="string">'http-proxy-middleware'</span>);</span><br></pre></td></tr></table></figure>
 
-<h3 id="方法二-直接在package-json中配置"><a href="#方法二-直接在package-json中配置" class="headerlink" title="方法二: 直接在package.json中配置"></a>方法二: 直接在package.json中配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"proxy"</span>: <span class="string">"http://m.kugo.com"</span>,</span><br></pre></td></tr></table></figure>
+<h3 id="方法二-直接在package-json中配置"><a href="#方法二-直接在package-json中配置" class="headerlink" title="方法二: 直接在package.json中配置"></a>方法二: 直接在package.json中配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"proxy"</span>: <span class="string">"http://localhost:5001"</span>,</span><br></pre></td></tr></table></figure>
 
 
 
@@ -232,7 +234,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#create-react-app项目中跨域配置代理-2-0版本以上"><span class="toc-number">1.</span> <span class="toc-text">create-react-app项目中跨域配置代理,2.0版本以上</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法一-安装http-proxy-middleware-可以配置多个代理"><span class="toc-number">1.1.</span> <span class="toc-text">方法一:安装http-proxy-middleware,可以配置多个代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0-x-x版本的引用方式"><span class="toc-number">1.2.</span> <span class="toc-text">0.x.x版本的引用方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-0-0版本的引入方式"><span class="toc-number">1.3.</span> <span class="toc-text">1.0.0版本的引入方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法二-直接在package-json中配置"><span class="toc-number">1.4.</span> <span class="toc-text">方法二: 直接在package.json中配置</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法一-安装http-proxy-middleware-可以配置多个代理"><span class="toc-number">1.</span> <span class="toc-text">方法一:安装http-proxy-middleware,可以配置多个代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#0-x-x版本的引用方式"><span class="toc-number">2.</span> <span class="toc-text">0.x.x版本的引用方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-0-0版本的引入方式"><span class="toc-number">3.</span> <span class="toc-text">1.0.0版本的引入方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法二-直接在package-json中配置"><span class="toc-number">4.</span> <span class="toc-text">方法二: 直接在package.json中配置</span></a></li></ol>
                     </div>
                 </span>
             </div>
