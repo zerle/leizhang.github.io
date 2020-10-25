@@ -6,15 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020 | Zerle</title>
+  <title>原生JS灵魂之问(上篇) | Zerle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zerle">
-<meta property="og:url" content="http://yoursite.com/archives/2020/page/2/index.html">
+  <meta name="description" content="原生JS的知识系统梳理 第一篇: JS数据类型之问——概念篇在 JS 中，存在着 7 种原始值，分别是： boolean null undefined number string symbol bigint  引用数据类型:对象Object（包含普通对象-Object，数组对象-Array，正则对象-RegExp，日期对象-Date，数学函数-Math，函数对象-Function） 2.说出下面运">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生JS灵魂之问(上篇)">
+<meta property="og:url" content="http://yoursite.com/2020/10/25/JavaScript/index.html">
 <meta property="og:site_name" content="Zerle">
+<meta property="og:description" content="原生JS的知识系统梳理 第一篇: JS数据类型之问——概念篇在 JS 中，存在着 7 种原始值，分别是： boolean null undefined number string symbol bigint  引用数据类型:对象Object（包含普通对象-Object，数组对象-Array，正则对象-RegExp，日期对象-Date，数学函数-Math，函数对象-Function） 2.说出下面运">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/JavaScript/01.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/JavaScript/02.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/JavaScript/03.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/JavaScript/04.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/JavaScript/05.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/JavaScript/06.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/JavaScript/07.png">
+<meta property="article:published_time" content="2020-10-25T10:13:08.000Z">
+<meta property="article:modified_time" content="2020-10-25T16:00:39.460Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/25/JavaScript/01.png">
   
     <link rel="alternative" href="/atom.xml" title="Zerle" type="application/atom+xml">
   
@@ -134,106 +146,324 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-JavaScript" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      原生JS灵魂之问(上篇)
+    </h1>
+  
+
+        <!--显示阅读次数-->
+        
+            <br/>
+            <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+            <span class="icon-sort"></span>
+            <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+                    阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+            </span>
+            </a>
+        
+        
+        <a href="/2020/10/25/JavaScript/" class="archive-article-date">
+  	<time datetime="2020-10-25T10:13:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+        
+          
+          
+            <p>原生JS的知识系统梳理</p>
+<h2 id="第一篇-JS数据类型之问——概念篇"><a href="#第一篇-JS数据类型之问——概念篇" class="headerlink" title="第一篇: JS数据类型之问——概念篇"></a>第一篇: JS数据类型之问——概念篇</h2><h3 id="在-JS-中，存在着-7-种原始值，分别是："><a href="#在-JS-中，存在着-7-种原始值，分别是：" class="headerlink" title="在 JS 中，存在着 7 种原始值，分别是："></a>在 JS 中，存在着 7 种原始值，分别是：</h3><ul>
+<li>boolean</li>
+<li>null</li>
+<li>undefined</li>
+<li>number</li>
+<li>string</li>
+<li>symbol</li>
+<li>bigint</li>
+</ul>
+<p>引用数据类型:<br>对象Object（包含普通对象-Object，数组对象-Array，正则对象-RegExp，日期对象-Date，数学函数-Math，函数对象-Function）</p>
+<h3 id="2-说出下面运行的结果，解释原因。"><a href="#2-说出下面运行的结果，解释原因。" class="headerlink" title="2.说出下面运行的结果，解释原因。"></a>2.说出下面运行的结果，解释原因。</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="built_in">test</span>(person) &#123;</span><br><span class="line">  person.age = 26</span><br><span class="line">  person = &#123;</span><br><span class="line">    name: <span class="string">'hzj'</span>,</span><br><span class="line">    age: 18</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> person</span><br><span class="line">&#125;</span><br><span class="line">const p1 = &#123;</span><br><span class="line">  name: <span class="string">'fyq'</span>,</span><br><span class="line">  age: 19</span><br><span class="line">&#125;</span><br><span class="line">const p2 = <span class="built_in">test</span>(p1)</span><br><span class="line">console.log(p1) // -&gt; ?</span><br><span class="line">console.log(p2) // -&gt; ?</span><br></pre></td></tr></table></figure>
+<p>结果:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p1：&#123;name: “fyq”, age: 26&#125;</span><br><span class="line">p2：&#123;name: “hzj”, age: 18&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">原因: 在函数传参的时候传递的是对象在堆中的内存地址值，<span class="built_in">test</span>函数中的实参person是p1对象的内存地址，通过调用person.age = 26确实改变了p1的值，但随后person变成了另一块内存空间的地址，并且在最后将这另外一份内存空间的地址返回，赋给了p2。</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-null是对象吗？为什么？"><a href="#3-null是对象吗？为什么？" class="headerlink" title="3.null是对象吗？为什么？"></a>3.null是对象吗？为什么？</h3><p>结论: null不是对象。<br>解释: 虽然 typeof null 会输出 object，但是这只是 JS 存在的一个悠久 Bug。在 JS 的最初版本中使用的是 32 位系统，为了性能考虑使用低位存储变量的类型信息，000 开头代表是对象然而 null 表示为全零，所以将它错误的判断为 object 。</p>
+<h3 id="4-’1’-toString-为什么可以调用？"><a href="#4-’1’-toString-为什么可以调用？" class="headerlink" title="4.’1’.toString()为什么可以调用？"></a>4.’1’.toString()为什么可以调用？</h3><p>其实在这个语句运行的过程中做了这样几件事情：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var s = new Object(<span class="string">'1'</span>);</span><br><span class="line">s.toString();</span><br><span class="line">s = null;</span><br></pre></td></tr></table></figure>
+
+<p>第一步: 创建Object类实例。注意为什么不是String ？ 由于Symbol和BigInt的出现，对它们调用new都会报错，目前ES6规范也不建议用new来创建基本类型的包装类。<br>第二步: 调用实例方法。<br>第三步: 执行完方法立即销毁这个实例。<br>整个过程体现了基本包装类型的性质，而基本包装类型恰恰属于基本数据类型，包括Boolean, Number和String。</p>
+<h3 id="5-0-1-0-2为什么不等于0-3？"><a href="#5-0-1-0-2为什么不等于0-3？" class="headerlink" title="5.0.1+0.2为什么不等于0.3？"></a>5.0.1+0.2为什么不等于0.3？</h3><p>0.1和0.2在转换成二进制后会无限循环，由于标准位数的限制后面多余的位数会被截掉，此时就已经出现了精度的损失，相加后因浮点数小数位的限制而截断的二进制数字在转换为十进制就会变成0.30000000000000004。</p>
+<h3 id="6-如何理解BigInt"><a href="#6-如何理解BigInt" class="headerlink" title="6.如何理解BigInt?"></a>6.如何理解BigInt?</h3><h4 id="什么是BigInt"><a href="#什么是BigInt" class="headerlink" title="什么是BigInt?"></a>什么是BigInt?</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigInt是一种新的数据类型，用于当整数值大于Number数据类型支持的范围时。这种数据类型允许我们安全地对大整数执行算术操作，表示高分辨率的时间戳，使用大整数id，等等，而不需要使用库。</span><br></pre></td></tr></table></figure>
+<h4 id="为什么需要BigInt"><a href="#为什么需要BigInt" class="headerlink" title="为什么需要BigInt?"></a>为什么需要BigInt?</h4><p>在JS中，所有的数字都以双精度64位浮点格式表示，那这会带来什么问题呢？<br>这导致JS中的Number无法精确表示非常大的整数，它会将非常大的整数四舍五入，确切地说，JS中的Number类型只能安全地表示-9007199254740991(-(2^53-1))和9007199254740991（(2^53-1)），任何超出此范围的整数值都可能失去精度。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(999999999999999);  //=&gt;10000000000000000</span><br></pre></td></tr></table></figure>
+<p>同时也会有一定的安全性问题:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">9007199254740992 === 9007199254740993;    // → <span class="literal">true</span> 居然是<span class="literal">true</span>!</span><br></pre></td></tr></table></figure>
+
+<h4 id="如何创建并使用BigInt？"><a href="#如何创建并使用BigInt？" class="headerlink" title="如何创建并使用BigInt？"></a>如何创建并使用BigInt？</h4><p>要创建BigInt，只需要在数字末尾追加n即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log( 9007199254740995n );    // → 9007199254740995n </span><br><span class="line">console.log( 9007199254740995 );     // → 9007199254740996</span><br></pre></td></tr></table></figure>
+
+<p>另一种创建BigInt的方法是用BigInt()构造函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigInt(<span class="string">"9007199254740995"</span>);    // → 9007199254740995n</span><br></pre></td></tr></table></figure>
+
+<p>简单使用如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">10n + 20n;    // → 30n  </span><br><span class="line">10n - 20n;    // → -10n </span><br><span class="line">+10n;         // → TypeError: Cannot convert a BigInt value to a number </span><br><span class="line">-10n;         // → -10n </span><br><span class="line">10n * 20n;    // → 200n </span><br><span class="line">20n / 10n;    // → 2n   </span><br><span class="line">23n % 10n;    // → 3n   </span><br><span class="line">10n ** 3n;    // → 1000n    </span><br><span class="line"></span><br><span class="line">const x = 10n;  </span><br><span class="line">++x;          // → 11n  </span><br><span class="line">--x;          // → 9n</span><br><span class="line">console.log(typeof x);   //<span class="string">"bigint"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="值得警惕的点"><a href="#值得警惕的点" class="headerlink" title="值得警惕的点"></a>值得警惕的点</h5><p>1.BigInt不支持一元加号运算符, 这可能是某些程序可能依赖于 + 始终生成 Number 的不变量，或者抛出异常。另外，更改 + 的行为也会破坏 asm.js代码。</p>
+<p>2.因为隐式类型转换可能丢失信息，所以不允许在bigint和 Number 之间进行混合操作。当混合使用大整数和浮点数时，结果值可能无法由BigInt或Number精确表示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10 + 10n;    // → TypeError</span><br></pre></td></tr></table></figure>
+
+<p>3.不能将BigInt传递给Web api和内置的 JS 函数，这些函数需要一个 Number 类型的数字。尝试这样做会报TypeError错误。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Math.max(2n, 4n, 6n);    // → TypeError</span><br></pre></td></tr></table></figure>
+
+<p>4.当 Boolean 类型与 BigInt 类型相遇时，BigInt的处理方式与Number类似，换句话说，只要不是0n，BigInt就被视为truthy的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(0n)&#123;//条件判断为<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(3n)&#123;//条件为<span class="literal">true</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5.元素都为BigInt的数组可以进行sort。</p>
+<p>6.BigInt可以正常地进行位运算，如|、&amp;、&lt;&lt;、&gt;&gt;和^</p>
+<p>浏览器兼容性<br>caniuse的结果:</p>
+<img src="/2020/10/25/JavaScript/01.png" class title="This is an image">
+
+<p>其实现在的兼容性并不怎么好，只有chrome67、firefox、Opera这些主流实现，要正式成为规范，其实还有很长的路要走。</p>
+<p>我们期待BigInt的光明前途！</p>
+<h2 id="第二篇-JS数据类型之问——检测篇"><a href="#第二篇-JS数据类型之问——检测篇" class="headerlink" title="第二篇: JS数据类型之问——检测篇"></a>第二篇: JS数据类型之问——检测篇</h2><h3 id="1-typeof-是否能正确判断类型？"><a href="#1-typeof-是否能正确判断类型？" class="headerlink" title="1.typeof 是否能正确判断类型？"></a>1.typeof 是否能正确判断类型？</h3><p>对于原始类型来说，除了 null 都可以调用typeof显示正确的类型。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typeof 1 // <span class="string">'number'</span></span><br><span class="line">typeof <span class="string">'1'</span> // <span class="string">'string'</span></span><br><span class="line">typeof undefined // <span class="string">'undefined'</span></span><br><span class="line">typeof <span class="literal">true</span> // <span class="string">'boolean'</span></span><br><span class="line">typeof Symbol() // <span class="string">'symbol'</span></span><br></pre></td></tr></table></figure>
+
+<p>但对于引用数据类型，除了函数之外，都会显示”object”。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">typeof [] // <span class="string">'object'</span></span><br><span class="line">typeof &#123;&#125; // <span class="string">'object'</span></span><br><span class="line">typeof console.log // <span class="string">'function'</span></span><br></pre></td></tr></table></figure>
+
+<p>因此采用typeof判断对象数据类型是不合适的，采用instanceof会更好，instanceof的原理是基于原型链的查询，只要处于原型链中，判断永远为true</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const Person = <span class="function"><span class="title">function</span></span>() &#123;&#125;</span><br><span class="line">const p1 = new Person()</span><br><span class="line">p1 instanceof Person // <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">var str1 = <span class="string">'hello world'</span></span><br><span class="line">str1 instanceof String // <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">var str2 = new String(<span class="string">'hello world'</span>)</span><br><span class="line">str2 instanceof String // <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-instanceof能否判断基本数据类型？"><a href="#2-instanceof能否判断基本数据类型？" class="headerlink" title="2. instanceof能否判断基本数据类型？"></a>2. instanceof能否判断基本数据类型？</h3><p>能。比如下面这种方式:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class PrimitiveNumber &#123;</span><br><span class="line">  static [Symbol.hasInstance](x) &#123;</span><br><span class="line">    <span class="built_in">return</span> typeof x === <span class="string">'number'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(111 instanceof PrimitiveNumber) // <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你不知道Symbol，可以看看<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance" target="_blank" rel="noopener">MDN上关于hasInstance的解释</a>。<br>其实就是自定义instanceof行为的一种方式，这里将原有的instanceof方法重定义，换成了typeof，因此能够判断基本数据类型。</p>
+<h3 id="3-能不能手动实现一下instanceof的功能？"><a href="#3-能不能手动实现一下instanceof的功能？" class="headerlink" title="3.能不能手动实现一下instanceof的功能？"></a>3.能不能手动实现一下instanceof的功能？</h3><p>核心: 原型链的向上查找</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> myInstanceof(left, right) &#123;</span><br><span class="line">    //基本数据类型直接返回<span class="literal">false</span></span><br><span class="line">    <span class="keyword">if</span>(typeof left !== <span class="string">'object'</span> || left === null) <span class="built_in">return</span> <span class="literal">false</span>;</span><br><span class="line">    //getProtypeOf是Object对象自带的一个方法，能够拿到参数的原型对象</span><br><span class="line">    <span class="built_in">let</span> proto = Object.getPrototypeOf(left);</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">        //查找到尽头，还没找到</span><br><span class="line">        <span class="keyword">if</span>(proto == null) <span class="built_in">return</span> <span class="literal">false</span>;</span><br><span class="line">        //找到相同的原型对象</span><br><span class="line">        <span class="keyword">if</span>(proto == right.prototype) <span class="built_in">return</span> <span class="literal">true</span>;</span><br><span class="line">        proto = Object.getPrototypeOf(proto);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(myInstanceof(<span class="string">"111"</span>, String)); //<span class="literal">false</span></span><br><span class="line">console.log(myInstanceof(new String(<span class="string">"111"</span>), String));//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-Object-is和-的区别？"><a href="#4-Object-is和-的区别？" class="headerlink" title="4.Object.is和===的区别？"></a>4.Object.is和===的区别？</h3><p>Object在严格等于的基础上修复了一些特殊情况下的失误，具体来说就是+0和-0，NaN和NaN。 源码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> is(x, y) &#123;</span><br><span class="line">  <span class="keyword">if</span> (x === y) &#123;</span><br><span class="line">    //运行到1/x === 1/y的时候x和y都为0，但是1/+0 = +Infinity， 1/-0 = -Infinity, 是不一样的</span><br><span class="line">    <span class="built_in">return</span> x !== 0 || y !== 0 || 1 / x === 1 / y;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    //NaN===NaN是<span class="literal">false</span>,这是不对的，我们在这里做一个拦截，x !== x，那么一定是 NaN, y 同理</span><br><span class="line">    //两个都是NaN的时候返回<span class="literal">true</span></span><br><span class="line">    <span class="built_in">return</span> x !== x &amp;&amp; y !== y;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第三篇-JS数据类型之问——转换篇"><a href="#第三篇-JS数据类型之问——转换篇" class="headerlink" title="第三篇: JS数据类型之问——转换篇"></a>第三篇: JS数据类型之问——转换篇</h2><h3 id="1-结果是什么？为什么？"><a href="#1-结果是什么？为什么？" class="headerlink" title="1.[] == ![]结果是什么？为什么？"></a>1.[] == ![]结果是什么？为什么？</h3><p>解析:<br>== 中，左右两边都需要转换为数字然后进行比较。<br>[]转换为数字为0。<br>![] 首先是转换为布尔值，由于[]作为一个引用类型转换为布尔值为true,<br>因此![]为false，进而在转换成数字，变为0。<br>0 == 0 ， 结果为true</p>
+<h3 id="2-JS中类型转换有哪几种？"><a href="#2-JS中类型转换有哪几种？" class="headerlink" title="2.JS中类型转换有哪几种？"></a>2.JS中类型转换有哪几种？</h3><p>JS中，类型转换只有三种：</p>
+<ul>
+<li>转换成数字</li>
+<li>转换成布尔值</li>
+<li>转换成字符串</li>
+</ul>
+<p>转换具体规则如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意<span class="string">"Boolean 转字符串"</span>这行结果指的是 <span class="literal">true</span> 转字符串的例子</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/25/JavaScript/02.png" class title="This is an image">
+
+<h3 id="3-和-有什么区别？"><a href="#3-和-有什么区别？" class="headerlink" title="3.== 和 ===有什么区别？"></a>3.== 和 ===有什么区别？</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">===叫做严格相等，是指：左右两边不仅值要相等，类型也要相等，例如<span class="string">'1'</span>===1的结果是<span class="literal">false</span>，因为一边是string，另一边是number。</span><br></pre></td></tr></table></figure>
+
+<p>==不像===那样严格，对于一般情况，只要值相等，就返回true，但==还涉及一些类型转换，它的转换规则如下：</p>
+<ul>
+<li>两边的类型是否相同，相同的话就比较值的大小，例如1==2，返回false</li>
+<li>判断的是否是null和undefined，是的话就返回true</li>
+<li>判断的类型是否是String和Number，是的话，把String类型转换成Number，再进行比较</li>
+<li>判断其中一方是否是Boolean，是的话就把Boolean转换成Number，再进行比较</li>
+<li>如果其中一方为Object，且另一方为String、Number或者Symbol，会将Object转换成字符串，再进行比较</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(&#123;a: 1&#125; == <span class="literal">true</span>);//<span class="literal">false</span></span><br><span class="line">console.log(&#123;a: 1&#125; == <span class="string">"[object Object]"</span>);//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-对象转原始类型是根据什么流程运行的？"><a href="#4-对象转原始类型是根据什么流程运行的？" class="headerlink" title="4.对象转原始类型是根据什么流程运行的？"></a>4.对象转原始类型是根据什么流程运行的？</h3><p>对象转原始类型，会调用内置的[ToPrimitive]函数，对于该函数而言，其逻辑如下：</p>
+<p>1.如果Symbol.toPrimitive()方法，优先调用再返回<br>2.调用valueOf()，如果转换为原始类型，则返回<br>3.调用toString()，如果转换为原始类型，则返回<br>4.如果都没有返回原始类型，会报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">  value: 3,</span><br><span class="line">  <span class="function"><span class="title">valueOf</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> 4;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">toString</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">'5'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  [Symbol.toPrimitive]() &#123;</span><br><span class="line">    <span class="built_in">return</span> 6</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(obj + 1); // 输出7</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-如何让if-a-1-amp-amp-a-2-条件成立？"><a href="#5-如何让if-a-1-amp-amp-a-2-条件成立？" class="headerlink" title="5.如何让if(a == 1 &amp;&amp; a == 2)条件成立？"></a>5.如何让if(a == 1 &amp;&amp; a == 2)条件成立？</h3><p>其实就是上一个问题的应用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;</span><br><span class="line">  value: 0,</span><br><span class="line">  valueOf: <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    this.value++;</span><br><span class="line">    <span class="built_in">return</span> this.value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">console.log(a == 1 &amp;&amp; a == 2);//<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第四篇-谈谈你对闭包的理解"><a href="#第四篇-谈谈你对闭包的理解" class="headerlink" title="第四篇: 谈谈你对闭包的理解"></a>第四篇: 谈谈你对闭包的理解</h2><h3 id="什么是闭包？"><a href="#什么是闭包？" class="headerlink" title="什么是闭包？"></a>什么是闭包？</h3><p>红宝书(p178)上对于闭包的定义：闭包是指有权访问另外一个函数作用域中的变量的函数，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MDN 对闭包的定义为：闭包是指那些能够访问自由变量的函数。</span><br><span class="line"></span><br><span class="line">（其中自由变量，指在函数中使用的，但既不是函数参数arguments也不是函数的局部变量的变量，其实就是另外一个函数作用域中的变量。）</span><br></pre></td></tr></table></figure>
+
+<h3 id="闭包产生的原因"><a href="#闭包产生的原因" class="headerlink" title="闭包产生的原因?"></a>闭包产生的原因?</h3><p>首先要明白作用域链的概念，其实很简单，在ES5中只存在两种作用域————全局作用域和函数作用域，当访问一个变量时，解释器会首先在当前作用域查找标示符，如果没有找到，就去父作用域找，直到找到该变量的标示符或者不在父作用域中，这就是作用域链，值得注意的是，每一个子函数都会拷贝上级的作用域，形成一个作用域的链条。 比如:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var a = 1;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">  var a = 2</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;</span><br><span class="line">    var a = 3;</span><br><span class="line">    console.log(a);//3</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中，f1的作用域指向有全局作用域(window)和它本身，而f2的作用域指向全局作用域(window)、f1和它本身。而且作用域是从最底层向上找，直到找到全局作用域window为止，如果全局还没有的话就会报错。就这么简单一件事情！<br>闭包产生的本质就是，当前环境中存在指向父级作用域的引用。还是举上面的例子:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">  var a = 2</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">f2</span></span>() &#123;</span><br><span class="line">    console.log(a);//2</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> f2;</span><br><span class="line">&#125;</span><br><span class="line">var x = f1();</span><br><span class="line">x();</span><br></pre></td></tr></table></figure>
+
+<p>这里x会拿到父级作用域中的变量，输出2。因为在当前环境中，含有对f2的引用，f2恰恰引用了window、f1和f2的作用域。因此f2可以访问到f1的作用域的变量。<br>那是不是只有返回函数才算是产生了闭包呢？、<br>回到闭包的本质，我们只需要让父级作用域的引用存在即可，因此我们还可以这么做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var f3;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f1</span></span>() &#123;</span><br><span class="line">  var a = 2</span><br><span class="line">  f3 = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    console.log(a);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">f1();</span><br><span class="line">f3();</span><br></pre></td></tr></table></figure>
+
+<p>让f1执行，给f3赋值后，等于说现在f3拥有了window、f1和f3本身这几个作用域的访问权限，还是自底向上查找，最近是在f1中找到了a,因此输出2。<br>在这里是外面的变量f3存在着父级作用域的引用，因此产生了闭包，形式变了，本质没有改变。</p>
+<h3 id="闭包有哪些表现形式"><a href="#闭包有哪些表现形式" class="headerlink" title="闭包有哪些表现形式?"></a>闭包有哪些表现形式?</h3><p>明白了本质之后，我们就来看看，在真实的场景中，究竟在哪些地方能体现闭包的存在？</p>
+<p>1.返回一个函数。刚刚已经举例。<br>2.作为函数参数传递</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var a = 1;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">foo</span></span>()&#123;</span><br><span class="line">  var a = 2;</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">baz</span></span>()&#123;</span><br><span class="line">    console.log(a);</span><br><span class="line">  &#125;</span><br><span class="line">  bar(baz);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> bar(fn)&#123;</span><br><span class="line">  // 这就是闭包</span><br><span class="line">  fn();</span><br><span class="line">&#125;</span><br><span class="line">// 输出2，而不是1</span><br><span class="line">foo();</span><br></pre></td></tr></table></figure>
+
+<p>3.在定时器、事件监听、Ajax请求、跨窗口通信、Web Workers或者任何异步中，只要使用了回调函数，实际上就是在使用闭包。</p>
+<p>以下的闭包保存的仅仅是window和当前作用域。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 定时器</span><br><span class="line">setTimeout(<span class="keyword">function</span> <span class="function"><span class="title">timeHandler</span></span>()&#123;</span><br><span class="line">  console.log(<span class="string">'111'</span>);</span><br><span class="line">&#125;，100)</span><br><span class="line"></span><br><span class="line">// 事件监听</span><br><span class="line">$(<span class="string">'#app'</span>).click(<span class="function"><span class="title">function</span></span>()&#123;</span><br><span class="line">  console.log(<span class="string">'DOM Listener'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>4.IIFE(立即执行函数表达式)创建闭包, 保存了全局作用域window和当前函数的作用域，因此可以全局的变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var a = 2;</span><br><span class="line">(<span class="keyword">function</span> <span class="function"><span class="title">IIFE</span></span>()&#123;</span><br><span class="line">  // 输出2</span><br><span class="line">  console.log(a);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>为什么会全部输出6？如何改进，让它输出1，2，3，4，5？(方法越多越好)<br>因为setTimeout为宏任务，由于JS中单线程eventLoop机制，在主线程同步任务执行完后才去执行宏任务，因此循环结束后setTimeout中的回调才依次执行，但输出i的时候当前作用域没有，往上一级再找，发现了i,此时循环已经结束，i变成了6。因此会全部输出6。<br>解决方法：</p>
+<p>1、利用IIFE(立即执行函数表达式)当每次for循环时，把此时的i变量传递到定时器中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(var i = 1;i &lt;= 5;i++)&#123;</span><br><span class="line">  (<span class="keyword">function</span>(j)&#123;</span><br><span class="line">    setTimeout(<span class="keyword">function</span> <span class="function"><span class="title">timer</span></span>()&#123;</span><br><span class="line">      console.log(j)</span><br><span class="line">    &#125;, 0)</span><br><span class="line">  &#125;)(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、给定时器传入第三个参数, 作为timer函数的第一个函数参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(var i=1;i&lt;=5;i++)&#123;</span><br><span class="line">  setTimeout(<span class="keyword">function</span> timer(j)&#123;</span><br><span class="line">    console.log(j)</span><br><span class="line">  &#125;, 0, i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3、使用ES6中的let</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="built_in">let</span> i = 1; i &lt;= 5; i++)&#123;</span><br><span class="line">  setTimeout(<span class="keyword">function</span> <span class="function"><span class="title">timer</span></span>()&#123;</span><br><span class="line">    console.log(i)</span><br><span class="line">  &#125;,0)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>let使JS发生革命性的变化，让JS有函数作用域变为了块级作用域，用let后作用域链不复存在。代码的作用域以块级为单位，以上面代码为例:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// i = 1</span><br><span class="line">&#123;</span><br><span class="line">  setTimeout(<span class="keyword">function</span> <span class="function"><span class="title">timer</span></span>()&#123;</span><br><span class="line">    console.log(1)</span><br><span class="line">  &#125;,0)</span><br><span class="line">&#125;</span><br><span class="line">// i = 2</span><br><span class="line">&#123;</span><br><span class="line">  setTimeout(<span class="keyword">function</span> <span class="function"><span class="title">timer</span></span>()&#123;</span><br><span class="line">    console.log(2)</span><br><span class="line">  &#125;,0)</span><br><span class="line">&#125;</span><br><span class="line">// i = 3</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>因此能输出正确的结果。</p>
+<h2 id="第五篇-谈谈你对原型链的理解"><a href="#第五篇-谈谈你对原型链的理解" class="headerlink" title="第五篇: 谈谈你对原型链的理解"></a>第五篇: 谈谈你对原型链的理解</h2><h3 id="1-原型对象和构造函数有何关系？"><a href="#1-原型对象和构造函数有何关系？" class="headerlink" title="1.原型对象和构造函数有何关系？"></a>1.原型对象和构造函数有何关系？</h3><p>在JavaScript中，每当定义一个函数数据类型(普通函数、类)时候，都会天生自带一个prototype属性，这个属性指向函数的原型对象。<br>当函数经过new调用时，这个函数就成为了构造函数，返回一个全新的实例对象，这个实例对象有一个<strong>proto</strong>属性，指向构造函数的原型对象。</p>
+<img src="/2020/10/25/JavaScript/03.png" class title="This is an image">
+
+<h3 id="2-能不能描述一下原型链？"><a href="#2-能不能描述一下原型链？" class="headerlink" title="2.能不能描述一下原型链？"></a>2.能不能描述一下原型链？</h3><p>JavaScript对象通过<strong>proto</strong> 指向父类对象，直到指向Object对象为止，这样就形成了一个原型指向的链条, 即原型链。</p>
+<img src="/2020/10/25/JavaScript/04.png" class title="This is an image">
+
+<ul>
+<li>对象的 hasOwnProperty() 来检查对象自身中是否含有该属性</li>
+<li>使用 in 检查对象中是否含有某个属性时，如果对象中没有但是原型链中有，也会返回 true</li>
+</ul>
+<h2 id="第六篇-JS如何实现继承？"><a href="#第六篇-JS如何实现继承？" class="headerlink" title="第六篇: JS如何实现继承？"></a>第六篇: JS如何实现继承？</h2><h3 id="第一种-借助call"><a href="#第一种-借助call" class="headerlink" title="第一种: 借助call"></a>第一种: 借助call</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Parent1</span></span>()&#123;</span><br><span class="line">  this.name = <span class="string">'parent1'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Child1</span></span>()&#123;</span><br><span class="line">  Parent1.call(this);</span><br><span class="line">  this.type = <span class="string">'child1'</span></span><br><span class="line">&#125;</span><br><span class="line">console.log(new Child1);</span><br></pre></td></tr></table></figure>
+
+<p>这样写的时候子类虽然能够拿到父类的属性值，但是问题是父类原型对象中一旦存在方法那么子类无法继承。那么引出下面的方法。</p>
+<h3 id="第二种-借助原型链"><a href="#第二种-借助原型链" class="headerlink" title="第二种: 借助原型链"></a>第二种: 借助原型链</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Parent2</span></span>() &#123;</span><br><span class="line">  this.name = <span class="string">'parent2'</span>;</span><br><span class="line">  this.play = [1, 2, 3]</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Child2</span></span>() &#123;</span><br><span class="line">  this.type = <span class="string">'child2'</span>;</span><br><span class="line">&#125;</span><br><span class="line">Child2.prototype = new Parent2();</span><br><span class="line"></span><br><span class="line">console.log(new Child2());</span><br></pre></td></tr></table></figure>
+
+<p>看似没有问题，父类的方法和属性都能够访问，但实际上有一个潜在的不足。举个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var s1 = new Child2();</span><br><span class="line">var s2 = new Child2();</span><br><span class="line">s1.play.push(4);</span><br><span class="line">console.log(s1.play, s2.play);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到控制台：</p>
+<img src="/2020/10/25/JavaScript/05.png" class title="This is an image">
+
+<p>明明我只改变了s1的play属性，为什么s2也跟着变了呢？很简单，因为两个实例使用的是同一个原型对象。</p>
+<p>那么还有更好的方式么？</p>
+<h3 id="第三种：将前两种组合"><a href="#第三种：将前两种组合" class="headerlink" title="第三种：将前两种组合"></a>第三种：将前两种组合</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Parent3</span></span> () &#123;</span><br><span class="line">  this.name = <span class="string">'parent3'</span>;</span><br><span class="line">  this.play = [1, 2, 3];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Child3</span></span>() &#123;</span><br><span class="line">  Parent3.call(this);</span><br><span class="line">  this.type = <span class="string">'child3'</span>;</span><br><span class="line">&#125;</span><br><span class="line">Child3.prototype = new Parent3();</span><br><span class="line">var s3 = new Child3();</span><br><span class="line">var s4 = new Child3();</span><br><span class="line">s3.play.push(4);</span><br><span class="line">console.log(s3.play, s4.play);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到控制台：</p>
+<img src="/2020/10/25/JavaScript/06.png" class title="This is an image">
+
+<p>之前的问题都得以解决。但是这里又徒增了一个新问题，那就是Parent3的构造函数会多执行了一次（Child3.prototype = new Parent3();）。这是我们不愿看到的。那么如何解决这个问题？</p>
+<h3 id="第四种-组合继承的优化1"><a href="#第四种-组合继承的优化1" class="headerlink" title="第四种: 组合继承的优化1"></a>第四种: 组合继承的优化1</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Parent4</span></span> () &#123;</span><br><span class="line">  this.name = <span class="string">'parent4'</span>;</span><br><span class="line">  this.play = [1, 2, 3];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Child4</span></span>() &#123;</span><br><span class="line">  Parent4.call(this);</span><br><span class="line">  this.type = <span class="string">'child4'</span>;</span><br><span class="line">&#125;</span><br><span class="line">Child4.prototype = Parent4.prototype;</span><br></pre></td></tr></table></figure>
+
+<p>这里让将父类原型对象直接给到子类，父类构造函数只执行一次，而且父类属性和方法均能访问，但是我们来测试一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var s3 = new Child4();</span><br><span class="line">var s4 = new Child4();</span><br><span class="line">console.log(s3)</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/25/JavaScript/07.png" class title="This is an image">
+
+<p>子类实例的构造函数是Parent4，显然这是不对的，应该是Child4。</p>
+<h3 id="第五种-最推荐使用-组合继承的优化1"><a href="#第五种-最推荐使用-组合继承的优化1" class="headerlink" title="第五种(最推荐使用): 组合继承的优化1"></a>第五种(最推荐使用): 组合继承的优化1</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Parent5</span></span> () &#123;</span><br><span class="line">  this.name = <span class="string">'parent5'</span>;</span><br><span class="line">  this.play = [1, 2, 3];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Child5</span></span>() &#123;</span><br><span class="line">  Parent5.call(this);</span><br><span class="line">  this.type = <span class="string">'child5'</span>;</span><br><span class="line">&#125;</span><br><span class="line">Child5.prototype = Object.create(Parent5.prototype);</span><br><span class="line">Child5.prototype.constructor = Child5;</span><br></pre></td></tr></table></figure>
+
+<p>这是最推荐的一种方式，接近完美的继承，它的名字也叫做寄生组合继承。</p>
+<h3 id="ES6的extends被编译后的JavaScript代码"><a href="#ES6的extends被编译后的JavaScript代码" class="headerlink" title="ES6的extends被编译后的JavaScript代码"></a>ES6的extends被编译后的JavaScript代码</h3><p>ES6的代码最后都是要在浏览器上能够跑起来的，这中间就利用了babel这个编译工具，将ES6的代码编译成ES5让一些不支持新语法的浏览器也能运行。</p>
+<p>那最后编译成了什么样子呢？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> _possibleConstructorReturn(self, call) &#123;</span><br><span class="line">    // ...</span><br><span class="line">    <span class="built_in">return</span> call &amp;&amp; (typeof call === <span class="string">'object'</span> || typeof call === <span class="string">'function'</span>) ? call : self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> _inherits(subClass, superClass) &#123;</span><br><span class="line">    // ...</span><br><span class="line">    //看到没有</span><br><span class="line">    subClass.prototype = Object.create(superClass &amp;&amp; superClass.prototype, &#123;</span><br><span class="line">        constructor: &#123;</span><br><span class="line">            value: subClass,</span><br><span class="line">            enumerable: <span class="literal">false</span>,</span><br><span class="line">            writable: <span class="literal">true</span>,</span><br><span class="line">            configurable: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span> (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var Parent = <span class="keyword">function</span> <span class="function"><span class="title">Parent</span></span>() &#123;</span><br><span class="line">    // 验证是否是 Parent 构造出来的 this</span><br><span class="line">    _classCallCheck(this, Parent);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">var Child = (<span class="keyword">function</span> (_Parent) &#123;</span><br><span class="line">    _inherits(Child, _Parent);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">Child</span></span>() &#123;</span><br><span class="line">        _classCallCheck(this, Child);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">return</span> _possibleConstructorReturn(this, (Child.__proto__ || Object.getPrototypeOf(Child)).apply(this, arguments));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">return</span> Child;</span><br><span class="line">&#125;(Parent));</span><br></pre></td></tr></table></figure>
+
+<p>核心是_inherits函数，可以看到它采用的依然也是第五种方式————寄生组合继承方式，同时证明了这种方式的成功。不过这里加了一个Object.setPrototypeOf(subClass, superClass)，这是用来干啥的呢？<br>答案是用来继承父类的静态方法。这也是原来的继承方式疏忽掉的地方。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">追问: 面向对象的设计一定是好的设计吗？</span><br></pre></td></tr></table></figure>
+
+<p>不一定。从继承的角度说，这一设计是存在巨大隐患的。</p>
+<h3 id="从设计思想上谈谈继承本身的问题"><a href="#从设计思想上谈谈继承本身的问题" class="headerlink" title="从设计思想上谈谈继承本身的问题"></a>从设计思想上谈谈继承本身的问题</h3><p>假如现在有不同品牌的车，每辆车都有drive、music、addOil这三个方法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Car&#123;</span><br><span class="line">  constructor(id) &#123;</span><br><span class="line">    this.id = id;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">drive</span></span>()&#123;</span><br><span class="line">    console.log(<span class="string">"wuwuwu!"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">music</span></span>()&#123;</span><br><span class="line">    console.log(<span class="string">"lalala!"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">addOil</span></span>()&#123;</span><br><span class="line">    console.log(<span class="string">"哦哟！"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class otherCar extends Car&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在可以实现车的功能，并且以此去扩展不同的车。<br>但是问题来了，新能源汽车也是车，但是它并不需要addOil(加油)。<br>如果让新能源汽车的类继承Car的话，也是有问题的，俗称”大猩猩和香蕉”的问题。大猩猩手里有香蕉，但是我现在明明只需要香蕉，却拿到了一只大猩猩。也就是说加油这个方法，我现在是不需要的，但是由于继承的原因，也给到子类了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">继承的最大问题在于：无法决定继承哪些属性，所有属性都得继承。</span><br></pre></td></tr></table></figure>
+
+<p>当然你可能会说，可以再创建一个父类啊，把加油的方法给去掉，但是这也是有问题的，一方面父类是无法描述所有子类的细节情况的，为了不同的子类特性去增加不同的父类，代码势必会大量重复，另一方面一旦子类有所变动，父类也要进行相应的更新，代码的耦合性太高，维护性不好。<br>那如何来解决继承的诸多问题呢？<br>用组合，这也是当今编程语法发展的趋势，比如golang完全采用的是面向组合的设计方式。<br>顾名思义，面向组合就是先设计一系列零件，然后将这些零件进行拼装，来形成不同的实例或者类。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">drive</span></span>()&#123;</span><br><span class="line">  console.log(<span class="string">"wuwuwu!"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">music</span></span>()&#123;</span><br><span class="line">  console.log(<span class="string">"lalala!"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">addOil</span></span>()&#123;</span><br><span class="line">  console.log(<span class="string">"哦哟！"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> car = compose(drive, music, addOil);</span><br><span class="line"><span class="built_in">let</span> newEnergyCar = compose(drive, music);</span><br></pre></td></tr></table></figure>
+
+<p>代码干净，复用性也很好。这就是面向组合的设计方式。</p>
+<p><font color="#ff502c">申明：此篇文章转载于</font><a href="https://juejin.im/post/6844903974378668039" target="_blank" rel="noopener">此处</a><font color="#ff502c">，如有侵权，请联系删除，谢谢！</font></p>
+
+          
+        
+      </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/24/react-proxy/" class="archive-article-date">
-  	<time datetime="2020-05-24T15:23:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/24/react-proxy/">react项目跨域配置代理</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/17/hexo/" class="archive-article-date">
-  	<time datetime="2020-05-17T04:45:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-17</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/10/25/JavaScript-02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          原生JS灵魂之问(中篇)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/10/25/HTTP-02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">TCP协议灵魂之问(下篇)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/17/hexo/">Hexo</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一篇-JS数据类型之问——概念篇"><span class="toc-number">1.</span> <span class="toc-text">第一篇: JS数据类型之问——概念篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在-JS-中，存在着-7-种原始值，分别是："><span class="toc-number">1.1.</span> <span class="toc-text">在 JS 中，存在着 7 种原始值，分别是：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-说出下面运行的结果，解释原因。"><span class="toc-number">1.2.</span> <span class="toc-text">2.说出下面运行的结果，解释原因。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-null是对象吗？为什么？"><span class="toc-number">1.3.</span> <span class="toc-text">3.null是对象吗？为什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-’1’-toString-为什么可以调用？"><span class="toc-number">1.4.</span> <span class="toc-text">4.’1’.toString()为什么可以调用？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-0-1-0-2为什么不等于0-3？"><span class="toc-number">1.5.</span> <span class="toc-text">5.0.1+0.2为什么不等于0.3？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-如何理解BigInt"><span class="toc-number">1.6.</span> <span class="toc-text">6.如何理解BigInt?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是BigInt"><span class="toc-number">1.6.1.</span> <span class="toc-text">什么是BigInt?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#为什么需要BigInt"><span class="toc-number">1.6.2.</span> <span class="toc-text">为什么需要BigInt?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何创建并使用BigInt？"><span class="toc-number">1.6.3.</span> <span class="toc-text">如何创建并使用BigInt？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#值得警惕的点"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">值得警惕的点</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二篇-JS数据类型之问——检测篇"><span class="toc-number">2.</span> <span class="toc-text">第二篇: JS数据类型之问——检测篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-typeof-是否能正确判断类型？"><span class="toc-number">2.1.</span> <span class="toc-text">1.typeof 是否能正确判断类型？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-instanceof能否判断基本数据类型？"><span class="toc-number">2.2.</span> <span class="toc-text">2. instanceof能否判断基本数据类型？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-能不能手动实现一下instanceof的功能？"><span class="toc-number">2.3.</span> <span class="toc-text">3.能不能手动实现一下instanceof的功能？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Object-is和-的区别？"><span class="toc-number">2.4.</span> <span class="toc-text">4.Object.is和&#x3D;&#x3D;&#x3D;的区别？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三篇-JS数据类型之问——转换篇"><span class="toc-number">3.</span> <span class="toc-text">第三篇: JS数据类型之问——转换篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-结果是什么？为什么？"><span class="toc-number">3.1.</span> <span class="toc-text">1.[] &#x3D;&#x3D; ![]结果是什么？为什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-JS中类型转换有哪几种？"><span class="toc-number">3.2.</span> <span class="toc-text">2.JS中类型转换有哪几种？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-和-有什么区别？"><span class="toc-number">3.3.</span> <span class="toc-text">3.&#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D;有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-对象转原始类型是根据什么流程运行的？"><span class="toc-number">3.4.</span> <span class="toc-text">4.对象转原始类型是根据什么流程运行的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-如何让if-a-1-amp-amp-a-2-条件成立？"><span class="toc-number">3.5.</span> <span class="toc-text">5.如何让if(a &#x3D;&#x3D; 1 &amp;&amp; a &#x3D;&#x3D; 2)条件成立？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第四篇-谈谈你对闭包的理解"><span class="toc-number">4.</span> <span class="toc-text">第四篇: 谈谈你对闭包的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是闭包？"><span class="toc-number">4.1.</span> <span class="toc-text">什么是闭包？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#闭包产生的原因"><span class="toc-number">4.2.</span> <span class="toc-text">闭包产生的原因?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#闭包有哪些表现形式"><span class="toc-number">4.3.</span> <span class="toc-text">闭包有哪些表现形式?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第五篇-谈谈你对原型链的理解"><span class="toc-number">5.</span> <span class="toc-text">第五篇: 谈谈你对原型链的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-原型对象和构造函数有何关系？"><span class="toc-number">5.1.</span> <span class="toc-text">1.原型对象和构造函数有何关系？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-能不能描述一下原型链？"><span class="toc-number">5.2.</span> <span class="toc-text">2.能不能描述一下原型链？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第六篇-JS如何实现继承？"><span class="toc-number">6.</span> <span class="toc-text">第六篇: JS如何实现继承？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一种-借助call"><span class="toc-number">6.1.</span> <span class="toc-text">第一种: 借助call</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二种-借助原型链"><span class="toc-number">6.2.</span> <span class="toc-text">第二种: 借助原型链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三种：将前两种组合"><span class="toc-number">6.3.</span> <span class="toc-text">第三种：将前两种组合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第四种-组合继承的优化1"><span class="toc-number">6.4.</span> <span class="toc-text">第四种: 组合继承的优化1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第五种-最推荐使用-组合继承的优化1"><span class="toc-number">6.5.</span> <span class="toc-text">第五种(最推荐使用): 组合继承的优化1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES6的extends被编译后的JavaScript代码"><span class="toc-number">6.6.</span> <span class="toc-text">ES6的extends被编译后的JavaScript代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从设计思想上谈谈继承本身的问题"><span class="toc-number">6.7.</span> <span class="toc-text">从设计思想上谈谈继承本身的问题</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/17/vue-index/" class="archive-article-date">
-  	<time datetime="2020-05-17T03:20:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-17</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/17/vue-index/">Vue</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2020/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span>
-    </nav>
+  
+
   
 
 
@@ -257,8 +487,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
