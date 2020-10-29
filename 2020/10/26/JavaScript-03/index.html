@@ -6,15 +6,31 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Zerle</title>
+  <title>原生JS灵魂之问(下篇) | Zerle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zerle">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="本次分享的主题是JS执行原理和深入异步，是一块比较系统且有深度的内容，相信对进阶的小伙伴是一个很大的提升。 第24篇: JavaScript内存机制之问——数据是如何存储的？网上的资料基本是这样说的: 基本数据类型用栈存储，引用数据类型用堆存储。 看起来没有错误，但实际上是有问题的。可以考虑一下闭包的情况，如果变量存在栈中，那函数调用完栈顶空间销毁，闭包变量不就没了吗？ 其实还是需要补充一句: 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生JS灵魂之问(下篇)">
+<meta property="og:url" content="http://yoursite.com/2020/10/26/JavaScript-03/index.html">
 <meta property="og:site_name" content="Zerle">
+<meta property="og:description" content="本次分享的主题是JS执行原理和深入异步，是一块比较系统且有深度的内容，相信对进阶的小伙伴是一个很大的提升。 第24篇: JavaScript内存机制之问——数据是如何存储的？网上的资料基本是这样说的: 基本数据类型用栈存储，引用数据类型用堆存储。 看起来没有错误，但实际上是有问题的。可以考虑一下闭包的情况，如果变量存在栈中，那函数调用完栈顶空间销毁，闭包变量不就没了吗？ 其实还是需要补充一句: 1">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/01.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/02.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/03.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/04.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/05.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/06.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/07.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/08.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/09.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/26/JavaScript-03/11.png">
+<meta property="article:published_time" content="2020-10-26T14:40:54.000Z">
+<meta property="article:modified_time" content="2020-10-29T14:47:54.304Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/26/JavaScript-03/01.png">
   
     <link rel="alternative" href="/atom.xml" title="Zerle" type="application/atom+xml">
   
@@ -134,20 +150,26 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-JavaScript-03" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-JavaScript-03" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/26/JavaScript-03/">原生JS灵魂之问(下篇)</a>
+    <h1 class="article-title" itemprop="name">
+      原生JS灵魂之问(下篇)
     </h1>
   
 
         <!--显示阅读次数-->
+        
+            <br/>
+            <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+            <span class="icon-sort"></span>
+            <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+                    阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+            </span>
+            </a>
         
         
         <a href="/2020/10/26/JavaScript-03/" class="archive-article-date">
@@ -161,7 +183,279 @@
           
           
             <p>本次分享的主题是JS执行原理和深入异步，是一块比较系统且有深度的内容，相信对进阶的小伙伴是一个很大的提升。</p>
-            
+<h2 id="第24篇-JavaScript内存机制之问——数据是如何存储的？"><a href="#第24篇-JavaScript内存机制之问——数据是如何存储的？" class="headerlink" title="第24篇: JavaScript内存机制之问——数据是如何存储的？"></a>第24篇: JavaScript内存机制之问——数据是如何存储的？</h2><p>网上的资料基本是这样说的: 基本数据类型用栈存储，引用数据类型用堆存储。</p>
+<p>看起来没有错误，但实际上是有问题的。可以考虑一下闭包的情况，如果变量存在栈中，那函数调用完栈顶空间销毁，闭包变量不就没了吗？</p>
+<p>其实还是需要补充一句:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">闭包变量是存在堆内存中的。</span><br></pre></td></tr></table></figure>
+
+<p>具体而言，以下数据类型存储在栈中:</p>
+<ul>
+<li>boolean</li>
+<li>null</li>
+<li>undefined</li>
+<li>number</li>
+<li>string</li>
+<li>symbol</li>
+<li>bigint</li>
+</ul>
+<p>而所有的对象数据类型存放在堆中。<br>值得注意的是，对于赋值操作，原始类型的数据直接完整地复制变量值，对象数据类型的数据则是复制引用地址。<br>因此会有下面的情况:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123; a: 1 &#125;;</span><br><span class="line"><span class="built_in">let</span> newObj = obj;</span><br><span class="line">newObj.a = 2;</span><br><span class="line">console.log(obj.a);//变成了2</span><br></pre></td></tr></table></figure>
+
+<p>之所以会这样，是因为 obj 和 newObj 是同一份堆空间的地址，改变newObj，等于改变了共同的堆内存，这时候通过 obj 来获取这块内存的值当然会改变。<br>当然，你可能会问: 为什么不全部用栈来保存呢？<br>首先，对于系统栈来说，它的功能除了保存变量之外，还有创建并切换函数执行上下文的功能。举个例子:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> f(a) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> func(a) &#123;</span><br><span class="line">  f(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func(1);</span><br></pre></td></tr></table></figure>
+
+
+<p>假设用ESP指针来保存当前的执行状态，在系统栈中会产生如下的过程：</p>
+<p>1.调用func, 将 func 函数的上下文压栈，ESP指向栈顶。</p>
+<p>2.执行func，又调用f函数，将 f 函数的上下文压栈，ESP 指针上移。</p>
+<p>3.执行完 f 函数，将ESP 下移，f函数对应的栈顶空间被回收。</p>
+<p>4.执行完 func，ESP 下移，func对应的空间被回收。</p>
+<p>图示如下:</p>
+<img src="/2020/10/26/JavaScript-03/01.png" class title="This is an image">
+
+
+<p>因此你也看到了，如果采用栈来存储相对基本类型更加复杂的对象数据，那么切换上下文的开销将变得巨大！</p>
+<p>不过堆内存虽然空间大，能存放大量的数据，但与此同时垃圾内存的回收会带来更大的开销，下一篇就来分析一下堆内存到底是如何进行垃圾回收并进行优化的。</p>
+<h2 id="第25篇：V8-引擎如何进行垃圾内存的回收？"><a href="#第25篇：V8-引擎如何进行垃圾内存的回收？" class="headerlink" title="第25篇：V8 引擎如何进行垃圾内存的回收？"></a>第25篇：V8 引擎如何进行垃圾内存的回收？</h2><p>JS 语言不像 C/C++, 让程序员自己去开辟或者释放内存，而是类似Java，采用自己的一套垃圾回收算法进行自动的内存管理。作为一名资深的前端工程师，对于JS内存回收的机制是需要非常清楚, 以便于在极端的环境下能够分析出系统性能的瓶颈，另一方面，学习这其中的机制，也对我们深入理解JS的闭包特性、以及对内存的高效使用，都有很大的帮助。</p>
+<h3 id="V8-内存限制"><a href="#V8-内存限制" class="headerlink" title="V8 内存限制"></a>V8 内存限制</h3><p>在其他的后端语言中，如Java/Go, 对于内存的使用没有什么限制，但是JS不一样，V8只能使用系统的一部分内存，具体来说，在64位系统下，V8最多只能分配1.4G, 在 32 位系统中，最多只能分配0.7G。你想想在前端这样的大内存需求其实并不大，但对于后端而言，nodejs如果遇到一个2G多的文件，那么将无法全部将其读入内存进行各种操作了。<br>我们知道对于栈内存而言，当ESP指针下移，也就是上下文切换之后，栈顶的空间会自动被回收。但对于堆内存而言就比较复杂了，我们下面着重分析堆内存的垃圾回收。<br>上一篇我们提到过了，所有的对象类型的数据在JS中都是通过堆进行空间分配的。当我们构造一个对象进行赋值操作的时候，其实相应的内存已经分配到了堆上。你可以不断的这样创建对象，让 V8 为它分配空间，直到堆的大小达到上限。<br>那么问题来了，V8 为什么要给它设置内存上限？明明我的机器大几十G的内存，只能让我用这么一点？<br>究其根本，是由两个因素所共同决定的，一个是JS单线程的执行机制，另一个是JS垃圾回收机制的限制。<br>首先JS是单线程运行的，这意味着一旦进入到垃圾回收，那么其它的各种运行逻辑都要暂停; 另一方面垃圾回收其实是非常耗时间的操作，V8 官方是这样形容的:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">以 1.5GB 的垃圾回收堆内存为例，V8 做一次小的垃圾回收需要50ms 以上，做一次非增量式(ps:后面会解释)的垃圾回收甚至要 1s 以上。</span><br></pre></td></tr></table></figure>
+
+<p>可见其耗时之久，而且在这么长的时间内，我们的JS代码执行会一直没有响应，造成应用卡顿，导致应用性能和响应能力直线下降。因此，V8 做了一个简单粗暴的选择，那就是限制堆内存，也算是一种权衡的手段，因为大部分情况是不会遇到操作几个G内存这样的场景的。<br>不过，如果你想调整这个内存的限制也不是不行。配置命令如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 这是调整老生代这部分的内存，单位是MB。后面会详细介绍新生代和老生代内存</span><br><span class="line">node --max-old-space-size=2048 xxx.js</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 这是调整新生代这部分的内存，单位是 KB。</span><br><span class="line">node --max-new-space-size=2048 xxx.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="新生代内存的回收"><a href="#新生代内存的回收" class="headerlink" title="新生代内存的回收"></a>新生代内存的回收</h3><p>V8 把堆内存分成了两部分进行处理——新生代内存和老生代内存。顾名思义，新生代就是临时分配的内存，存活时间短， 老生代是常驻内存，存活的时间长。V8 的堆内存，也就是两个内存之和。</p>
+<img src="/2020/10/26/JavaScript-03/02.png" class title="This is an image">
+
+<p>根据这两种不同种类的堆内存，V8 采用了不同的回收策略，来根据不同的场景做针对性的优化。<br>首先是新生代的内存，刚刚已经介绍了调整新生代内存的方法，那它的内存默认限制是多少？在 64 位和 32 位系统下分别为 32MB 和 16MB。够小吧，不过也很好理解，新生代中的变量存活时间短，来了马上就走，不容易产生太大的内存负担，因此可以将它设的足够小。<br>那好了，新生代的垃圾回收是怎么做的呢？<br>首先将新生代内存空间一分为二:</p>
+<img src="/2020/10/26/JavaScript-03/03.png" class title="This is an image">
+
+<p>其中From部分表示正在使用的内存，To 是目前闲置的内存。<br>当进行垃圾回收时，V8 将From部分的对象检查一遍，如果是存活对象那么复制到To内存中(在To内存中按照顺序从头放置的)，如果是非存活对象直接回收即可。<br>当所有的From中的存活对象按照顺序进入到To内存之后，From 和 To 两者的角色对调，From现在被闲置，To为正在使用，如此循环。<br>那你很可能会问了，直接将非存活对象回收了不就万事大吉了嘛，为什么还要后面的一系列操作？<br>注意，我刚刚特别说明了，在To内存中按照顺序从头放置的，这是为了应对这样的场景:</p>
+<img src="/2020/10/26/JavaScript-03/04.png" class title="This is an image">
+
+<p>深色的小方块代表存活对象，白色部分表示待分配的内存，由于堆内存是连续分配的，这样零零散散的空间可能会导致稍微大一点的对象没有办法进行空间分配，这种零散的空间也叫做内存碎片。刚刚介绍的新生代垃圾回收算法也叫Scavenge算法。<br>Scavenge 算法主要就是解决内存碎片的问题，在进行一顿复制之后，To空间变成了这个样子:</p>
+<img src="/2020/10/26/JavaScript-03/05.png" class title="This is an image">
+
+<p>是不是整齐了许多？这样就大大方便了后续连续空间的分配。</p>
+<p>不过Scavenge 算法的劣势也非常明显，就是内存只能使用新生代内存的一半，但是它只存放生命周期短的对象，这种对象一般很少，因此时间性能非常优秀。</p>
+<h3 id="老生代内存的回收"><a href="#老生代内存的回收" class="headerlink" title="老生代内存的回收"></a>老生代内存的回收</h3><p>刚刚介绍了新生代的回收方式，那么新生代中的变量如果经过多次回收后依然存在，那么就会被放入到老生代内存中，这种现象就叫晋升。<br>发生晋升其实不只是这一种原因，我们来梳理一下会有那些情况触发晋升:</p>
+<ul>
+<li>已经经历过一次 Scavenge 回收。</li>
+<li>To（闲置）空间的内存占用超过25%。</li>
+</ul>
+<p>现在进入到老生代的垃圾回收机制当中，老生代中累积的变量空间一般都是很大的，当然不能用Scavenge算法啦，浪费一半空间不说，对庞大的内存空间进行复制岂不是劳民伤财？<br>那么对于老生代而言，究竟是采取怎样的策略进行垃圾回收的呢？<br>第一步，进行标记-清除。这个过程在《JavaScript高级程序设计(第三版)》中有过详细的介绍，主要分成两个阶段，即标记阶段和清除阶段。首先会遍历堆中的所有对象，对它们做上标记，然后对于代码环境中使用的变量以及被强引用的变量取消标记，剩下的就是要删除的变量了，在随后的清除阶段对其进行空间的回收。<br>当然这又会引发内存碎片的问题，存活对象的空间不连续对后续的空间分配造成障碍。老生代又是如何处理这个问题的呢？<br>第二步，整理内存碎片。V8 的解决方式非常简单粗暴，在清除阶段结束后，把存活的对象全部往一端靠拢。</p>
+<img src="/2020/10/26/JavaScript-03/06.png" class title="This is an image">
+
+<p>由于是移动对象，它的执行速度不可能很快，事实上也是整个过程中最耗时间的部分。</p>
+<h3 id="增量标记"><a href="#增量标记" class="headerlink" title="增量标记"></a>增量标记</h3><p>由于JS的单线程机制，V8 在进行垃圾回收的时候，不可避免地会阻塞业务逻辑的执行，倘若老生代的垃圾回收任务很重，那么耗时会非常可怕，严重影响应用的性能。那这个时候为了避免这样问题，V8 采取了增量标记的方案，即将一口气完成的标记任务分为很多小的部分完成，每做完一个小的部分就”歇”一下，就js应用逻辑执行一会儿，然后再执行下面的部分，如果循环，直到标记阶段完成才进入内存碎片的整理上面来。其实这个过程跟React Fiber的思路有点像，这里就不展开了。<br>经过增量标记之后，垃圾回收过程对JS应用的阻塞时间减少到原来了1 / 6, 可以看到，这是一个非常成功的改进。<br>JS垃圾回收的原理就介绍到这里了，其实理解起来是非常简单的，重要的是理解它为什么要这么做，而不仅仅是如何做的，希望这篇总结能够对你有所启发。</p>
+<h2 id="第26篇-描述一下-V8-执行一段JS代码的过程？"><a href="#第26篇-描述一下-V8-执行一段JS代码的过程？" class="headerlink" title="第26篇: 描述一下 V8 执行一段JS代码的过程？"></a>第26篇: 描述一下 V8 执行一段JS代码的过程？</h2><p>前端相对来说是一个比较新兴的领域，因此各种前端框架和工具层出不穷，让人眼花缭乱，尤其是各大厂商推出小程序之后各自制定标准，让前端开发的工作更加繁琐，在此背景下为了抹平平台之间的差异，诞生的各种编译工具/框架也数不胜数。但无论如何，想要赶上这些框架和工具的更新速度是非常难的，即使赶上了也很难产生自己的技术积淀，一个更好的方式便是学习那些本质的知识，抓住上层应用中不变的底层机制，这样我们便能轻松理解上层的框架而不仅仅是被动地使用，甚至能够在适当的场景下自己造出轮子，以满足开发效率的需求。<br>站在 V8 的角度，理解其中的执行机制，也能够帮助我们理解很多的上层应用，包括Babel、Eslint、前端框架的底层机制。那么，一段 JavaScript 代码放在 V8 当中究竟是如何执行的呢？<br>首先需要明白的是，机器是读不懂 JS 代码，机器只能理解特定的机器码，那如果要让 JS 的逻辑在机器上运行起来，就必须将 JS 的代码翻译成机器码，然后让机器识别。JS属于解释型语言，对于解释型的语言说，解释器会对源代码做如下分析:</p>
+<ul>
+<li>通过词法分析和语法分析生成 AST(抽象语法树)</li>
+<li>生成字节码</li>
+</ul>
+<p>然后解释器根据字节码来执行程序。但 JS 整个执行的过程其实会比这个更加复杂，接下来就来一一地拆解。</p>
+<h3 id="1-生成-AST"><a href="#1-生成-AST" class="headerlink" title="1.生成 AST"></a>1.生成 AST</h3><p>生成 AST 分为两步——词法分析和语法分析。<br>词法分析即分词，它的工作就是将一行行的代码分解成一个个token。 比如下面一行代码:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> name = <span class="string">'sanyuan'</span></span><br></pre></td></tr></table></figure>
+
+<p>其中会把句子分解成四个部分:</p>
+<img src="/2020/10/26/JavaScript-03/07.png" class title="This is an image">
+
+<p>即解析成了四个token，这就是词法分析的作用。</p>
+<p>接下来语法分析阶段，将生成的这些 token 数据，根据一定的语法规则转化为AST。举个例子:</p>
+<p>最后生成的 AST 是这样的:</p>
+<img src="/2020/10/26/JavaScript-03/08.png" class title="This is an image">
+
+<p>当生成了 AST 之后，编译器/解释器后续的工作都要依靠 AST 而不是源代码。顺便补充一句，babel 的工作原理就是将 ES6 的代码解析生成ES6的AST，然后将 ES6 的 AST 转换为 ES5 的AST,最后才将 ES5 的 AST 转化为具体的 ES5 代码。由于本文着重阐述原理，关于 babel 编译的细节就不展开了，推荐大家去读一读荒山的<a href="https://juejin.im/post/6844903956905197576?_blank" target="_blank" rel="noopener">babel文章</a>, 帮你打开新世界的大门: )<br>回到 V8 本身，生成 AST 后，接下来会生成执行上下文，关于执行上下文，可以参考上上篇《JavaScript内存机制之问——数据是如何存储的？》中对于上下文压栈出栈过程的讲解。</p>
+<h3 id="2-生成字节码"><a href="#2-生成字节码" class="headerlink" title="2. 生成字节码"></a>2. 生成字节码</h3><p>开头就已经提到过了，生成 AST 之后，直接通过 V8 的解释器(也叫Ignition)来生成字节码。但是字节码并不能让机器直接运行，那你可能就会说了，不能执行还转成字节码干嘛，直接把 AST 转换成机器码不就得了，让机器直接执行。确实，在 V8 的早期是这么做的，但后来因为机器码的体积太大，引发了严重的内存占用问题。<br>给一张对比图让大家直观地感受以下三者代码量的差异:</p>
+<img src="/2020/10/26/JavaScript-03/09.png" class title="This is an image">
+
+<p>很容易得出，字节码是比机器码轻量得多的代码。那 V8 为什么要使用字节码，字节码到底是个什么东西？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字节码是介于AST 和 机器码之间的一种代码，但是与特定类型的机器码无关，字节码需要通过解释器将其转换为机器码然后执行。</span><br></pre></td></tr></table></figure>
+
+<p>字节码仍然需要转换为机器码，但和原来不同的是，现在不用一次性将全部的字节码都转换成机器码，而是通过解释器来逐行执行字节码，省去了生成二进制文件的操作，这样就大大降低了内存的压力。</p>
+<ol start="3">
+<li>执行代码<br>接下来，就进入到字节码解释执行的阶段啦！<br>在执行字节码的过程中，如果发现某一部分代码重复出现，那么 V8 将它记做热点代码(HotSpot)，然后将这么代码编译成机器码保存起来，这个用来编译的工具就是V8的编译器(也叫做TurboFan)<br>, 因此在这样的机制下，代码执行的时间越久，那么执行效率会越来越高，因为有越来越多的字节码被标记为热点代码，遇到它们时直接执行相应的机器码，不用再次将转换为机器码。<br>其实当你听到有人说 JS 就是一门解释器语言的时候，其实这个说法是有问题的。因为字节码不仅配合了解释器，而且还和编译器打交道，所以 JS 并不是完全的解释型语言。而编译器和解释器的<br>根本区别在于前者会编译生成二进制文件但后者不会。<br>并且，这种字节码跟编译器和解释器结合的技术，我们称之为即时编译, 也就是我们经常听到的JIT。<br>这就是 V8 中执行一段JS代码的整个过程，梳理一下:</li>
+</ol>
+<ul>
+<li>1.首先通过词法分析和语法分析生成 AST</li>
+<li>2.将 AST 转换为字节码</li>
+<li>3.由解释器逐行执行字节码，遇到热点代码启动编译器进行编译，生成对应的机器码, 以优化执行效率</li>
+</ul>
+<p>关于这个问题的拆解就到这里，希望对你有所启发。</p>
+<h2 id="第28篇：如何理解EventLoop——宏任务和微任务篇"><a href="#第28篇：如何理解EventLoop——宏任务和微任务篇" class="headerlink" title="第28篇：如何理解EventLoop——宏任务和微任务篇"></a>第28篇：如何理解EventLoop——宏任务和微任务篇</h2><h3 id="宏任务-MacroTask-引入"><a href="#宏任务-MacroTask-引入" class="headerlink" title="宏任务(MacroTask)引入"></a>宏任务(MacroTask)引入</h3><p>在 JS 中，大部分的任务都是在主线程上执行，常见的任务有:</p>
+<ul>
+<li>1.渲染事件</li>
+<li>2.用户交互事件</li>
+<li>3.js脚本执行</li>
+<li>4.网络请求、文件读写完成事件等等。</li>
+</ul>
+<p>为了让这些事件有条不紊地进行，JS引擎需要对之执行的顺序做一定的安排，V8 其实采用的是一种队列的方式来存储这些任务，<br>即先进来的先执行。模拟如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">bool keep_running = <span class="literal">true</span>;</span><br><span class="line">void <span class="function"><span class="title">MainTherad</span></span>()&#123;</span><br><span class="line">  <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">    //执行队列中的任务</span><br><span class="line">    Task task = task_queue.takeTask();</span><br><span class="line">    ProcessTask(task);</span><br><span class="line">    </span><br><span class="line">    //执行延迟队列中的任务</span><br><span class="line">    ProcessDelayTask()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!keep_running) //如果设置了退出标志，那么直接退出线程循环</span><br><span class="line">        <span class="built_in">break</span>; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里用到了一个 for 循环，将队列中的任务一一取出，然后执行，这个很好理解。但是其中包含了两种任务队列，除了上述提到的任务队列， 还有一个延迟队列，它专门处理诸如setTimeout/setInterval这样的定时器回调任务。<br>上述提到的，普通任务队列和延迟队列中的任务，都属于宏任务。</p>
+<h3 id="微任务-MicroTask-引入"><a href="#微任务-MicroTask-引入" class="headerlink" title="微任务(MicroTask)引入"></a>微任务(MicroTask)引入</h3><p>对于每个宏任务而言，其内部都有一个微任务队列。那为什么要引入微任务？微任务在什么时候执行呢？<br>其实引入微任务的初衷是为了解决异步回调的问题。想一想，对于异步回调的处理，有多少种方式？总结起来有两点:</p>
+<p>将异步回调进行宏任务队列的入队操作。<br>将异步回调放到当前宏任务的末尾。</p>
+<p>如果采用第一种方式，那么执行回调的时机应该是在前面所有的宏任务完成之后，倘若现在的任务队列非常长，那么回调迟迟得不到执行，造成应用卡顿。<br>为了规避这样的问题，V8 引入了第二种方式，这就是微任务的解决方式。在每一个宏任务中定义一个微任务队列，当该宏任务执行完成，会检查其中的微任务队列，如果为空则直接执行下一个宏任务，如果不为空，则依次执行微任务，执行完成才去执行下一个宏任务。<br>常见的微任务有MutationObserver、Promise.then(或.reject) 以及以 Promise 为基础开发的其他技术(比如fetch API), 还包括 V8 的垃圾回收过程。<br>Ok, 这便是宏任务和微任务的概念，接下来正式介绍JS非常重要的运行机制——EventLoop。</p>
+<h2 id="第29篇-如何理解EventLoop——浏览器篇"><a href="#第29篇-如何理解EventLoop——浏览器篇" class="headerlink" title="第29篇: 如何理解EventLoop——浏览器篇"></a>第29篇: 如何理解EventLoop——浏览器篇</h2><p>干讲理论不容易理解，让我们直接以一个例子开始吧:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">console.log(<span class="string">'start'</span>);</span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">  console.log(<span class="string">'timeout'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">Promise.resolve().<span class="keyword">then</span>(() =&gt; &#123;</span><br><span class="line">  console.log(<span class="string">'resolve'</span>);</span><br><span class="line">&#125;);</span><br><span class="line">console.log(<span class="string">'end'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>我们来分析一下:</p>
+<ul>
+<li>1.刚开始整个脚本作为一个宏任务来执行，对于同步代码直接压入执行栈(关于执行栈，若不了解请移步之前的文章《JavaScript内存机制之问——数据是如何存储的？》)进行执行，因此先打印start和end</li>
+<li>2.setTimeout 作为一个宏任务放入宏任务队列</li>
+<li>3.Promise.then作为一个为微任务放入到微任务队列</li>
+<li>4.当本次宏任务执行完，检查微任务队列，发现一个Promise.then, 执行</li>
+<li>5.接下来进入到下一个宏任务——setTimeout, 执行</li>
+</ul>
+<p>因此最后的顺序是:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">end</span><br><span class="line">resolve</span><br><span class="line">timeout</span><br></pre></td></tr></table></figure>
+
+<p>这样就带大家直观地感受到了浏览器环境下 EventLoop 的执行流程。不过，这只是其中的一部分情况，接下来我们来做一个更完整的总结。</p>
+<p>一开始整段脚本作为第一个宏任务执行<br>执行过程中同步代码直接执行，宏任务进入宏任务队列，微任务进入微任务队列<br>当前宏任务执行完出队，检查微任务队列，如果有则依次执行，直到微任务队列为空<br>执行浏览器 UI 线程的渲染工作<br>检查是否有Web worker任务，有则执行<br>执行队首新的宏任务，回到2，依此循环，直到宏任务和微任务队列都为空</p>
+<p>最后给大家留一道题目练习:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">'Promise1'</span>)  </span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">'setTimeout2'</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">&#125;);</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">'setTimeout1'</span>)</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">'Promise2'</span>)    </span><br><span class="line">  &#125;)</span><br><span class="line">&#125;,0);</span><br><span class="line">console.log(<span class="string">'start'</span>);</span><br><span class="line"></span><br><span class="line">// start</span><br><span class="line">// Promise1</span><br><span class="line">// setTimeout1</span><br><span class="line">// Promise2</span><br><span class="line">// setTimeout2</span><br></pre></td></tr></table></figure>
+
+<h2 id="第30篇-如何理解EventLoop——nodejs篇"><a href="#第30篇-如何理解EventLoop——nodejs篇" class="headerlink" title="第30篇: 如何理解EventLoop——nodejs篇"></a>第30篇: 如何理解EventLoop——nodejs篇</h2><p>nodejs 和 浏览器的 eventLoop 还是有很大差别的，值得单独拿出来说一说。</p>
+<p>不知你是否看过关于 nodejs 中 eventLoop 的一些文章, 是否被这些流程图搞得眼花缭乱、一头雾水:</p>
+<img src="/2020/10/26/JavaScript-03/10.png" class title="This is an image">
+
+<p>看到这你不用紧张，这里会抛开这些晦涩的流程图，以最清晰浅显的方式来一步步拆解 nodejs 的事件循环机制。</p>
+<h3 id="1-三大关键阶段"><a href="#1-三大关键阶段" class="headerlink" title="1. 三大关键阶段"></a>1. 三大关键阶段</h3><p>首先，梳理一下 nodejs 三个非常重要的执行阶段:</p>
+<p>1.执行 定时器回调 的阶段。检查定时器，如果到了时间，就执行回调。这些定时器就是setTimeout、setInterval。这个阶段暂且叫它timer。</p>
+<p>2.轮询(英文叫poll)阶段。因为在node代码中难免会有异步操作，比如文件I/O，网络I/O等等，那么当这些异步操作做完了，就会来通知JS主线程，怎么通知呢？就是通过’data’、</p>
+<p>‘connect’等事件使得事件循环到达 poll 阶段。到达了这个阶段后:<br>如果当前已经存在定时器，而且有定时器到时间了，拿出来执行，eventLoop 将回到timer阶段。<br>如果没有定时器, 会去看回调函数队列。</p>
+<ul>
+<li><p>如果队列不为空，拿出队列中的方法依次执行</p>
+</li>
+<li><p>如果队列为空，检查是否有 setImmdiate 的回调</p>
+<ul>
+<li>有则前往check阶段(下面会说)</li>
+<li>没有则继续等待，相当于阻塞了一段时间(阻塞时间是有上限的), 等待 callback 函数加入队列，加入后会立刻执行。一段时间后自动进入 check 阶段。</li>
+</ul>
+</li>
+</ul>
+<p>3.check 阶段。这是一个比较简单的阶段，直接执行 setImmdiate 的回调。</p>
+<p>这三个阶段为一个循环过程。不过现在的eventLoop并不完整，我们现在就来一一地完善。</p>
+<h3 id="2-完善"><a href="#2-完善" class="headerlink" title="2. 完善"></a>2. 完善</h3><p>首先，当第 1 阶段结束后，可能并不会立即等待到异步事件的响应，这时候 nodejs 会进入到 I/O异常的回调阶段。比如说 TCP 连接遇到ECONNREFUSED，就会在这个时候执行回调。<br>并且在 check 阶段结束后还会进入到 关闭事件的回调阶段。如果一个 socket 或句柄（handle）被突然关闭，例如 socket.destroy()，<br>‘close’ 事件的回调就会在这个阶段执行。<br>梳理一下，nodejs 的 eventLoop 分为下面的几个阶段:</p>
+<ul>
+<li>1.timer 阶段</li>
+<li>2.I/O 异常回调阶段</li>
+<li>3.空闲、预备状态(第2阶段结束，poll 未触发之前)</li>
+<li>4.poll 阶段</li>
+<li>5.check 阶段</li>
+<li>6.关闭事件的回调阶段</li>
+</ul>
+<p>是不是清晰了许多？</p>
+<h3 id="3-实例演示"><a href="#3-实例演示" class="headerlink" title="3. 实例演示"></a>3. 实例演示</h3><p>好，我们以上次的练习题来实践一把:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">'timer1'</span>)</span><br><span class="line">    Promise.resolve().<span class="keyword">then</span>(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">        console.log(<span class="string">'promise1'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, 0)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">'timer2'</span>)</span><br><span class="line">    Promise.resolve().<span class="keyword">then</span>(<span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">        console.log(<span class="string">'promise2'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, 0)</span><br></pre></td></tr></table></figure>
+
+<p>这里我要说，node版本 &gt;= 11和在 11 以下的会有不同的表现。</p>
+<p>首先说 node 版本 &gt;= 11的，它会和浏览器表现一致，一个定时器运行完立即运行相应的微任务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">timer1</span><br><span class="line">promise1</span><br><span class="line">time2</span><br><span class="line">promise2</span><br></pre></td></tr></table></figure>
+
+<p>而 node 版本小于 11 的情况下，对于定时器的处理是:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">若第一个定时器任务出队并执行完，发现队首的任务仍然是一个定时器，那么就将微任务暂时保存，直接去执行新的定时器任务，当新的定时器任务执行完后，再一一执行中途产生的微任务</span><br></pre></td></tr></table></figure>
+
+<p>因此会打印出这样的结果:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">timer1</span><br><span class="line">timer2</span><br><span class="line">promise1</span><br><span class="line">promise2</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-nodejs-和-浏览器关于eventLoop的主要区别"><a href="#4-nodejs-和-浏览器关于eventLoop的主要区别" class="headerlink" title="4.nodejs 和 浏览器关于eventLoop的主要区别"></a>4.nodejs 和 浏览器关于eventLoop的主要区别</h3><p>两者最主要的区别在于浏览器中的微任务是在每个相应的宏任务中执行的，而nodejs中的微任务是在不同阶段之间执行的。</p>
+<h3 id="5-关于process-nextTick的一点说明"><a href="#5-关于process-nextTick的一点说明" class="headerlink" title="5.关于process.nextTick的一点说明"></a>5.关于process.nextTick的一点说明</h3><p>process.nextTick 是一个独立于 eventLoop 的任务队列。<br>在每一个 eventLoop 阶段完成后会去检查这个队列，如果里面有任务，会让这部分任务优先于微任务执行。</p>
+<h2 id="第31篇-nodejs中的异步、非阻塞I-O是如何实现的？"><a href="#第31篇-nodejs中的异步、非阻塞I-O是如何实现的？" class="headerlink" title="第31篇: nodejs中的异步、非阻塞I/O是如何实现的？"></a>第31篇: nodejs中的异步、非阻塞I/O是如何实现的？</h2><p>在听到 nodejs 相关的特性时，经常会对 异步I/O、非阻塞I/O有所耳闻，听起来好像是差不多的意思，但其实是两码事，下面我们就以原理的角度来剖析一下对 nodejs 来说，这两种技术底层是如何实现的？</p>
+<h3 id="什么是I-O？"><a href="#什么是I-O？" class="headerlink" title="什么是I/O？"></a>什么是I/O？</h3><p>首先，我想有必要把 I/O 的概念解释一下。I/O 即Input/Output, 输入和输出的意思。在浏览器端，只有一种 I/O，那就是利用 Ajax 发送网络请求，然后读取返回的内容，这属于网络I/O。回到 nodejs 中，其实这种的 I/O 的场景就更加广泛了，主要分为两种:</p>
+<ul>
+<li>文件 I/O。比如用 fs 模块对文件进行读写操作。</li>
+<li>网络 I/O。比如 http 模块发起网络请求。</li>
+</ul>
+<h3 id="阻塞和非阻塞I-O"><a href="#阻塞和非阻塞I-O" class="headerlink" title="阻塞和非阻塞I/O"></a>阻塞和非阻塞I/O</h3><p>阻塞和非阻塞 I/O 其实是针对操作系统内核而言的，而不是 nodejs 本身。阻塞 I/O 的特点就是一定要等到操作系统完成所有操作后才表示调用结束，而非阻塞 I/O 是调用后立马返回，不用等操作系统内核完成操作。<br>对前者而言，在操作系统进行 I/O 的操作的过程中，我们的应用程序其实是一直处于等待状态的，什么都做不了。那如果换成非阻塞I/O，调用返回后我们的 nodejs 应用程序可以完成其他的事情，而操作系统同时也在进行 I/O。这样就把等待的时间充分利用了起来，提高了执行效率，但是同时又会产生一个问题，nodejs 应用程序怎么知道操作系统已经完成了 I/O 操作呢？<br>为了让 nodejs 知道操作系统已经做完 I/O 操作，需要重复地去操作系统那里判断一下是否完成，这种重复判断的方式就是轮询。对于轮询而言，有以下这么几种方案:</p>
+<ul>
+<li>1.一直轮询检查I/O状态，直到 I/O 完成。这是最原始的方式，也是性能最低的，会让 CPU 一直耗用在等待上面。其实跟阻塞 I/O 的效果是一样的。</li>
+</ul>
+<ul>
+<li>2.遍历文件描述符(即 文件I/O 时操作系统和 nodejs 之间的文件凭证)的方式来确定 I/O 是否完成，I/O完成则文件描述符的状态改变。但 CPU 轮询消耗还是很大。</li>
+</ul>
+<ul>
+<li>3.epoll模式。即在进入轮询的时候如果I/O未完成CPU就休眠，完成之后唤醒CPU。</li>
+</ul>
+<p>总之，CPU要么重复检查I/O，要么重复检查文件描述符，要么休眠，都得不到很好的利用，我们希望的是:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nodejs 应用程序发起 I/O 调用后可以直接去执行别的逻辑，操作系统默默地做完 I/O 之后给 nodejs 发一个完成信号，nodejs 执行回调操作。</span><br></pre></td></tr></table></figure>
+
+<p>这是理想的情况，也是异步 I/O 的效果，那如何实现这样的效果呢？</p>
+<h3 id="异步-I-O-的本质"><a href="#异步-I-O-的本质" class="headerlink" title="异步 I/O 的本质"></a>异步 I/O 的本质</h3><p>Linux 原生存在这样的一种方式，即(AIO), 但两个致命的缺陷:</p>
+<p>只有 Linux 下存在，在其他系统中没有异步 I/O 支持。<br>无法利用系统缓存。</p>
+<h4 id="nodejs中的异步-I-O-方案"><a href="#nodejs中的异步-I-O-方案" class="headerlink" title="nodejs中的异步 I/O 方案"></a>nodejs中的异步 I/O 方案</h4><p>是不是没有办法了呢？在单线程的情况下确实是这样，但是如果把思路放开一点，利用多线程来考虑这个问题，就变得轻松多了。我们可以让一个进程进行计算操作，另外一些进行 I/O 调用，I/O 完成后把信号传给计算的线程，进而执行回调，这不就好了吗？没错，异步 I/O 就是使用这样的线程池来实现的。<br>只不过在不同的系统下面表现会有所差异，在 Linux 下可以直接使用线程池来完成，在Window系统下则采用 IOCP 这个系统API(其内部还是用线程池完成的)。<br>有了操作系统的支持，那 nodejs 如何来对接这些操作系统从而实现异步 I/O 呢？<br>以文件为 I/O 我们以一段代码为例:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> fs = require(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">'/test.txt'</span>, <span class="keyword">function</span> (err, data) &#123;</span><br><span class="line">    console.log(data); </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h4><p>执行代码的过程中大概发生了这些事情:</p>
+<p>首先，fs.readFile调用Node的核心模块fs.js ；<br>接下来，Node的核心模块调用内建模块node_file.cc，创建对应的文件I/O观察者对象(这个对象后面有大用！) ；<br>最后，根据不同平台（Linux或者window），内建模块通过libuv中间层进行系统调用</p>
+<img src="/2020/10/26/JavaScript-03/11.png" class title="This is an image">
+
+<h4 id><a href="#" class="headerlink" title></a></h4><p>libuv调用过程拆解<br>重点来了！libuv 中是如何来进行进行系统调用的呢？也就是 uv_fs_open() 中做了些什么？</p>
+<h5 id="1-创建请求对象"><a href="#1-创建请求对象" class="headerlink" title="1. 创建请求对象"></a>1. 创建请求对象</h5><p>以Windows系统为例来说，在这个函数的调用过程中，我们创建了一个文件I/O的请求对象，并往里面注入了回调函数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">req_wrap-&gt;object_-&gt;Set(oncomplete_sym, callback);</span><br></pre></td></tr></table></figure>
+
+<p>req_wrap 便是这个请求对象，req_wrap 中 object_ 的 oncomplete_sym 属性对应的值便是我们 nodejs 应用程序代码中传入的回调函数。</p>
+<h5 id="2-推入线程池，调用返回"><a href="#2-推入线程池，调用返回" class="headerlink" title="2. 推入线程池，调用返回"></a>2. 推入线程池，调用返回</h5><p>在这个对象包装完成后，QueueUserWorkItem() 方法将这个对象推进线程池中等待执行。<br>好，至此现在js的调用就直接返回了，我们的 js 应用程序代码可以继续往下执行，当然，当前的 I/O 操作同时也在线程池中将被执行，这不就完成了异步么：）<br>等等，别高兴太早，回调都还没执行呢！接下来便是执行回调通知的环节。</p>
+<h5 id="3-回调通知"><a href="#3-回调通知" class="headerlink" title="3. 回调通知"></a>3. 回调通知</h5><p>事实上现在线程池中的 I/O 无论是阻塞还是非阻塞都已经无所谓了，因为异步的目的已经达成。重要的是 I/O 完成后会发生什么。<br>在介绍后续的故事之前，给大家介绍两个重要的方法: GetQueuedCompletionStatus 和 PostQueuedCompletionStatus。</p>
+<ul>
+<li><p>1.还记得之前讲过的 eventLoop 吗？在每一个Tick当中会调用GetQueuedCompletionStatus检查线程池中是否有执行完的请求，如果有则表示时机已经成熟，可以执行回调了。</p>
+</li>
+<li><p>2.PostQueuedCompletionStatus方法则是向 IOCP 提交状态，告诉它当前I/O完成了。</p>
+</li>
+</ul>
+<p>名字比较长，先介绍是为了让大家混个脸熟，至少后面出来不会感到太突兀：）<br>我们言归正传，把后面的过程串联起来。<br>当对应线程中的 I/O 完成后，会将获得的结果存储起来，保存到相应的请求对象中，然后调用PostQueuedCompletionStatus()向 IOCP 提交执行完成的状态，并且将线程还给操作系统。一旦 EventLoop 的轮询操作中，调用GetQueuedCompletionStatus检测到了完成的状态，就会把请求对象塞给I/O观察者(之前埋下伏笔，如今终于闪亮登场)。</p>
+<ul>
+<li><p>1.I/O 观察者现在的行为就是取出请求对象的存储结果，同时也取出它的oncomplete_sym属性，即回调函数(不懂这个属性的回看第1步的操作)。将前者作为函数参数传入后者，并执行后者。<br>这里，回调函数就成功执行啦！<br>总结 :</p>
+</li>
+<li><p>2.阻塞和非阻塞 I/O 其实是针对操作系统内核而言的。阻塞 I/O 的特点就是一定要等到操作系统完成所有操作后才表示调用结束，而非阻塞 I/O 是调用后立马返回，不用等操作系统内核完成操作。<br>nodejs中的异步 I/O 采用多线程的方式，由 EventLoop、I/O 观察者，请求对象、线程池四大要素相互配合，共同实现。</p>
+</li>
+</ul>
+<h2 id="第32篇：JS异步编程有哪些方案？为什么会出现这些方案？"><a href="#第32篇：JS异步编程有哪些方案？为什么会出现这些方案？" class="headerlink" title="第32篇：JS异步编程有哪些方案？为什么会出现这些方案？"></a>第32篇：JS异步编程有哪些方案？为什么会出现这些方案？</h2><p>关于 JS 单线程、EventLoop 以及异步 I/O 这些底层的特性，我们之前做过了详细的拆解，不在赘述。在探究了底层机制之后，我们还需要对代码的组织方式有所理解，这是离我们最日常开发最接近的部分，异步代码的组织方式直接决定了开发和维护的效率，其重要性也不可小觑。尽管底层机制没变，但异步代码的组织方式却随着 ES 标准的发展，一步步发生了巨大的变革。接着让我们来一探究竟吧！</p>
+<h3 id="回调函数时代"><a href="#回调函数时代" class="headerlink" title="回调函数时代"></a>回调函数时代</h3><p>相信很多 nodejs 的初学者都或多或少踩过这样的坑，node 中很多原生的 api 就是诸如这样的:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fs.readFile(<span class="string">'xxx'</span>, (err, data) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>典型的高阶函数，将回调函数作为函数参数传给了readFile。但久而久之，就会发现，这种传入回调的方式也存在大坑, 比如下面这样:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fs.readFile(<span class="string">'1.json'</span>, (err, data) =&gt; &#123;</span><br><span class="line">    fs.readFile(<span class="string">'2.json'</span>, (err, data) =&gt; &#123;</span><br><span class="line">        fs.readFile(<span class="string">'3.json'</span>, (err, data) =&gt; &#123;</span><br><span class="line">            fs.readFile(<span class="string">'4.json'</span>, (err, data) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>回调当中嵌套回调，也称回调地狱。这种代码的可读性和可维护性都是非常差的，因为嵌套的层级太多。而且还有一个严重的问题，就是每次任务可能会失败，需要在回调里面对每个任务的失败情况进行处理，增加了代码的混乱程度。</p>
+<h3 id="Promise-时代"><a href="#Promise-时代" class="headerlink" title="Promise 时代"></a>Promise 时代</h3><p>ES6 中新增的 Promise 就很好了解决了回调地狱的问题，同时了合并了错误处理。写出来的代码类似于下面这样:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">readFilePromise(<span class="string">'1.json'</span>).<span class="keyword">then</span>(data =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> readFilePromise(<span class="string">'2.json'</span>)</span><br><span class="line">&#125;).<span class="keyword">then</span>(data =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> readFilePromise(<span class="string">'3.json'</span>)</span><br><span class="line">&#125;).<span class="keyword">then</span>(data =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> readFilePromise(<span class="string">'4.json'</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>以链式调用的方式避免了大量的嵌套，也符合人的线性思维方式，大大方便了异步编程。</p>
+<h3 id="co-Generator-方式"><a href="#co-Generator-方式" class="headerlink" title="co + Generator 方式"></a>co + Generator 方式</h3><p>利用协程完成 Generator 函数，用 co 库让代码依次执行完，同时以同步的方式书写，也让异步操作按顺序执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">co(<span class="keyword">function</span>* () &#123;</span><br><span class="line">  const r1 = yield readFilePromise(<span class="string">'1.json'</span>);</span><br><span class="line">  const r2 = yield readFilePromise(<span class="string">'2.json'</span>);</span><br><span class="line">  const r3 = yield readFilePromise(<span class="string">'3.json'</span>);</span><br><span class="line">  const r4 = yield readFilePromise(<span class="string">'4.json'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这四种经典的异步编程方式就简单回顾完了，由于是鸟瞰大局，我觉得知道是什么比了解细节要重要, 因此也没有展开。不过没关系，接下来，让我们针对这些具体的解决方案，一步步深入异步编程，理解其中的本质。</p>
+<h2 id="第33篇-能不能简单实现一下-node-中回调函数的机制？"><a href="#第33篇-能不能简单实现一下-node-中回调函数的机制？" class="headerlink" title="第33篇: 能不能简单实现一下 node 中回调函数的机制？"></a>第33篇: 能不能简单实现一下 node 中回调函数的机制？</h2><p>回调函数的方式其实内部利用了发布-订阅模式，在这里我们以模拟实现 node 中的 Event 模块为例来写实现回调函数的机制。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">EventEmitter</span></span>() &#123;</span><br><span class="line">  this.events = new Map();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个 EventEmitter 一共需要实现这些方法: addListener, removeListener, once, removeAllListener, emit。</p>
+<p>首先是addListener：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// once 参数表示是否只是触发一次</span><br><span class="line">const wrapCallback = (fn, once = <span class="literal">false</span>) =&gt; (&#123; callback: fn, once &#125;);</span><br><span class="line"></span><br><span class="line">EventEmitter.prototype.addListener = <span class="keyword">function</span> (<span class="built_in">type</span>, fn, once = <span class="literal">false</span>) &#123;</span><br><span class="line">  <span class="built_in">let</span> handler = this.events.get(<span class="built_in">type</span>);</span><br><span class="line">  <span class="keyword">if</span> (!handler) &#123;</span><br><span class="line">    // 为 <span class="built_in">type</span> 事件绑定回调</span><br><span class="line">    this.events.set(<span class="built_in">type</span>, wrapCallback(fn, once));</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (handler &amp;&amp; typeof handler.callback === <span class="string">'function'</span>) &#123;</span><br><span class="line">    // 目前 <span class="built_in">type</span> 事件只有一个回调</span><br><span class="line">    this.events.set(<span class="built_in">type</span>, [handler, wrapCallback(fn, once)]);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    // 目前 <span class="built_in">type</span> 事件回调数 &gt;= 2</span><br><span class="line">    handler.push(wrapCallback(fn, once));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>removeLisener 的实现如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">EventEmitter.prototype.removeListener = <span class="keyword">function</span> (<span class="built_in">type</span>, listener) &#123;</span><br><span class="line">  <span class="built_in">let</span> handler = this.events.get(<span class="built_in">type</span>);</span><br><span class="line">  <span class="keyword">if</span> (!handler) <span class="built_in">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (!Array.isArray(handler)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (handler.callback === listener.callback) this.events.delete(<span class="built_in">type</span>);</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">let</span> i = 0; i &lt; handler.length; i++) &#123;</span><br><span class="line">    <span class="built_in">let</span> item = handler[i];</span><br><span class="line">    <span class="keyword">if</span> (item.callback === listener.callback) &#123;</span><br><span class="line">      // 删除该回调，注意数组塌陷的问题，即后面的元素会往前挪一位。i 要 -- </span><br><span class="line">      handler.splice(i, 1);</span><br><span class="line">      i--;</span><br><span class="line">      <span class="keyword">if</span> (handler.length === 1) &#123;</span><br><span class="line">        // 长度为 1 就不用数组存了</span><br><span class="line">        this.events.set(<span class="built_in">type</span>, handler[0]);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>once 实现思路很简单，先调用 addListener 添加上了once标记的回调对象, 然后在 emit 的时候遍历回调列表，将标记了once: true的项remove掉即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">EventEmitter.prototype.once = <span class="keyword">function</span> (<span class="built_in">type</span>, fn) &#123;</span><br><span class="line">  this.addListener(<span class="built_in">type</span>, fn, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">EventEmitter.prototype.emit = <span class="keyword">function</span> (<span class="built_in">type</span>, ...args) &#123;</span><br><span class="line">  <span class="built_in">let</span> handler = this.events.get(<span class="built_in">type</span>);</span><br><span class="line">  <span class="keyword">if</span> (!handler) <span class="built_in">return</span>;</span><br><span class="line">  <span class="keyword">if</span> (Array.isArray(handler)) &#123;</span><br><span class="line">    // 遍历列表，执行回调</span><br><span class="line">    handler.map(item =&gt; &#123;</span><br><span class="line">      item.callback.apply(this, args);</span><br><span class="line">      // 标记的 once: <span class="literal">true</span> 的项直接移除</span><br><span class="line">      <span class="keyword">if</span> (item.once) this.removeListener(<span class="built_in">type</span>, item);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    // 只有一个回调则直接执行</span><br><span class="line">    handler.callback.apply(this, args);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后是 removeAllListener：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">EventEmitter.prototype.removeAllListener = <span class="keyword">function</span> (<span class="built_in">type</span>) &#123;</span><br><span class="line">  <span class="built_in">let</span> handler = this.events.get(<span class="built_in">type</span>);</span><br><span class="line">  <span class="keyword">if</span> (!handler) <span class="built_in">return</span>;</span><br><span class="line">  <span class="keyword">else</span> this.events.delete(<span class="built_in">type</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们测试一下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> e = new EventEmitter();</span><br><span class="line">e.addListener(<span class="string">'type'</span>, () =&gt; &#123;</span><br><span class="line">  console.log(<span class="string">"type事件触发！"</span>);</span><br><span class="line">&#125;)</span><br><span class="line">e.addListener(<span class="string">'type'</span>, () =&gt; &#123;</span><br><span class="line">  console.log(<span class="string">"WOW!type事件又触发了！"</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">f</span></span>() &#123; </span><br><span class="line">  console.log(<span class="string">"type事件我只触发一次"</span>); </span><br><span class="line">&#125;</span><br><span class="line">e.once(<span class="string">'type'</span>, f)</span><br><span class="line">e.emit(<span class="string">'type'</span>);</span><br><span class="line">e.emit(<span class="string">'type'</span>);</span><br><span class="line">e.removeAllListener(<span class="string">'type'</span>);</span><br><span class="line">e.emit(<span class="string">'type'</span>);</span><br><span class="line"></span><br><span class="line">// <span class="built_in">type</span>事件触发！</span><br><span class="line">// WOW!<span class="built_in">type</span>事件又触发了！</span><br><span class="line">// <span class="built_in">type</span>事件我只触发一次</span><br><span class="line">// <span class="built_in">type</span>事件触发！</span><br><span class="line">// WOW!<span class="built_in">type</span>事件又触发了！</span><br></pre></td></tr></table></figure>
+
+<p>OK，一个简易的 Event 就这样实现完成了，为什么说它简易呢？因为还有很多细节的部分没有考虑:</p>
+<ul>
+<li>1.在参数少的情况下，call 的性能优于 apply，反之 apply 的性能更好。因此在执行回调时候可以根据情况调用 call 或者 apply。</li>
+<li>2.考虑到内存容量，应该设置回调列表的最大值，当超过最大值的时候，应该选择部分回调进行删除操作。</li>
+<li>3.鲁棒性有待提高。对于参数的校验很多地方直接忽略掉了。</li>
+</ul>
+<p>不过，这个案例的目的只是带大家掌握核心的原理，如果在这里洋洋洒洒写三四百行意义也不大，有兴趣的可以去看看Node中<a href="https://github.com/browserify/events/blob/master/events.js?_blank" target="_blank" rel="noopener">Event 模块</a>的源码，里面对各种细节和边界情况做了详细的处理。</p>
+<p><font color="#ff502c">申明：此篇文章转载于</font><a href="https://juejin.im/post/6844904004007247880?_blank" target="_blank" rel="noopener">此处</a><font color="#ff502c">，如有侵权，请联系删除，谢谢！</font></p>
+
           
         
       </div>
@@ -171,16 +465,28 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/26/JavaScript-03/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/10/25/JavaScript-02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">原生JS灵魂之问(中篇)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -195,611 +501,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JavaScript-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/JavaScript-02/">原生JS灵魂之问(中篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/JavaScript-02/" class="archive-article-date">
-  	<time datetime="2020-10-25T15:07:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>本文检验你对JS语言的理解有没有到达那样的水准，有一些边界情况是否能够考虑到，有没有基本的计算机素养(比如最基本的排序方法到底理不理解)，未来有没有潜力去设计出更加优秀的产品或者框架。如果你仅仅是想通过一篇文章来解决业务中的临时问题，那不好意思，请出门左拐，这篇文章确实不适合你。但如果你觉得自己的原生编程能力还有待提高，想让自己的思维能力上一个台阶，希望这篇”呕心沥血”的文章能够让你有所成长</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/JavaScript-02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#第24篇-JavaScript内存机制之问——数据是如何存储的？"><span class="toc-number">1.</span> <span class="toc-text">第24篇: JavaScript内存机制之问——数据是如何存储的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第25篇：V8-引擎如何进行垃圾内存的回收？"><span class="toc-number">2.</span> <span class="toc-text">第25篇：V8 引擎如何进行垃圾内存的回收？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#V8-内存限制"><span class="toc-number">2.1.</span> <span class="toc-text">V8 内存限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新生代内存的回收"><span class="toc-number">2.2.</span> <span class="toc-text">新生代内存的回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#老生代内存的回收"><span class="toc-number">2.3.</span> <span class="toc-text">老生代内存的回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#增量标记"><span class="toc-number">2.4.</span> <span class="toc-text">增量标记</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第26篇-描述一下-V8-执行一段JS代码的过程？"><span class="toc-number">3.</span> <span class="toc-text">第26篇: 描述一下 V8 执行一段JS代码的过程？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-生成-AST"><span class="toc-number">3.1.</span> <span class="toc-text">1.生成 AST</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-生成字节码"><span class="toc-number">3.2.</span> <span class="toc-text">2. 生成字节码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第28篇：如何理解EventLoop——宏任务和微任务篇"><span class="toc-number">4.</span> <span class="toc-text">第28篇：如何理解EventLoop——宏任务和微任务篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#宏任务-MacroTask-引入"><span class="toc-number">4.1.</span> <span class="toc-text">宏任务(MacroTask)引入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#微任务-MicroTask-引入"><span class="toc-number">4.2.</span> <span class="toc-text">微任务(MicroTask)引入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第29篇-如何理解EventLoop——浏览器篇"><span class="toc-number">5.</span> <span class="toc-text">第29篇: 如何理解EventLoop——浏览器篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第30篇-如何理解EventLoop——nodejs篇"><span class="toc-number">6.</span> <span class="toc-text">第30篇: 如何理解EventLoop——nodejs篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-三大关键阶段"><span class="toc-number">6.1.</span> <span class="toc-text">1. 三大关键阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-完善"><span class="toc-number">6.2.</span> <span class="toc-text">2. 完善</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-实例演示"><span class="toc-number">6.3.</span> <span class="toc-text">3. 实例演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-nodejs-和-浏览器关于eventLoop的主要区别"><span class="toc-number">6.4.</span> <span class="toc-text">4.nodejs 和 浏览器关于eventLoop的主要区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-关于process-nextTick的一点说明"><span class="toc-number">6.5.</span> <span class="toc-text">5.关于process.nextTick的一点说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第31篇-nodejs中的异步、非阻塞I-O是如何实现的？"><span class="toc-number">7.</span> <span class="toc-text">第31篇: nodejs中的异步、非阻塞I&#x2F;O是如何实现的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是I-O？"><span class="toc-number">7.1.</span> <span class="toc-text">什么是I&#x2F;O？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#阻塞和非阻塞I-O"><span class="toc-number">7.2.</span> <span class="toc-text">阻塞和非阻塞I&#x2F;O</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异步-I-O-的本质"><span class="toc-number">7.3.</span> <span class="toc-text">异步 I&#x2F;O 的本质</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nodejs中的异步-I-O-方案"><span class="toc-number">7.3.1.</span> <span class="toc-text">nodejs中的异步 I&#x2F;O 方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#执行流程"><span class="toc-number">7.3.2.</span> <span class="toc-text">执行流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#"><span class="toc-number">7.3.3.</span> <span class="toc-text"></span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-创建请求对象"><span class="toc-number">7.3.3.1.</span> <span class="toc-text">1. 创建请求对象</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-推入线程池，调用返回"><span class="toc-number">7.3.3.2.</span> <span class="toc-text">2. 推入线程池，调用返回</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-回调通知"><span class="toc-number">7.3.3.3.</span> <span class="toc-text">3. 回调通知</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第32篇：JS异步编程有哪些方案？为什么会出现这些方案？"><span class="toc-number">8.</span> <span class="toc-text">第32篇：JS异步编程有哪些方案？为什么会出现这些方案？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#回调函数时代"><span class="toc-number">8.1.</span> <span class="toc-text">回调函数时代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-时代"><span class="toc-number">8.2.</span> <span class="toc-text">Promise 时代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#co-Generator-方式"><span class="toc-number">8.3.</span> <span class="toc-text">co + Generator 方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第33篇-能不能简单实现一下-node-中回调函数的机制？"><span class="toc-number">9.</span> <span class="toc-text">第33篇: 能不能简单实现一下 node 中回调函数的机制？</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-  
-    <article id="post-JavaScript" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/JavaScript/">原生JS灵魂之问(上篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/JavaScript/" class="archive-article-date">
-  	<time datetime="2020-10-25T10:13:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>原生JS的知识系统梳理</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/JavaScript/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HTTP-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HTTP-02/">TCP协议灵魂之问(下篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/HTTP-02/" class="archive-article-date">
-  	<time datetime="2020-10-25T07:17:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>TCP 作为传输层的协议，是一个软件工程师素养的体现，也是面试中经常被问到的知识点。在此，我将 TCP 核心的一些问题梳理了一下，希望能帮到各位。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HTTP-02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HTTP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HTTP/">HTTP灵魂之问(上篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/HTTP/" class="archive-article-date">
-  	<time datetime="2020-10-25T02:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>这篇文章就是为了帮助大家树立完整的 HTTP 知识体系，并达到一定的深度，从容地应对各种灵魂之问，也同时提升自己作为一个 web 开发的专业素养吧。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HTTP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-URL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/URL/">三次握手和四次挥手</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/URL/" class="archive-article-date">
-  	<time datetime="2020-10-25T02:36:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>三次握手和四次挥手是各个公司常见的考点，也具有一定的水平区分度，也被一些面试官作为热身题。很多小伙伴说这个问题刚开始回答的挺好，但是后面越回答越冒冷汗，最后就歇菜了。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/URL/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-brower" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/brower/">浏览器灵魂之问</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/brower/" class="archive-article-date">
-  	<time datetime="2020-10-25T00:55:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>作为一个合格的前端工程师，浏览器相关的工作原理是我们进行性能优化的基石,必须牢牢掌握才能面对瞬息万变的实际场景，针对性地给出实际方案，而不是背诵各种开发军规和性能优化的条例，这样很难发现真正的问题所在, 更无法真正地解决问题。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/brower/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-nginx-base" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/21/nginx-base/">Nginx基础配置</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/21/nginx-base/" class="archive-article-date">
-  	<time datetime="2020-10-21T14:06:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <h2 id="Nginx介绍"><a href="#Nginx介绍" class="headerlink" title="Nginx介绍"></a>Nginx介绍</h2><p>作为一个前端，我相信你一定听说过Nginx。因为它在最近两年实在是太火了，作为一个前端如果不会Nginx，都不敢跟别人说自己是大前端。那Nginx到底是什么？我们还是引用官方的介绍吧：</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/21/nginx-base/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-write-webpack" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/23/write-webpack/">手写webpack核心原理</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/08/23/write-webpack/" class="archive-article-date">
-  	<time datetime="2020-08-23T11:08:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>手写webpack核心原理，再也不怕面试官问我webpack原理</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/23/write-webpack/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-webpack-advanced" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/18/webpack-advanced/">Webpack-进阶篇</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/07/18/webpack-advanced/" class="archive-article-date">
-  	<time datetime="2020-07-18T07:30:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>解锁Webpack系列(进阶篇)</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/18/webpack-advanced/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -822,8 +549,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
