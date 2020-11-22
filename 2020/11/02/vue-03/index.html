@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Zerle</title>
+  <title>Vue2中 watch 的高级用法 | Zerle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zerle">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="假设有如下代码： 123456789101112131415161718&lt;div&gt;      &lt;p&gt;FullName: &amp;#123;&amp;#123;fullName&amp;#125;&amp;#125;&lt;&#x2F;p&gt;      &lt;p&gt;FirstName: &lt;input type&#x3D;&quot;text&quot; v-model&#x3D;&quot;firstName&quot;&gt;&lt;&#x2F;p&gt;&lt;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue2中 watch 的高级用法">
+<meta property="og:url" content="http://yoursite.com/2020/11/02/vue-03/index.html">
 <meta property="og:site_name" content="Zerle">
+<meta property="og:description" content="假设有如下代码： 123456789101112131415161718&lt;div&gt;      &lt;p&gt;FullName: &amp;#123;&amp;#123;fullName&amp;#125;&amp;#125;&lt;&#x2F;p&gt;      &lt;p&gt;FirstName: &lt;input type&#x3D;&quot;text&quot; v-model&#x3D;&quot;firstName&quot;&gt;&lt;&#x2F;p&gt;&lt;&#x2F;">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-02T14:31:40.000Z">
+<meta property="article:modified_time" content="2020-11-02T14:35:18.600Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
   
@@ -134,86 +138,26 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-webpack-tapable" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-vue-03" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/22/webpack-tapable/">Webpack 核心模块 tapable 解析</a>
+    <h1 class="article-title" itemprop="name">
+      Vue2中 watch 的高级用法
     </h1>
   
 
         <!--显示阅读次数-->
         
-        
-        <a href="/2020/11/22/webpack-tapable/" class="archive-article-date">
-  	<time datetime="2020-11-22T10:20:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>Webpack 是一个现代 JavaScript 应用程序的静态模块打包器，是对前端项目实现自动化和优化必不可少的工具，Webpack 的 loader（加载器）和 plugin（插件）是由 Webpack 开发者和社区开发者共同贡献的，而目前又没有比较系统的开发文档，想写加载器和插件必须要懂 Webpack 的原理，即看懂 Webpack 的源码，tapable 则是 Webpack 依赖的核心库，可以说不懂 tapable 就看不懂 Webpack 源码，所以本篇会对 tapable 提供的类进行解析和模拟。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/22/webpack-tapable/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
+            <br/>
+            <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+            <span class="icon-sort"></span>
+            <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+                    阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+            </span>
             </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-vue-03" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/02/vue-03/">Vue2中 watch 的高级用法</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
         
         
         <a href="/2020/11/02/vue-03/" class="archive-article-date">
@@ -227,7 +171,36 @@
           
           
             <p>假设有如下代码：</p>
-            
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">      &lt;p&gt;FullName: &#123;&#123;fullName&#125;&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;FirstName: &lt;input <span class="built_in">type</span>=<span class="string">"text"</span> v-model=<span class="string">"firstName"</span>&gt;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">new Vue(&#123;</span><br><span class="line">  el: <span class="string">'#root'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Dawei'</span>,</span><br><span class="line">    lastName: <span class="string">'Lou'</span>,</span><br><span class="line">    fullName: <span class="string">''</span></span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    firstName(newName, oldName) &#123;</span><br><span class="line">      this.fullName = newName + <span class="string">' '</span> + this.lastName;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码的效果是，当我们输入firstName后，wacth监听每次修改变化的新值，然后计算输出fullName。</p>
+<h2 id="handler方法和immediate属性"><a href="#handler方法和immediate属性" class="headerlink" title="handler方法和immediate属性"></a>handler方法和immediate属性</h2><p>这里 watch 的一个特点是，最初绑定的时候是不会执行的，要等到 firstName 改变时才执行监听计算。那我们想要一开始就让他最初绑定的时候就执行改怎么办呢？我们需要修改一下我们的 watch 写法，修改过后的 watch 代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">watch: &#123;</span><br><span class="line">  firstName: &#123;</span><br><span class="line">    handler(newName, oldName) &#123;</span><br><span class="line">      this.fullName = newName + <span class="string">' '</span> + this.lastName;</span><br><span class="line">    &#125;,</span><br><span class="line">    // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法</span><br><span class="line">    immediate: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">注意到handler了吗，我们给 firstName 绑定了一个handler方法，之前我们写的 watch 方法其实默认写的就是这个handler，Vue.js会去处理这个逻辑，最终编译出来其实就是这个handler。</span><br><span class="line">而immediate:<span class="literal">true</span>代表如果在 wacth 里声明了 firstName 之后，就会立即先去执行里面的handler方法，如果为 <span class="literal">false</span>就跟我们以前的效果一样，不会在绑定的时候就执行。</span><br></pre></td></tr></table></figure>
+
+<h2 id="deep属性"><a href="#deep属性" class="headerlink" title="deep属性"></a>deep属性</h2><p>watch 里面还有一个属性 deep，默认值是 false，代表是否深度监听，比如我们 data 里有一个obj属性：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">      &lt;p&gt;obj.a: &#123;&#123;obj.a&#125;&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;obj.a: &lt;input <span class="built_in">type</span>=<span class="string">"text"</span> v-model=<span class="string">"obj.a"</span>&gt;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">new Vue(&#123;</span><br><span class="line">  el: <span class="string">'#root'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    obj: &#123;</span><br><span class="line">      a: 123</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    obj: &#123;</span><br><span class="line">      handler(newName, oldName) &#123;</span><br><span class="line">         console.log(<span class="string">'obj.a changed'</span>);</span><br><span class="line">      &#125;,</span><br><span class="line">      immediate: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>当我们在在输入框中输入数据视图改变obj.a的值时，我们发现是无效的。受现代 JavaScript 的限制 (以及废弃 Object.observe)，Vue 不能检测到对象属性的添加或删除。由于 Vue 会在初始化实例时对属性执行 getter/setter 转化过程，所以属性必须在 data 对象上存在才能让 Vue 转换它，这样才能让它是响应的。<br>默认情况下 handler 只监听obj这个属性它的引用的变化，我们只有给obj赋值的时候它才会监听到，比如我们在 mounted事件钩子函数中对obj进行重新赋值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mounted: &#123;</span><br><span class="line">  this.obj = &#123;</span><br><span class="line">    a: <span class="string">'456'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样我们的 handler 才会执行，打印obj.a changed。</p>
+<p>相反，如果我们需要监听obj里的属性a的值呢？这时候deep属性就派上用场了！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">watch: &#123;</span><br><span class="line">  obj: &#123;</span><br><span class="line">    handler(newName, oldName) &#123;</span><br><span class="line">      console.log(<span class="string">'obj.a changed'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    immediate: <span class="literal">true</span>,</span><br><span class="line">    deep: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>deep的意思就是深入观察，监听器会一层层的往下遍历，给对象的所有属性都加上这个监听器，但是这样性能开销就会非常大了，任何修改obj里面任何一个属性都会触发这个监听器里的 handler。</p>
+<p>优化，我们可以是使用字符串形式监听。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">watch: &#123;</span><br><span class="line">  <span class="string">'obj.a'</span>: &#123;</span><br><span class="line">    handler(newName, oldName) &#123;</span><br><span class="line">      console.log(<span class="string">'obj.a changed'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    immediate: <span class="literal">true</span>,</span><br><span class="line">    // deep: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样Vue.js才会一层一层解析下去，直到遇到属性a，然后才给a设置监听函数。</p>
+<h2 id="注销watch"><a href="#注销watch" class="headerlink" title="注销watch"></a>注销watch</h2><p>为什么要注销 watch？因为我们的组件是经常要被销毁的，比如我们跳一个路由，从一个页面跳到另外一个页面，那么原来的页面的 watch 其实就没用了，这时候我们应该注销掉原来页面的 watch 的，不然的话可能会导致内置溢出。好在我们平时 watch 都是写在组件的选项中的，他会随着组件的销毁而销毁。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const app = new Vue(&#123;</span><br><span class="line">  template: <span class="string">'&lt;div id="root"&gt;&#123;&#123;text&#125;&#125;&lt;/div&gt;'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    text: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    text(newVal, oldVal)&#123;</span><br><span class="line">      console.log(`<span class="variable">$&#123;newVal&#125;</span> : <span class="variable">$&#123;oldVal&#125;</span>`);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>但是，如果我们使用下面这样的方式写 watch，那么就要手动注销了，这种注销其实也很简单</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const unWatch = app.<span class="variable">$watch</span>(<span class="string">'text'</span>, (newVal, oldVal) =&gt; &#123;</span><br><span class="line">  console.log(`<span class="variable">$&#123;newVal&#125;</span> : <span class="variable">$&#123;oldVal&#125;</span>`);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">unWatch(); // 手动注销watch</span><br></pre></td></tr></table></figure>
+
+<p>app.$watch调用后会返回一个值，就是unWatch方法，你要注销 watch 只要调用unWatch方法就可以了。</p>
+
           
         
       </div>
@@ -237,16 +210,37 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/02/vue-03/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/11/22/webpack-tapable/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Webpack 核心模块 tapable 解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/11/02/vue-02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">听说你熟练使用Vue2，那这9种Vue技术你掌握了吗？</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -261,545 +255,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-vue-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/02/vue-02/">听说你熟练使用Vue2，那这9种Vue技术你掌握了吗？</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/11/02/vue-02/" class="archive-article-date">
-  	<time datetime="2020-11-02T14:19:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>现在，Vue.js已成为前端开发的热门框架。有很多工程师利用Vue.js的便利性和强大功能。但是，我们完成的某些解决方案可能未遵循最佳做法。好吧，让我们看一下那些必备的Vue技术。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/02/vue-02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#handler方法和immediate属性"><span class="toc-number">1.</span> <span class="toc-text">handler方法和immediate属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deep属性"><span class="toc-number">2.</span> <span class="toc-text">deep属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注销watch"><span class="toc-number">3.</span> <span class="toc-text">注销watch</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-  
-    <article id="post-JavaScript-03" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/26/JavaScript-03/">原生JS灵魂之问(下篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/26/JavaScript-03/" class="archive-article-date">
-  	<time datetime="2020-10-26T14:40:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>本次分享的主题是JS执行原理和深入异步，是一块比较系统且有深度的内容，相信对进阶的小伙伴是一个很大的提升。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/26/JavaScript-03/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JavaScript-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/JavaScript-02/">原生JS灵魂之问(中篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/JavaScript-02/" class="archive-article-date">
-  	<time datetime="2020-10-25T15:07:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>本文检验你对JS语言的理解有没有到达那样的水准，有一些边界情况是否能够考虑到，有没有基本的计算机素养(比如最基本的排序方法到底理不理解)，未来有没有潜力去设计出更加优秀的产品或者框架。如果你仅仅是想通过一篇文章来解决业务中的临时问题，那不好意思，请出门左拐，这篇文章确实不适合你。但如果你觉得自己的原生编程能力还有待提高，想让自己的思维能力上一个台阶，希望这篇”呕心沥血”的文章能够让你有所成长</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/JavaScript-02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JavaScript" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/JavaScript/">原生JS灵魂之问(上篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/JavaScript/" class="archive-article-date">
-  	<time datetime="2020-10-25T10:13:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>原生JS的知识系统梳理</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/JavaScript/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HTTP-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HTTP-02/">TCP协议灵魂之问(下篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/HTTP-02/" class="archive-article-date">
-  	<time datetime="2020-10-25T07:17:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>TCP 作为传输层的协议，是一个软件工程师素养的体现，也是面试中经常被问到的知识点。在此，我将 TCP 核心的一些问题梳理了一下，希望能帮到各位。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HTTP-02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HTTP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HTTP/">HTTP灵魂之问(上篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/HTTP/" class="archive-article-date">
-  	<time datetime="2020-10-25T02:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>这篇文章就是为了帮助大家树立完整的 HTTP 知识体系，并达到一定的深度，从容地应对各种灵魂之问，也同时提升自己作为一个 web 开发的专业素养吧。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HTTP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-URL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/URL/">三次握手和四次挥手</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/URL/" class="archive-article-date">
-  	<time datetime="2020-10-25T02:36:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>三次握手和四次挥手是各个公司常见的考点，也具有一定的水平区分度，也被一些面试官作为热身题。很多小伙伴说这个问题刚开始回答的挺好，但是后面越回答越冒冷汗，最后就歇菜了。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/URL/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-brower" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/brower/">浏览器灵魂之问</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/brower/" class="archive-article-date">
-  	<time datetime="2020-10-25T00:55:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>作为一个合格的前端工程师，浏览器相关的工作原理是我们进行性能优化的基石,必须牢牢掌握才能面对瞬息万变的实际场景，针对性地给出实际方案，而不是背诵各种开发军规和性能优化的条例，这样很难发现真正的问题所在, 更无法真正地解决问题。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/brower/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -822,8 +303,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

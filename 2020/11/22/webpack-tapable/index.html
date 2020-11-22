@@ -6,15 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Zerle</title>
+  <title>Webpack 核心模块 tapable 解析 | Zerle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zerle">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="Webpack 是一个现代 JavaScript 应用程序的静态模块打包器，是对前端项目实现自动化和优化必不可少的工具，Webpack 的 loader（加载器）和 plugin（插件）是由 Webpack 开发者和社区开发者共同贡献的，而目前又没有比较系统的开发文档，想写加载器和插件必须要懂 Webpack 的原理，即看懂 Webpack 的源码，tapable 则是 Webpack 依赖的核心">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webpack 核心模块 tapable 解析">
+<meta property="og:url" content="http://yoursite.com/2020/11/22/webpack-tapable/index.html">
 <meta property="og:site_name" content="Zerle">
+<meta property="og:description" content="Webpack 是一个现代 JavaScript 应用程序的静态模块打包器，是对前端项目实现自动化和优化必不可少的工具，Webpack 的 loader（加载器）和 plugin（插件）是由 Webpack 开发者和社区开发者共同贡献的，而目前又没有比较系统的开发文档，想写加载器和插件必须要懂 Webpack 的原理，即看懂 Webpack 的源码，tapable 则是 Webpack 依赖的核心">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/11/22/webpack-tapable/01.png">
+<meta property="article:published_time" content="2020-11-22T10:20:40.000Z">
+<meta property="article:modified_time" content="2020-11-22T10:34:42.749Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/11/22/webpack-tapable/01.png">
   
     <link rel="alternative" href="/atom.xml" title="Zerle" type="application/atom+xml">
   
@@ -134,20 +140,26 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-webpack-tapable" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-webpack-tapable" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/22/webpack-tapable/">Webpack 核心模块 tapable 解析</a>
+    <h1 class="article-title" itemprop="name">
+      Webpack 核心模块 tapable 解析
     </h1>
   
 
         <!--显示阅读次数-->
+        
+            <br/>
+            <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+            <span class="icon-sort"></span>
+            <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+                    阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+            </span>
+            </a>
         
         
         <a href="/2020/11/22/webpack-tapable/" class="archive-article-date">
@@ -161,7 +173,82 @@
           
           
             <p>Webpack 是一个现代 JavaScript 应用程序的静态模块打包器，是对前端项目实现自动化和优化必不可少的工具，Webpack 的 loader（加载器）和 plugin（插件）是由 Webpack 开发者和社区开发者共同贡献的，而目前又没有比较系统的开发文档，想写加载器和插件必须要懂 Webpack 的原理，即看懂 Webpack 的源码，tapable 则是 Webpack 依赖的核心库，可以说不懂 tapable 就看不懂 Webpack 源码，所以本篇会对 tapable 提供的类进行解析和模拟。</p>
-            
+<h2 id="tapable-介绍"><a href="#tapable-介绍" class="headerlink" title="tapable 介绍"></a>tapable 介绍</h2><img src="/2020/11/22/webpack-tapable/01.png" class title="This is an image">
+
+<p>Webpack 本质上是一种事件流的机制，它的工作流程就是将各个插件串联起来，而实现这一切的核心就是 tapable，Webpack 中最核心的，负责编译的 Compiler 和负责创建 bundles 的 Compilation 都是 tapable 构造函数的实例。</p>
+<p>打开 Webpack 4.0 的源码中一定会看到下面这些以 Sync、Async 开头，以 Hook 结尾的方法，这些都是 tapable 核心库的类，为我们提供不同的事件流执行机制，我们称为 “钩子”。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 引入 tapable 如下</span><br><span class="line">const &#123;</span><br><span class="line">    SyncHook,</span><br><span class="line">    SyncBailHook,</span><br><span class="line">    SyncWaterfallHook,</span><br><span class="line">    SyncLoopHook,</span><br><span class="line">    AsyncParallelHook,</span><br><span class="line">    AsyncParallelBailHook,</span><br><span class="line">    AsyncSeriesHook,</span><br><span class="line">    AsyncSeriesBailHook,</span><br><span class="line">    AsyncSeriesWaterfallHook</span><br><span class="line"> &#125; = require(<span class="string">"tapable"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面的实现事件流机制的 “钩子” 大方向可以分为两个类别，“同步” 和 “异步”，“异步” 又分为两个类别，“并行” 和 “串行”，而 “同步” 的钩子都是串行的。</p>
+<h2 id="Sync-类型的钩子"><a href="#Sync-类型的钩子" class="headerlink" title="Sync 类型的钩子"></a>Sync 类型的钩子</h2><h3 id="1、SyncHook"><a href="#1、SyncHook" class="headerlink" title="1、SyncHook"></a>1、SyncHook</h3><p>SyncHook 为串行同步执行，不关心事件处理函数的返回值，在触发事件之后，会按照事件注册的先后顺序执行所有的事件处理函数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// SyncHook 钩子的使用</span><br><span class="line">const &#123; SyncHook &#125; = require(<span class="string">"tapable"</span>);</span><br><span class="line"></span><br><span class="line">// 创建实例</span><br><span class="line"><span class="built_in">let</span> syncHook = new SyncHook([<span class="string">"name"</span>, <span class="string">"age"</span>]);</span><br><span class="line"></span><br><span class="line">// 注册事件</span><br><span class="line">syncHook.tap(<span class="string">"1"</span>, (name, age) =&gt; console.log(<span class="string">"1"</span>, name, age));</span><br><span class="line">syncHook.tap(<span class="string">"2"</span>, (name, age) =&gt; console.log(<span class="string">"2"</span>, name, age));</span><br><span class="line">syncHook.tap(<span class="string">"3"</span>, (name, age) =&gt; console.log(<span class="string">"3"</span>, name, age));</span><br><span class="line"></span><br><span class="line">// 触发事件，让监听函数执行</span><br><span class="line">syncHook.call(<span class="string">"panda"</span>, 18);</span><br><span class="line"></span><br><span class="line">// 1 panda 18</span><br><span class="line">// 2 panda 18</span><br><span class="line">// 3 panda 18</span><br></pre></td></tr></table></figure>
+
+<p>在 tapable 解构的 SyncHook 是一个类，注册事件需先创建实例，创建实例时支持传入一个数组，数组内存储事件触发时传入的参数，实例的 tap 方法用于注册事件，支持传入两个参数，第一个参数为事件名称，在 Webpack 中一般用于存储事件对应的插件名称（名字随意，只是起到注释作用）， 第二个参数为事件处理函数，函数参数为执行 call 方法触发事件时所传入的参数的形参。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 模拟 SyncHook 类</span><br><span class="line">class SyncHook &#123;</span><br><span class="line">    constructor(args) &#123;</span><br><span class="line">        this.args = args;</span><br><span class="line">        this.tasks = [];</span><br><span class="line">    &#125;</span><br><span class="line">    tap(name, task) &#123;</span><br><span class="line">        this.tasks.push(task);</span><br><span class="line">    &#125;</span><br><span class="line">    call(...args) &#123;</span><br><span class="line">        // 也可在参数不足时抛出异常</span><br><span class="line">        <span class="keyword">if</span> (args.length &lt; this.args.length) throw new Error(<span class="string">"参数不足"</span>);</span><br><span class="line"></span><br><span class="line">        // 传入参数严格对应创建实例传入数组中的规定的参数，执行时多余的参数为 undefined</span><br><span class="line">        args = args.slice(0, this.args.length);</span><br><span class="line"></span><br><span class="line">        // 依次执行事件处理函数</span><br><span class="line">        this.tasks.forEach(task =&gt; task(...args));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>tasks 数组用于存储事件处理函数，call 方法调用时传入参数超过创建 SyncHook 实例传入的数组长度时，多余参数可处理为 undefined，也可在参数不足时抛出异常，不灵活，后面的例子中就不再这样写了。</p>
+<h3 id="2、SyncBailHook"><a href="#2、SyncBailHook" class="headerlink" title="2、SyncBailHook"></a>2、SyncBailHook</h3><p>SyncBailHook 同样为串行同步执行，如果事件处理函数执行时有一个返回值不为空（即返回值为 undefined），则跳过剩下未执行的事件处理函数（如类的名字，意义在于保险）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// SyncBailHook 钩子的使用</span><br><span class="line">const &#123; SyncBailHook &#125; = require(<span class="string">"tapable"</span>);</span><br><span class="line"></span><br><span class="line">// 创建实例</span><br><span class="line"><span class="built_in">let</span> syncBailHook = new SyncBailHook([<span class="string">"name"</span>, <span class="string">"age"</span>]);</span><br><span class="line"></span><br><span class="line">// 注册事件</span><br><span class="line">syncBailHook.tap(<span class="string">"1"</span>, (name, age) =&gt; console.log(<span class="string">"1"</span>, name, age));</span><br><span class="line"></span><br><span class="line">syncBailHook.tap(<span class="string">"2"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">"2"</span>, name, age);</span><br><span class="line">    <span class="built_in">return</span> <span class="string">"2"</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">syncBailHook.tap(<span class="string">"3"</span>, (name, age) =&gt; console.log(<span class="string">"3"</span>, name, age));</span><br><span class="line"></span><br><span class="line">// 触发事件，让监听函数执行</span><br><span class="line">syncBailHook.call(<span class="string">"panda"</span>, 18);</span><br><span class="line"></span><br><span class="line">// 1 panda 18</span><br><span class="line">// 2 panda 18</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的用法可以看出，SyncHook 和 SyncBailHook 在逻辑上只是 call 方法不同，导致事件的执行机制不同，对于后面其他的 “钩子”，也是 call 的区别，接下来实现 SyncBailHook 类。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 模拟 SyncBailHook 类</span><br><span class="line">class SyncBailHook &#123;</span><br><span class="line">    constructor(args) &#123;</span><br><span class="line">        this.args = args;</span><br><span class="line">        this.tasks = [];</span><br><span class="line">    &#125;</span><br><span class="line">    tap(name, task) &#123;</span><br><span class="line">        this.tasks.push(task);</span><br><span class="line">    &#125;</span><br><span class="line">    call(...args) &#123;</span><br><span class="line">        // 传入参数严格对应创建实例传入数组中的规定的参数，执行时多余的参数为 undefined</span><br><span class="line">        args = args.slice(0, this.args.length);</span><br><span class="line"></span><br><span class="line">        // 依次执行事件处理函数，如果返回值不为空，则停止向下执行</span><br><span class="line">        <span class="built_in">let</span> i = 0, ret;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            ret = this.tasks[i++](...args);</span><br><span class="line">        &#125; <span class="keyword">while</span> (!ret);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面代码的 call 方法中，我们设置返回值为 ret，第一次执行后没有返回值则继续循环执行，如果有返回值则立即停止循环，即实现 “保险” 的功能。</p>
+<h3 id="3、SyncWaterfallHook"><a href="#3、SyncWaterfallHook" class="headerlink" title="3、SyncWaterfallHook"></a>3、SyncWaterfallHook</h3><p>SyncWaterfallHook 为串行同步执行，上一个事件处理函数的返回值作为参数传递给下一个事件处理函数，依次类推，正因如此，只有第一个事件处理函数的参数可以通过 call 传递，而 call 的返回值为最后一个事件处理函数的返回值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// SyncWaterfallHook 钩子的使用</span><br><span class="line">const &#123; SyncWaterfallHook &#125; = require(<span class="string">"tapable"</span>);</span><br><span class="line"></span><br><span class="line">// 创建实例</span><br><span class="line"><span class="built_in">let</span> syncWaterfallHook = new SyncWaterfallHook([<span class="string">"name"</span>, <span class="string">"age"</span>]);</span><br><span class="line"></span><br><span class="line">// 注册事件</span><br><span class="line">syncWaterfallHook.tap(<span class="string">"1"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">"1"</span>, name, age);</span><br><span class="line">    <span class="built_in">return</span> <span class="string">"1"</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">syncWaterfallHook.tap(<span class="string">"2"</span>, data =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">"2"</span>, data);</span><br><span class="line">    <span class="built_in">return</span> <span class="string">"2"</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">syncWaterfallHook.tap(<span class="string">"3"</span>, data =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">"3"</span>, data);</span><br><span class="line">    <span class="built_in">return</span> <span class="string">"3"</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 触发事件，让监听函数执行</span><br><span class="line"><span class="built_in">let</span> ret = syncWaterfallHook.call(<span class="string">"panda"</span>, 18);</span><br><span class="line">console.log(<span class="string">"call"</span>, ret);</span><br><span class="line"></span><br><span class="line">// 1 panda 18</span><br><span class="line">// 2 1</span><br><span class="line">// 3 2</span><br><span class="line">// call 3</span><br></pre></td></tr></table></figure>
+
+<p>SyncWaterfallHook 名称中含有 “瀑布”，通过上面代码可以看出 “瀑布” 形象生动的描绘了事件处理函数执行的特点，与 SyncHook 和 SyncBailHook 的区别就在于事件处理函数返回结果的流动性，接下来看一下 SyncWaterfallHook 类的实现。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 模拟 SyncWaterfallHook 类</span><br><span class="line">class SyncWaterfallHook &#123;</span><br><span class="line">    constructor(args) &#123;</span><br><span class="line">        this.args = args;</span><br><span class="line">        this.tasks = [];</span><br><span class="line">    &#125;</span><br><span class="line">    tap(name, task) &#123;</span><br><span class="line">        this.tasks.push(task);</span><br><span class="line">    &#125;</span><br><span class="line">    call(...args) &#123;</span><br><span class="line">        // 传入参数严格对应创建实例传入数组中的规定的参数，执行时多余的参数为 undefined</span><br><span class="line">        args = args.slice(0, this.args.length);</span><br><span class="line"></span><br><span class="line">        // 依次执行事件处理函数，事件处理函数的返回值作为下一个事件处理函数的参数</span><br><span class="line">        <span class="built_in">let</span> [first, ...others] = this.tasks;</span><br><span class="line">        <span class="built_in">return</span> reduce((ret, task) =&gt; task(ret), first(...args));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中 call 的逻辑是将存储事件处理函数的 tasks 拆成两部分，分别为第一个事件处理函数，和存储其余事件处理函数的数组，使用 reduce 进行归并，将第一个事件处理函数执行后的返回值作为归并的初始值，依次调用其余事件处理函数并传递上一次归并的返回值。</p>
+<h3 id="4、SyncLoopHook"><a href="#4、SyncLoopHook" class="headerlink" title="4、SyncLoopHook"></a>4、SyncLoopHook</h3><p>SyncLoopHook 为串行同步执行，事件处理函数返回 true 表示继续循环，即循环执行当前事件处理函数，返回 undefined 表示结束循环，SyncLoopHook 与 SyncBailHook 的循环不同，SyncBailHook 只决定是否继续向下执行后面的事件处理函数，而 SyncLoopHook 的循环是指循环执行每一个事件处理函数，直到返回 undefined 为止，才会继续向下执行其他事件处理函数，执行机制同理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// SyncLoopHook 钩子的使用</span><br><span class="line">const &#123; SyncLoopHook &#125; = require(<span class="string">"tapable"</span>);</span><br><span class="line"></span><br><span class="line">// 创建实例</span><br><span class="line"><span class="built_in">let</span> syncLoopHook = new SyncLoopHook([<span class="string">"name"</span>, <span class="string">"age"</span>]);</span><br><span class="line"></span><br><span class="line">// 定义辅助变量</span><br><span class="line"><span class="built_in">let</span> total1 = 0;</span><br><span class="line"><span class="built_in">let</span> total2 = 0;</span><br><span class="line"></span><br><span class="line">// 注册事件</span><br><span class="line">syncLoopHook.tap(<span class="string">"1"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">"1"</span>, name, age, total1);</span><br><span class="line">    <span class="built_in">return</span> total1++ &lt; 2 ? <span class="literal">true</span> : undefined;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">syncLoopHook.tap(<span class="string">"2"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">"2"</span>, name, age, total2);</span><br><span class="line">    <span class="built_in">return</span> total2++ &lt; 2 ? <span class="literal">true</span> : undefined;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">syncLoopHook.tap(<span class="string">"3"</span>, (name, age) =&gt; console.log(<span class="string">"3"</span>, name, age));</span><br><span class="line"></span><br><span class="line">// 触发事件，让监听函数执行</span><br><span class="line">syncLoopHook.call(<span class="string">"panda"</span>, 18);</span><br><span class="line"></span><br><span class="line">// 1 panda 18 0</span><br><span class="line">// 1 panda 18 1</span><br><span class="line">// 1 panda 18 2</span><br><span class="line">// 2 panda 18 0</span><br><span class="line">// 2 panda 18 1</span><br><span class="line">// 2 panda 18 2</span><br><span class="line">// 3 panda 18</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的执行结果可以清楚的看到 SyncLoopHook 的执行机制，但有一点需要注意，返回值必须严格是 true 才会触发循环，多次执行当前事件处理函数，必须严格返回 undefined，才会结束循环，去执行后面的事件处理函数，如果事件处理函数的返回值不是 true 也不是 undefined，则会死循环。</p>
+<p>在了解 SyncLoopHook 的执行机制以后，我们接下来看看 SyncLoopHook 的 call 方法是如何实现的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 模拟 SyncLoopHook 类</span><br><span class="line">class SyncLoopHook &#123;</span><br><span class="line">    constructor(args) &#123;</span><br><span class="line">        this.args = args;</span><br><span class="line">        this.tasks = [];</span><br><span class="line">    &#125;</span><br><span class="line">    tap(name, task) &#123;</span><br><span class="line">        this.tasks.push(task);</span><br><span class="line">    &#125;</span><br><span class="line">    call(...args) &#123;</span><br><span class="line">        // 传入参数严格对应创建实例传入数组中的规定的参数，执行时多余的参数为 undefined</span><br><span class="line">        args = args.slice(0, this.args.length);</span><br><span class="line"></span><br><span class="line">        // 依次执行事件处理函数，如果返回值为 <span class="literal">true</span>，则继续执行当前事件处理函数</span><br><span class="line">        // 直到返回 undefined，则继续向下执行其他事件处理函数</span><br><span class="line">        this.tasks.forEach(task =&gt; &#123;</span><br><span class="line">            <span class="built_in">let</span> ret;</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                ret = this.task(...args);</span><br><span class="line">            &#125; <span class="keyword">while</span> (ret === <span class="literal">true</span> || !(ret === undefined));</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面代码中可以看到 SyncLoopHook 类 call 方法的实现更像是 SyncHook 和 SyncBailHook 的 call 方法的结合版，外层循环整个 tasks 事件处理函数队列，内层通过返回值进行循环，控制每一个事件处理函数的执行次数。</p>
+<p>注意：在 Sync 类型 “钩子” 下执行的插件都是顺序执行的，只能使用 tab 注册。</p>
+<h2 id="Async-类型的钩子"><a href="#Async-类型的钩子" class="headerlink" title="Async 类型的钩子"></a>Async 类型的钩子</h2><p>Async 类型可以使用 tap、tapSync 和 tapPromise 注册不同类型的插件 “钩子”，分别通过 call、callAsync 和 promise 方法调用，我们下面会针对 AsyncParallelHook 和 AsyncSeriesHook 的 async 和 promise 两种方式分别介绍和模拟。</p>
+<h3 id="1、AsyncParallelHook"><a href="#1、AsyncParallelHook" class="headerlink" title="1、AsyncParallelHook"></a>1、AsyncParallelHook</h3><p>AsyncParallelHook 为异步并行执行，通过 tapAsync 注册的事件，通过 callAsync 触发，通过 tapPromise 注册的事件，通过 promise 触发（返回值可以调用 then 方法）。</p>
+<h4 id="1-tapAsync-callAsync"><a href="#1-tapAsync-callAsync" class="headerlink" title="(1) tapAsync/callAsync"></a>(1) tapAsync/callAsync</h4><p>callAsync 的最后一个参数为回调函数，在所有事件处理函数执行完毕后执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// AsyncParallelHook 钩子：tapAsync/callAsync 的使用</span><br><span class="line">const &#123; AsyncParallelHook &#125; = require(<span class="string">"tapable"</span>);</span><br><span class="line"></span><br><span class="line">// 创建实例</span><br><span class="line"><span class="built_in">let</span> asyncParallelHook = new AsyncParallelHook([<span class="string">"name"</span>, <span class="string">"age"</span>]);</span><br><span class="line"></span><br><span class="line">// 注册事件</span><br><span class="line">console.time(<span class="string">"time"</span>);</span><br><span class="line">asyncParallelHook.tapAsync(<span class="string">"1"</span>, (name, age, <span class="keyword">done</span>) =&gt; &#123;</span><br><span class="line">    settimeout(() =&gt; &#123;</span><br><span class="line">        console.log(<span class="string">"1"</span>, name, age, new Date());</span><br><span class="line">        <span class="keyword">done</span>();</span><br><span class="line">    &#125;, 1000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">asyncParallelHook.tapAsync(<span class="string">"2"</span>, (name, age, <span class="keyword">done</span>) =&gt; &#123;</span><br><span class="line">    settimeout(() =&gt; &#123;</span><br><span class="line">        console.log(<span class="string">"2"</span>, name, age, new Date());</span><br><span class="line">        <span class="keyword">done</span>();</span><br><span class="line">    &#125;, 2000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">asyncParallelHook.tapAsync(<span class="string">"3"</span>, (name, age, <span class="keyword">done</span>) =&gt; &#123;</span><br><span class="line">    settimeout(() =&gt; &#123;</span><br><span class="line">        console.log(<span class="string">"3"</span>, name, age, new Date());</span><br><span class="line">        <span class="keyword">done</span>();</span><br><span class="line">        console.timeEnd(<span class="string">"time"</span>);</span><br><span class="line">    &#125;, 3000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 触发事件，让监听函数执行</span><br><span class="line">asyncParallelHook.callAsync(<span class="string">"panda"</span>, 18, () =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">"complete"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 1 panda 18 2018-08-07T10:38:32.675Z</span><br><span class="line">// 2 panda 18 2018-08-07T10:38:33.674Z</span><br><span class="line">// 3 panda 18 2018-08-07T10:38:34.674Z</span><br><span class="line">// complete</span><br><span class="line">// time: 3005.060ms</span><br></pre></td></tr></table></figure>
+
+<p>异步并行是指，事件处理函数内三个定时器的异步操作最长时间为 3s，而三个事件处理函数执行完成总共用时接近 3s，所以三个事件处理函数是几乎同时执行的，不需等待。</p>
+<p>所有 tabAsync 注册的事件处理函数最后一个参数都为一个回调函数 done，每个事件处理函数在异步代码执行完毕后调用 done 函数，则可以保证 callAsync 会在所有异步函数都执行完毕后执行，接下来看一看 callAsync 是如何实现的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// 模拟 AsyncParallelHook 类：tapAsync/callAsync</span><br><span class="line">class AsyncParallelHook &#123;</span><br><span class="line">    constructor(args) &#123;</span><br><span class="line">        this.args = args;</span><br><span class="line">        this.tasks = [];</span><br><span class="line">    &#125;</span><br><span class="line">    tabAsync(name, task) &#123;</span><br><span class="line">        this.tasks.push(task);</span><br><span class="line">    &#125;</span><br><span class="line">    callAsync(...args) &#123;</span><br><span class="line">        // 先取出最后传入的回调函数</span><br><span class="line">        <span class="built_in">let</span> finalCallback = args.pop();</span><br><span class="line"></span><br><span class="line">        // 传入参数严格对应创建实例传入数组中的规定的参数，执行时多余的参数为 undefined</span><br><span class="line">        args = args.slice(0, this.args.length);</span><br><span class="line"></span><br><span class="line">        // 定义一个 i 变量和 <span class="keyword">done</span> 函数，每次执行检测 i 值和队列长度，决定是否执行 callAsync 的回调函数</span><br><span class="line">        <span class="built_in">let</span> i = 0;</span><br><span class="line">        <span class="built_in">let</span> <span class="keyword">done</span> = () =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (++i === this.tasks.length) &#123;</span><br><span class="line">                finalCallback();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        // 依次执行事件处理函数</span><br><span class="line">        this.tasks.forEach(task =&gt; task(...args, <span class="keyword">done</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 callAsync 中，将最后一个参数（所有事件处理函数执行完毕后执行的回调）取出，并定义 done 函数，通过比较 i 和存储事件处理函数的数组 tasks 的 length 来确定回调是否执行，循环执行每一个事件处理函数并将 done 作为最后一个参数传入，所以每个事件处理函数内部的异步操作完成时，执行 done 就是为了检测是不是该执行 callAsync 的回调，当所有事件处理函数均执行完毕满足 done 函数内部 i 和 length 相等的条件时，则调用 callAsync 的回调。</p>
+<h4 id="2-tapPromise-promise"><a href="#2-tapPromise-promise" class="headerlink" title="(2) tapPromise/promise"></a>(2) tapPromise/promise</h4><p>要使用 tapPromise 注册事件，对事件处理函数有一个要求，必须返回一个 Promise 实例，而 promise 方法也返回一个 Promise 实例，callAsync 的回调函数在 promise 方法中用 then 的方式代替。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">// AsyncParallelHook 钩子：tapPromise/promise 的使用</span><br><span class="line">const &#123; AsyncParallelHook &#125; = require(<span class="string">"tapable"</span>);</span><br><span class="line"></span><br><span class="line">// 创建实例</span><br><span class="line"><span class="built_in">let</span> asyncParallelHook = new AsyncParallelHook([<span class="string">"name"</span>, <span class="string">"age"</span>]);</span><br><span class="line"></span><br><span class="line">// 注册事件</span><br><span class="line">console.time(<span class="string">"time"</span>);</span><br><span class="line">asyncParallelHook.tapPromise(<span class="string">"1"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">        settimeout(() =&gt; &#123;</span><br><span class="line">            console.log(<span class="string">"1"</span>, name, age, new Date());</span><br><span class="line">            resolve(<span class="string">"1"</span>);</span><br><span class="line">        &#125;, 1000);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">asyncParallelHook.tapPromise(<span class="string">"2"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">        settimeout(() =&gt; &#123;</span><br><span class="line">            console.log(<span class="string">"2"</span>, name, age, new Date());</span><br><span class="line">            resolve(<span class="string">"2"</span>);</span><br><span class="line">        &#125;, 2000);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">asyncParallelHook.tapPromise(<span class="string">"3"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">        settimeout(() =&gt; &#123;</span><br><span class="line">            console.log(<span class="string">"3"</span>, name, age, new Date());</span><br><span class="line">            resolve(<span class="string">"3"</span>);</span><br><span class="line">            console.timeEnd(<span class="string">"time"</span>);</span><br><span class="line">        &#125;, 3000);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 触发事件，让监听函数执行</span><br><span class="line">asyncParallelHook.promise(<span class="string">"panda"</span>, 18).<span class="keyword">then</span>(ret =&gt; &#123;</span><br><span class="line">    console.log(ret);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 1 panda 18 2018-08-07T12:17:21.741Z</span><br><span class="line">// 2 panda 18 2018-08-07T12:17:22.736Z</span><br><span class="line">// 3 panda 18 2018-08-07T12:17:23.739Z</span><br><span class="line">// time: 3006.542ms</span><br><span class="line">// [ <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span> ]</span><br></pre></td></tr></table></figure>
+
+<p>上面每一个 tapPromise 注册事件的事件处理函数都返回一个 Promise 实例，并将返回值传入 resolve 方法，调用 promise 方法触发事件时，如果所有事件处理函数返回的 Promise 实例结果都成功，会将结果存储在数组中，并作为参数传递给 promise 的 then 方法中成功的回调，如果有一个失败就是将失败的结果返回作为参数传递给失败的回调。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 模拟 AsyncParallelHook 类 tapPromise/promise</span><br><span class="line">class AsyncParallelHook &#123;</span><br><span class="line">    constructor(args) &#123;</span><br><span class="line">        this.args = args;</span><br><span class="line">        this.tasks = [];</span><br><span class="line">    &#125;</span><br><span class="line">    tapPromise(name, task) &#123;</span><br><span class="line">        this.tasks.push(task);</span><br><span class="line">    &#125;</span><br><span class="line">    promise(...args) &#123;</span><br><span class="line">        // 传入参数严格对应创建实例传入数组中的规定的参数，执行时多余的参数为 undefined</span><br><span class="line">        args = args.slice(0, this.args.length);</span><br><span class="line"></span><br><span class="line">        // 将所有事件处理函数转换成 Promise 实例，并发执行所有的 Promise</span><br><span class="line">        <span class="built_in">return</span> Promise.all(this.tasks.map(task =&gt; task(...args)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实根据上面对于 tapPromise 和 promise 使用的描述就可以猜到，promise 方法的逻辑是通过 Promise.all 来实现的。</p>
+<h3 id="2、AsyncSeriesHook"><a href="#2、AsyncSeriesHook" class="headerlink" title="2、AsyncSeriesHook"></a>2、AsyncSeriesHook</h3><p>AsyncSeriesHook 为异步串行执行，与 AsyncParallelHook 相同，通过 tapAsync 注册的事件，通过 callAsync 触发，通过 tapPromise 注册的事件，通过 promise 触发，可以调用 then 方法。</p>
+<h4 id="1-tapAsync-callAsync-1"><a href="#1-tapAsync-callAsync-1" class="headerlink" title="(1) tapAsync/callAsync"></a>(1) tapAsync/callAsync</h4><p>与 AsyncParallelHook 的 callAsync 方法类似，AsyncSeriesHook 的 callAsync 方法也是通过传入回调函数的方式，在所有事件处理函数执行完毕后执行 callAsync 的回调函数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">// AsyncSeriesHook 钩子：tapAsync/callAsync 的使用</span><br><span class="line">const &#123; AsyncSeriesHook &#125; = require(<span class="string">"tapable"</span>);</span><br><span class="line"></span><br><span class="line">// 创建实例</span><br><span class="line"><span class="built_in">let</span> asyncSeriesHook = new AsyncSeriesHook([<span class="string">"name"</span>, <span class="string">"age"</span>]);</span><br><span class="line"></span><br><span class="line">// 注册事件</span><br><span class="line">console.time(<span class="string">"time"</span>);</span><br><span class="line">asyncSeriesHook.tapAsync(<span class="string">"1"</span>, (name, age, next) =&gt; &#123;</span><br><span class="line">    settimeout(() =&gt; &#123;</span><br><span class="line">        console.log(<span class="string">"1"</span>, name, age, new Date());</span><br><span class="line">        next();</span><br><span class="line">    &#125;, 1000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">asyncSeriesHook.tapAsync(<span class="string">"2"</span>, (name, age, next) =&gt; &#123;</span><br><span class="line">    settimeout(() =&gt; &#123;</span><br><span class="line">        console.log(<span class="string">"2"</span>, name, age, new Date());</span><br><span class="line">        next();</span><br><span class="line">    &#125;, 2000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">asyncSeriesHook.tapAsync(<span class="string">"3"</span>, (name, age, next) =&gt; &#123;</span><br><span class="line">    settimeout(() =&gt; &#123;</span><br><span class="line">        console.log(<span class="string">"3"</span>, name, age, new Date());</span><br><span class="line">        next();</span><br><span class="line">        console.timeEnd(<span class="string">"time"</span>);</span><br><span class="line">    &#125;, 3000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 触发事件，让监听函数执行</span><br><span class="line">asyncSeriesHook.callAsync(<span class="string">"panda"</span>, 18, () =&gt; &#123;</span><br><span class="line">    console.log(<span class="string">"complete"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 1 panda 18 2018-08-07T14:40:52.896Z</span><br><span class="line">// 2 panda 18 2018-08-07T14:40:54.901Z</span><br><span class="line">// 3 panda 18 2018-08-07T14:40:57.901Z</span><br><span class="line">// complete</span><br><span class="line">// time: 6008.790ms</span><br></pre></td></tr></table></figure>
+
+<p>异步串行是指，事件处理函数内三个定时器的异步执行时间分别为 1s、2s 和 3s，而三个事件处理函数执行完总共用时接近 6s，所以三个事件处理函数执行是需要排队的，必须一个一个执行，当前事件处理函数执行完才能执行下一个。</p>
+<p>AsyncSeriesHook 类的 tabAsync 方法注册的事件处理函数参数中的 next 可以与 AsyncParallelHook 类中 tabAsync 方法参数的 done 进行类比，同为回调函数，不同点在于 AsyncSeriesHook 与 AsyncParallelHook 的 callAsync 方法的 “并行” 和 “串行” 的实现方式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 模拟 AsyncSeriesHook 类：tapAsync/callAsync</span><br><span class="line">class AsyncSeriesHook &#123;</span><br><span class="line">    constructor(args) &#123;</span><br><span class="line">        this.args = args;</span><br><span class="line">        this.tasks = [];</span><br><span class="line">    &#125;</span><br><span class="line">    tabAsync(name, task) &#123;</span><br><span class="line">        this.tasks.push(task);</span><br><span class="line">    &#125;</span><br><span class="line">    callAsync(...args) &#123;</span><br><span class="line">        // 先取出最后传入的回调函数</span><br><span class="line">        <span class="built_in">let</span> finalCallback = args.pop();</span><br><span class="line"></span><br><span class="line">        // 传入参数严格对应创建实例传入数组中的规定的参数，执行时多余的参数为 undefined</span><br><span class="line">        args = args.slice(0, this.args.length);</span><br><span class="line"></span><br><span class="line">        // 定义一个 i 变量和 next 函数，每次取出一个事件处理函数执行，并维护 i 的值</span><br><span class="line">        // 直到所有事件处理函数都执行完，调用 callAsync 的回调</span><br><span class="line">        // 如果事件处理函数中没有调用 next，则无法继续</span><br><span class="line">        <span class="built_in">let</span> i = 0;</span><br><span class="line">        <span class="built_in">let</span> next = () =&gt; &#123;</span><br><span class="line">            <span class="built_in">let</span> task = this.tasks[i++];</span><br><span class="line">            task ? task(...args, next) : finalCallback();</span><br><span class="line">        &#125;;</span><br><span class="line">        next();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>AsyncParallelHook 是通过循环依次执行了所有的事件处理函数，done 方法只为了检测是否已经满足条件执行 callAsync 的回调，如果中间某个事件处理函数没有调用 done，只是不会调用 callAsync 的回调，但是所有的事件处理函数都执行了。</p>
+<p>而 AsyncSeriesHook 的 next 执行机制更像 Express 和 Koa 中的中间件，在注册事件的回调中如果不调用 next，则在触发事件时会在没有调用 next 的事件处理函数的位置 “卡死”，即不会继续执行后面的事件处理函数，只有都调用 next 才能继续，而最后一个事件处理函数中调用 next 决定是否调用 callAsync 的回调。</p>
+<h4 id="2-tapPromise-promise-1"><a href="#2-tapPromise-promise-1" class="headerlink" title="(2) tapPromise/promise"></a>(2) tapPromise/promise</h4><p>与 AsyncParallelHook 类似，tapPromise 注册事件的事件处理函数需要返回一个 Promise 实例，promise 方法最后也返回一个 Promise 实例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">// AsyncSeriesHook 钩子：tapPromise/promise 的使用</span><br><span class="line">const &#123; AsyncSeriesHook &#125; = require(<span class="string">"tapable"</span>);</span><br><span class="line"></span><br><span class="line">// 创建实例</span><br><span class="line"><span class="built_in">let</span> asyncSeriesHook = new AsyncSeriesHook([<span class="string">"name"</span>, <span class="string">"age"</span>]);</span><br><span class="line"></span><br><span class="line">// 注册事件</span><br><span class="line">console.time(<span class="string">"time"</span>);</span><br><span class="line">asyncSeriesHook.tapPromise(<span class="string">"1"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">        settimeout(() =&gt; &#123;</span><br><span class="line">            console.log(<span class="string">"1"</span>, name, age, new Date());</span><br><span class="line">            resolve(<span class="string">"1"</span>);</span><br><span class="line">        &#125;, 1000);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">asyncSeriesHook.tapPromise(<span class="string">"2"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">        settimeout(() =&gt; &#123;</span><br><span class="line">            console.log(<span class="string">"2"</span>, name, age, new Date());</span><br><span class="line">            resolve(<span class="string">"2"</span>);</span><br><span class="line">        &#125;, 2000);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">asyncParallelHook.tapPromise(<span class="string">"3"</span>, (name, age) =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">        settimeout(() =&gt; &#123;</span><br><span class="line">            console.log(<span class="string">"3"</span>, name, age, new Date());</span><br><span class="line">            resolve(<span class="string">"3"</span>);</span><br><span class="line">            console.timeEnd(<span class="string">"time"</span>);</span><br><span class="line">        &#125;, 3000);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 触发事件，让监听函数执行</span><br><span class="line">asyncSeriesHook.promise(<span class="string">"panda"</span>, 18).<span class="keyword">then</span>(ret =&gt; &#123;</span><br><span class="line">    console.log(ret);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 1 panda 18 2018-08-07T14:45:52.896Z</span><br><span class="line">// 2 panda 18 2018-08-07T14:45:54.901Z</span><br><span class="line">// 3 panda 18 2018-08-07T14:45:57.901Z</span><br><span class="line">// time: 6014.291ms</span><br><span class="line">// [ <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span> ]</span><br></pre></td></tr></table></figure>
+
+<p>分析上面的执行过程，所有的事件处理函数都返回了 Promise 的实例，如果想实现 “串行”，则需要让每一个返回的 Promise 实例都调用 then，并在 then 中执行下一个事件处理函数，这样就保证了只有上一个事件处理函数执行完后才会执行下一个。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// 模拟 AsyncSeriesHook 类 tapPromise/promise</span><br><span class="line">class AsyncSeriesHook &#123;</span><br><span class="line">    constructor(args) &#123;</span><br><span class="line">        this.args = args;</span><br><span class="line">        this.tasks = [];</span><br><span class="line">    &#125;</span><br><span class="line">    tapPromise(name, task) &#123;</span><br><span class="line">        this.tasks.push(task);</span><br><span class="line">    &#125;</span><br><span class="line">    promise(...args) &#123;</span><br><span class="line">        // 传入参数严格对应创建实例传入数组中的规定的参数，执行时多余的参数为 undefined</span><br><span class="line">        args = args.slice(0, this.args.length);</span><br><span class="line"></span><br><span class="line">        // 将每个事件处理函数执行并调用返回 Promise 实例的 <span class="keyword">then</span> 方法</span><br><span class="line">        // 让下一个事件处理函数在 <span class="keyword">then</span> 方法成功的回调中执行</span><br><span class="line">        <span class="built_in">let</span> [first, ...others] = this.tasks;</span><br><span class="line">        <span class="built_in">return</span> others.reduce((promise, task) =&gt; &#123;</span><br><span class="line">            <span class="built_in">return</span> promise.then(() =&gt; task(...args));</span><br><span class="line">        &#125;, first(...args));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中的 “串行” 是使用 reduce 归并来实现的，首先将存储所有事件处理函数的数组 tasks 解构成两部分，第一个事件处理函数和存储其他事件处理函数的数组 others，对 others 进行归并，将第一个事件处理函数执行后返回的 Promise 实例作为归并的初始值，这样在归并的过程中上一个值始终是上一个事件处理函数返回的 Promise 实例，可以直接调用 then 方法，并在 then 的回调中执行下一个事件处理函数，直到归并完成，将 reduce 最后返回的 Promise 实例作为 promise 方法的返回值，则实现 promise 方法执行后继续调用 then 来实现后续逻辑。</p>
+<h2 id="对其他异步钩子补充"><a href="#对其他异步钩子补充" class="headerlink" title="对其他异步钩子补充"></a>对其他异步钩子补充</h2><p>在上面 Async 异步类型的 “钩子中”，我们只着重介绍了 “串行” 和 “并行”（AsyncParallelHook 和 AsyncSeriesHook）以及回调和 Promise 的两种注册和触发事件的方式，还有一些其他的具有一定特点的异步 “钩子” 我们并没有进行分析，因为他们的机制与同步对应的 “钩子” 非常的相似。</p>
+<p>AsyncParallelBailHook 和 AsyncSeriesBailHook 分别为异步 “并行” 和 “串行” 执行的 “钩子”，返回值不为 undefined，即有返回值，则立即停止向下执行其他事件处理函数，实现逻辑可结合 AsyncParallelHook 、AsyncSeriesHook 和 SyncBailHook。</p>
+<p>AsyncSeriesWaterfallHook 为异步 “串行” 执行的 “钩子”，上一个事件处理函数的返回值作为参数传递给下一个事件处理函数，实现逻辑可结合 AsyncSeriesHook 和 SyncWaterfallHook。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在 tapable 源码中，注册事件的方法 tab、tapSync、tapPromise 和触发事件的方法 call、callAsync、promise 都是通过 compile 方法快速编译出来的，我们本文中这些方法的实现只是遵照了 tapable 库这些 “钩子” 的事件处理机制进行了模拟，以方便我们了解 tapable，为学习 Webpack 原理做了一个铺垫，在 Webpack 中，这些 “钩子” 的真正作用就是将通过配置文件读取的插件与插件、加载器与加载器之间进行连接，“并行” 或 “串行” 执行，相信在我们对 tapable 中这些 “钩子” 的事件机制有所了解之后，再重新学习 Webpack 的源码应该会有所头绪。</p>
+
           
         
       </div>
@@ -171,16 +258,28 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/22/webpack-tapable/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/11/02/vue-03/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Vue2中 watch 的高级用法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -195,611 +294,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-vue-03" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/02/vue-03/">Vue2中 watch 的高级用法</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/11/02/vue-03/" class="archive-article-date">
-  	<time datetime="2020-11-02T14:31:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>假设有如下代码：</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/02/vue-03/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tapable-介绍"><span class="toc-number">1.</span> <span class="toc-text">tapable 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sync-类型的钩子"><span class="toc-number">2.</span> <span class="toc-text">Sync 类型的钩子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、SyncHook"><span class="toc-number">2.1.</span> <span class="toc-text">1、SyncHook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、SyncBailHook"><span class="toc-number">2.2.</span> <span class="toc-text">2、SyncBailHook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、SyncWaterfallHook"><span class="toc-number">2.3.</span> <span class="toc-text">3、SyncWaterfallHook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、SyncLoopHook"><span class="toc-number">2.4.</span> <span class="toc-text">4、SyncLoopHook</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Async-类型的钩子"><span class="toc-number">3.</span> <span class="toc-text">Async 类型的钩子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、AsyncParallelHook"><span class="toc-number">3.1.</span> <span class="toc-text">1、AsyncParallelHook</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-tapAsync-callAsync"><span class="toc-number">3.1.1.</span> <span class="toc-text">(1) tapAsync&#x2F;callAsync</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-tapPromise-promise"><span class="toc-number">3.1.2.</span> <span class="toc-text">(2) tapPromise&#x2F;promise</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、AsyncSeriesHook"><span class="toc-number">3.2.</span> <span class="toc-text">2、AsyncSeriesHook</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-tapAsync-callAsync-1"><span class="toc-number">3.2.1.</span> <span class="toc-text">(1) tapAsync&#x2F;callAsync</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-tapPromise-promise-1"><span class="toc-number">3.2.2.</span> <span class="toc-text">(2) tapPromise&#x2F;promise</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对其他异步钩子补充"><span class="toc-number">4.</span> <span class="toc-text">对其他异步钩子补充</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-  
-    <article id="post-vue-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/02/vue-02/">听说你熟练使用Vue2，那这9种Vue技术你掌握了吗？</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/11/02/vue-02/" class="archive-article-date">
-  	<time datetime="2020-11-02T14:19:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>现在，Vue.js已成为前端开发的热门框架。有很多工程师利用Vue.js的便利性和强大功能。但是，我们完成的某些解决方案可能未遵循最佳做法。好吧，让我们看一下那些必备的Vue技术。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/02/vue-02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JavaScript-03" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/26/JavaScript-03/">原生JS灵魂之问(下篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/26/JavaScript-03/" class="archive-article-date">
-  	<time datetime="2020-10-26T14:40:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>本次分享的主题是JS执行原理和深入异步，是一块比较系统且有深度的内容，相信对进阶的小伙伴是一个很大的提升。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/26/JavaScript-03/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JavaScript-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/JavaScript-02/">原生JS灵魂之问(中篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/JavaScript-02/" class="archive-article-date">
-  	<time datetime="2020-10-25T15:07:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>本文检验你对JS语言的理解有没有到达那样的水准，有一些边界情况是否能够考虑到，有没有基本的计算机素养(比如最基本的排序方法到底理不理解)，未来有没有潜力去设计出更加优秀的产品或者框架。如果你仅仅是想通过一篇文章来解决业务中的临时问题，那不好意思，请出门左拐，这篇文章确实不适合你。但如果你觉得自己的原生编程能力还有待提高，想让自己的思维能力上一个台阶，希望这篇”呕心沥血”的文章能够让你有所成长</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/JavaScript-02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JavaScript" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/JavaScript/">原生JS灵魂之问(上篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/JavaScript/" class="archive-article-date">
-  	<time datetime="2020-10-25T10:13:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>原生JS的知识系统梳理</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/JavaScript/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HTTP-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HTTP-02/">TCP协议灵魂之问(下篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/HTTP-02/" class="archive-article-date">
-  	<time datetime="2020-10-25T07:17:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>TCP 作为传输层的协议，是一个软件工程师素养的体现，也是面试中经常被问到的知识点。在此，我将 TCP 核心的一些问题梳理了一下，希望能帮到各位。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HTTP-02/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HTTP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HTTP/">HTTP灵魂之问(上篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/HTTP/" class="archive-article-date">
-  	<time datetime="2020-10-25T02:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>这篇文章就是为了帮助大家树立完整的 HTTP 知识体系，并达到一定的深度，从容地应对各种灵魂之问，也同时提升自己作为一个 web 开发的专业素养吧。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HTTP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-URL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/URL/">三次握手和四次挥手</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/URL/" class="archive-article-date">
-  	<time datetime="2020-10-25T02:36:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>三次握手和四次挥手是各个公司常见的考点，也具有一定的水平区分度，也被一些面试官作为热身题。很多小伙伴说这个问题刚开始回答的挺好，但是后面越回答越冒冷汗，最后就歇菜了。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/URL/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-brower" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/brower/">浏览器灵魂之问</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/brower/" class="archive-article-date">
-  	<time datetime="2020-10-25T00:55:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>作为一个合格的前端工程师，浏览器相关的工作原理是我们进行性能优化的基石,必须牢牢掌握才能面对瞬息万变的实际场景，针对性地给出实际方案，而不是背诵各种开发军规和性能优化的条例，这样很难发现真正的问题所在, 更无法真正地解决问题。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/brower/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -822,8 +342,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
