@@ -15,13 +15,16 @@
 <meta property="og:site_name" content="Zerle">
 <meta property="og:description" content="图片懒加载是一个很重要的前端性能优化手段。这篇文章将从懒加载的最简单场景开始介绍，逐步增加复杂度，希望能讲清楚常见的图片懒加载场景及在该场景下对应的解决办法。 为什么要做图片的懒加载假设在用户访问某个页面时就加载这个页面全部的图片（即使这些图片并不处在用户的当前的视窗中），在弱网环境或者网速较慢的环境下，这些“冗余”图片的下载会占用用户本来就非常有限的带宽，伤害用户体验（比如影响其他资源的下载）。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/11/23/image-lazyload/01.png">
+<meta property="og:image" content="http://yoursite.com/2020/11/23/image-lazyload/02.png">
+<meta property="og:image" content="http://yoursite.com/2020/11/23/image-lazyload/03.png">
 <meta property="og:image" content="http://yoursite.com/2020/11/23/image-lazyload/04.gif">
 <meta property="og:image" content="http://yoursite.com/2020/11/23/image-lazyload/05.gif">
 <meta property="article:published_time" content="2020-11-23T14:24:52.000Z">
-<meta property="article:modified_time" content="2020-11-23T14:32:56.661Z">
+<meta property="article:modified_time" content="2020-11-23T14:42:32.950Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/11/23/image-lazyload/04.gif">
+<meta name="twitter:image" content="http://yoursite.com/2020/11/23/image-lazyload/01.png">
   
     <link rel="alternative" href="/atom.xml" title="Zerle" type="application/atom+xml">
   
@@ -176,10 +179,10 @@
             <p>图片懒加载是一个很重要的前端性能优化手段。这篇文章将从懒加载的最简单场景开始介绍，逐步增加复杂度，希望能讲清楚常见的图片懒加载场景及在该场景下对应的解决办法。</p>
 <h2 id="为什么要做图片的懒加载"><a href="#为什么要做图片的懒加载" class="headerlink" title="为什么要做图片的懒加载"></a>为什么要做图片的懒加载</h2><p>假设在用户访问某个页面时就加载这个页面全部的图片（即使这些图片并不处在用户的当前的视窗中），在弱网环境或者网速较慢的环境下，这些“冗余”图片的下载会占用用户本来就非常有限的带宽，伤害用户体验（比如影响其他资源的下载）。所以对于网站的图片，理想的做法是懒加载（按需加载）。</p>
 <h2 id="图片懒加载的原理"><a href="#图片懒加载的原理" class="headerlink" title="图片懒加载的原理"></a>图片懒加载的原理</h2><p>在浏览器内部对于各种资源有着一套自己的优先级定义，浏览器会优先加载优先级高的资源</p>
-
+<img src="/2020/11/23/image-lazyload/01.png" class title="This is an image">
 
 <p>如果我们不去进行图片的懒加载，默认情况下，资源的priority如下。</p>
-
+<img src="/2020/11/23/image-lazyload/02.png" class title="This is an image">
 
 <p>这些优先级标记为high的图片会占用其他资源的下载带宽，可能会造成某些比较关键的资源（比如xhr call）加载缓慢，拖慢页面速度。</p>
 <h2 id="图片懒加载的简单实现"><a href="#图片懒加载的简单实现" class="headerlink" title="图片懒加载的简单实现"></a>图片懒加载的简单实现</h2><p>图片懒加载的思路一般时当页面加载时加载一个尺寸很小的占位图片（1kb以下），然后再通过js选择性的去加载真正的图片。</p>
@@ -191,7 +194,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// index.js</span><br><span class="line">(<span class="keyword">function</span> <span class="function"><span class="title">lazyLoad</span></span>()&#123;</span><br><span class="line">    const imageToLazy = document.querySelectorAll(<span class="string">'img[data-src]'</span>);</span><br><span class="line">    const loadImage = <span class="keyword">function</span> (image) &#123;</span><br><span class="line">        image.setAttribute(<span class="string">'src'</span>, image.getAttribute(<span class="string">'data-src'</span>));</span><br><span class="line">        image.addEventListener(<span class="string">'load'</span>, <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">            image.removeAttribute(<span class="string">"data-src"</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    imageToLazy.forEach(<span class="keyword">function</span>(image)&#123;</span><br><span class="line">        loadImage(image);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
 
 <p>通过懒加载之后，资源优先级如下。</p>
-
+<img src="/2020/11/23/image-lazyload/03.png" class title="This is an image">
 
 <h2 id="图片懒加载的进阶实现–滚动加载"><a href="#图片懒加载的进阶实现–滚动加载" class="headerlink" title="图片懒加载的进阶实现–滚动加载"></a>图片懒加载的进阶实现–滚动加载</h2><p>上面的方案并不完美，对于用户来说，不在视窗中的图片可能根本不是用户当前关心的图片，所以我们可以让这些图片出现在用户视窗中再进行加载。</p>
 <p>运用Intersection Observer 我们可以做到当图片滚动到视窗后再加载该图片。</p>
