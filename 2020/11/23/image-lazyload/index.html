@@ -15,10 +15,13 @@
 <meta property="og:site_name" content="Zerle">
 <meta property="og:description" content="图片懒加载是一个很重要的前端性能优化手段。这篇文章将从懒加载的最简单场景开始介绍，逐步增加复杂度，希望能讲清楚常见的图片懒加载场景及在该场景下对应的解决办法。 为什么要做图片的懒加载假设在用户访问某个页面时就加载这个页面全部的图片（即使这些图片并不处在用户的当前的视窗中），在弱网环境或者网速较慢的环境下，这些“冗余”图片的下载会占用用户本来就非常有限的带宽，伤害用户体验（比如影响其他资源的下载）。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/11/23/image-lazyload/04.gif">
+<meta property="og:image" content="http://yoursite.com/2020/11/23/image-lazyload/05.gif">
 <meta property="article:published_time" content="2020-11-23T14:24:52.000Z">
 <meta property="article:modified_time" content="2020-11-23T14:32:56.661Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/11/23/image-lazyload/04.gif">
   
     <link rel="alternative" href="/atom.xml" title="Zerle" type="application/atom+xml">
   
@@ -199,14 +202,14 @@
 <h2 id="图片尺寸已知"><a href="#图片尺寸已知" class="headerlink" title="图片尺寸已知"></a>图片尺寸已知</h2><p>图片尺寸已知出现的场景一般是博文的题图或者网站中一些固定尺寸的thumbnail，这些图的尺寸一般固定且一般不会发生改变。对于这种场景，我们可以加载对应尺寸的placeholder图片（如上一节的demo）。我们可以自己裁剪对应尺寸的的placeholder图片或者使用类似<a href="http://placeholder.com/" target="_blank" rel="noopener">http://placeholder.com/</a> 这样的服务来获取placeholder图片。</p>
 <h2 id="图片尺寸未知"><a href="#图片尺寸未知" class="headerlink" title="图片尺寸未知"></a>图片尺寸未知</h2><p>图片尺寸未知的情况下一般我们需要生成对应的thumbnail然后去加载我们生成的thumbnail去做placeholder。为了生成这些thumbnail你可以调用imagemagick或者调用一些在线的图片分割服务（比如七牛）</p>
 <h2 id="懒加载防止布局抖动"><a href="#懒加载防止布局抖动" class="headerlink" title="懒加载防止布局抖动"></a>懒加载防止布局抖动</h2><p>在图片懒加载时，由于图片的尺寸不定，浏览器难以计算需要给图片预留出的位置。所以当图片加载完成后会出现网页布局的抖动。</p>
-
+<img src="/2020/11/23/image-lazyload/04.gif" class title="This is an image">
 
 <p>即使我们选择的placeholder很小，可以在毫秒级别完成下载，用户可能意识不到布局的抖动。但是在一些性能比较差的设备上，这种布局的抖动还是会一定程度上影响用户的体验。为了完全避免布局闪动，我们可以采用aspect ratio boxes 的技术来制作一个占位用的元素。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=<span class="string">"lazy-load__container feature"</span>&gt;</span><br><span class="line">  &lt;img src=<span class="string">"placeholder.jpg"</span> data-src=<span class="string">"real.jpg"</span> /&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">.lazy-load__container&#123;</span><br><span class="line">    position: relative;</span><br><span class="line">    display: block;</span><br><span class="line">    height: 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.lazy-load__container.feature &#123;</span><br><span class="line">    // feature image 的高宽比设置成42.8%</span><br><span class="line">    // 对于其他图片 比如 post图片，高宽比可能会不同，可以使用其他css class去设置</span><br><span class="line">    padding-bottom: 42.8%;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.lazy-load__container img &#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top:0;</span><br><span class="line">    left:0;</span><br><span class="line">    height: 100%;</span><br><span class="line">    width: 100%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
+<img src="/2020/11/23/image-lazyload/05.gif" class title="This is an image">
 
 <p>上面这个实现的原理其实很简单，由于 padding-bottom (或者 padding-top)声明为百分比时是根据元素生成的box的 width 去计算百分比的，所以我们通过padding-bottom去声明一个对应高宽比的container。而这个container的具体尺寸会由尺寸确定的外层元素确定，但是高宽比始终保持一致。</p>
 <p>而图片的尺寸设置成100%container的尺寸保证图片始终和container的尺寸保持一致。</p>
