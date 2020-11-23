@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Zerle</title>
+  <title>详细解析赋值、浅拷贝和深拷贝的区别 | Zerle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zerle">
-<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+  <meta name="description" content="一、赋值（Copy）赋值是将某一数值或对象赋给某个变量的过程，分为下面 2 部分  基本数据类型：赋值，赋值之后两个变量互不影响 引用数据类型：赋址，两个变量具有相同的引用，指向同一个对象，相互之间有影响对基本类型进行赋值操作，两个变量互不影响。  12345678910let a &#x3D; &quot;xiaoming&quot;;let b &#x3D; a;console.log(b);&#x2F;&#x2F; xiaominga &#x3D; &quot;chan">
+<meta property="og:type" content="article">
+<meta property="og:title" content="详细解析赋值、浅拷贝和深拷贝的区别">
+<meta property="og:url" content="http://yoursite.com/2020/11/23/js-copy/index.html">
 <meta property="og:site_name" content="Zerle">
+<meta property="og:description" content="一、赋值（Copy）赋值是将某一数值或对象赋给某个变量的过程，分为下面 2 部分  基本数据类型：赋值，赋值之后两个变量互不影响 引用数据类型：赋址，两个变量具有相同的引用，指向同一个对象，相互之间有影响对基本类型进行赋值操作，两个变量互不影响。  12345678910let a &#x3D; &quot;xiaoming&quot;;let b &#x3D; a;console.log(b);&#x2F;&#x2F; xiaominga &#x3D; &quot;chan">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/11/23/js-copy/01.png">
+<meta property="og:image" content="http://yoursite.com/2020/11/23/js-copy/02.png">
+<meta property="og:image" content="http://yoursite.com/2020/11/23/js-copy/03.png">
+<meta property="article:published_time" content="2020-11-23T14:48:47.000Z">
+<meta property="article:modified_time" content="2020-11-23T15:01:46.211Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/11/23/js-copy/01.png">
   
     <link rel="alternative" href="/atom.xml" title="Zerle" type="application/atom+xml">
   
@@ -134,24 +142,30 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-HTTP-02" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-js-copy" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HTTP-02/">TCP协议灵魂之问(下篇)</a>
+    <h1 class="article-title" itemprop="name">
+      详细解析赋值、浅拷贝和深拷贝的区别
     </h1>
   
 
         <!--显示阅读次数-->
         
+            <br/>
+            <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+            <span class="icon-sort"></span>
+            <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+                    阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+            </span>
+            </a>
         
-        <a href="/2020/10/25/HTTP-02/" class="archive-article-date">
-  	<time datetime="2020-10-25T07:17:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
+        
+        <a href="/2020/11/23/js-copy/" class="archive-article-date">
+  	<time datetime="2020-11-23T14:48:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-23</time>
 </a>
         
       </header>
@@ -160,8 +174,57 @@
         
           
           
-            <p>TCP 作为传输层的协议，是一个软件工程师素养的体现，也是面试中经常被问到的知识点。在此，我将 TCP 核心的一些问题梳理了一下，希望能帮到各位。</p>
-            
+            <h2 id="一、赋值（Copy）"><a href="#一、赋值（Copy）" class="headerlink" title="一、赋值（Copy）"></a>一、赋值（Copy）</h2><p>赋值是将某一数值或对象赋给某个变量的过程，分为下面 2 部分</p>
+<ul>
+<li>基本数据类型：赋值，赋值之后两个变量互不影响</li>
+<li>引用数据类型：赋址，两个变量具有相同的引用，指向同一个对象，相互之间有影响<br>对基本类型进行赋值操作，两个变量互不影响。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> a = <span class="string">"xiaoming"</span>;</span><br><span class="line"><span class="built_in">let</span> b = a;</span><br><span class="line">console.log(b);</span><br><span class="line">// xiaoming</span><br><span class="line"></span><br><span class="line">a = <span class="string">"change"</span>;</span><br><span class="line">console.log(a);</span><br><span class="line">// change</span><br><span class="line">console.log(b);</span><br><span class="line">// xiaoming</span><br></pre></td></tr></table></figure>
+<p>对引用类型进行赋址操作，两个变量指向同一个对象，改变变量 a 之后会影响变量 b，哪怕改变的只是对象 a 中的基本类型数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> a = &#123;</span><br><span class="line">    name: <span class="string">"xiaoming"</span>,</span><br><span class="line">    book: &#123;</span><br><span class="line">        title: <span class="string">"You Don't Know JS"</span>,</span><br><span class="line">        price: <span class="string">"45"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">let</span> b = a;</span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"xiaoming"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"45"</span>&#125;</span><br><span class="line">// &#125; </span><br><span class="line"></span><br><span class="line">a.name = <span class="string">"change"</span>;</span><br><span class="line">a.book.price = <span class="string">"55"</span>;</span><br><span class="line">console.log(a);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"change"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"55"</span>&#125;</span><br><span class="line">// &#125; </span><br><span class="line"></span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"change"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"55"</span>&#125;</span><br><span class="line">// &#125;</span><br></pre></td></tr></table></figure>
+
+<p>通常在开发中并不希望改变变量 a 之后会影响到变量 b，这时就需要用到浅拷贝和深拷贝。</p>
+<h2 id="二、浅拷贝（Shallow-Copy）"><a href="#二、浅拷贝（Shallow-Copy）" class="headerlink" title="二、浅拷贝（Shallow Copy）"></a>二、浅拷贝（Shallow Copy）</h2><h3 id="1、什么是浅拷贝"><a href="#1、什么是浅拷贝" class="headerlink" title="1、什么是浅拷贝"></a>1、什么是浅拷贝</h3><p>创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，拷贝的就是基本类型的值，如果属性是引用类型，拷贝的就是内存地址 ，所以如果其中一个对象改变了这个地址，就会影响到另一个对象。</p>
+<img src="/2020/11/23/js-copy/01.png" class title="This is an image">
+
+<p>上图中，SourceObject 是原对象，其中包含基本类型属性 field1 和引用类型属性 refObj。浅拷贝之后基本类型数据 field2 和 filed1 是不同属性，互不影响。但引用类型 refObj 仍然是同一个，改变之后会对另一个对象产生影响。</p>
+<p>简单来说可以理解为浅拷贝只解决了第一层的问题，拷贝第一层的基本类型值，以及第一层的引用类型地址。</p>
+<h3 id="2、浅拷贝使用场景"><a href="#2、浅拷贝使用场景" class="headerlink" title="2、浅拷贝使用场景"></a>2、浅拷贝使用场景</h3><h4 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign()"></a>Object.assign()</h4><p>Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。</p>
+<p>有些文章说Object.assign() 是深拷贝，其实这是不正确的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> a = &#123;</span><br><span class="line">    name: <span class="string">"xiaoming"</span>,</span><br><span class="line">    book: &#123;</span><br><span class="line">        title: <span class="string">"You Don't Know JS"</span>,</span><br><span class="line">        price: <span class="string">"45"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">let</span> b = Object.assign(&#123;&#125;, a);</span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"xiaoming"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"45"</span>&#125;</span><br><span class="line">// &#125; </span><br><span class="line"></span><br><span class="line">a.name = <span class="string">"change"</span>;</span><br><span class="line">a.book.price = <span class="string">"55"</span>;</span><br><span class="line">console.log(a);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"change"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"55"</span>&#125;</span><br><span class="line">// &#125; </span><br><span class="line"></span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"xiaoming"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"55"</span>&#125;</span><br><span class="line">// &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码改变对象 a 之后，对象 b 的基本属性保持不变。但是当改变对象 a 中的对象 book 时，对象 b 相应的位置也发生了变化。</p>
+<h4 id="展开语法-Spread"><a href="#展开语法-Spread" class="headerlink" title="展开语法 Spread"></a>展开语法 Spread</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> a = &#123;</span><br><span class="line">    name: <span class="string">"xiaoming"</span>,</span><br><span class="line">    book: &#123;</span><br><span class="line">        title: <span class="string">"You Don't Know JS"</span>,</span><br><span class="line">        price: <span class="string">"45"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">let</span> b = &#123;...a&#125;;</span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"xiaoming"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"45"</span>&#125;</span><br><span class="line">// &#125; </span><br><span class="line"></span><br><span class="line">a.name = <span class="string">"change"</span>;</span><br><span class="line">a.book.price = <span class="string">"55"</span>;</span><br><span class="line">console.log(a);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"change"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"55"</span>&#125;</span><br><span class="line">// &#125; </span><br><span class="line"></span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"xiaoming"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"55"</span>&#125;</span><br><span class="line">// &#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过代码可以看出实际效果和 Object.assign() 是一样的。</p>
+<h4 id="Array-prototype-slice"><a href="#Array-prototype-slice" class="headerlink" title="Array.prototype.slice()"></a>Array.prototype.slice()</h4><p>slice() 方法返回一个新的数组对象，这一对象是一个由 begin和 end（不包括end）决定的原数组的浅拷贝。原始数组不会被改变</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> a = [0, <span class="string">"1"</span>, [2, 3]];</span><br><span class="line"><span class="built_in">let</span> b = a.slice(1);</span><br><span class="line">console.log(b);</span><br><span class="line">// [<span class="string">"1"</span>, [2, 3]]</span><br><span class="line"></span><br><span class="line">a[1] = <span class="string">"99"</span>;</span><br><span class="line">a[2][0] = 4;</span><br><span class="line">console.log(a);</span><br><span class="line">// [0, <span class="string">"99"</span>, [4, 3]]</span><br><span class="line"></span><br><span class="line">console.log(b);</span><br><span class="line">//  [<span class="string">"1"</span>, [4, 3]]</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，改变 a[1] 之后 b[0] 的值并没有发生变化，但改变 a[2][0] 之后，相应的 b[1][0] 的值也发生变化。说明 slice() 方法是浅拷贝，相应的还有concat等，在工作中面对复杂数组结构要额外注意。</p>
+<h2 id="三、深拷贝（Deep-Copy）"><a href="#三、深拷贝（Deep-Copy）" class="headerlink" title="三、深拷贝（Deep Copy）"></a>三、深拷贝（Deep Copy）</h2><h3 id="1、什么是深拷贝"><a href="#1、什么是深拷贝" class="headerlink" title="1、什么是深拷贝"></a>1、什么是深拷贝</h3><p>深拷贝会拷贝所有的属性，并拷贝属性指向的动态分配的内存。当对象和它所引用的对象一起拷贝时即发生深拷贝。深拷贝相比于浅拷贝速度较慢并且花销较大。拷贝前后两个对象互不影响。</p>
+<img src="/2020/11/23/js-copy/02.png" class title="This is an image">
+
+<h3 id="2、深拷贝使用场景"><a href="#2、深拷贝使用场景" class="headerlink" title="2、深拷贝使用场景"></a>2、深拷贝使用场景</h3><p>JSON.parse(JSON.stringify(object))</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> a = &#123;</span><br><span class="line">    name: <span class="string">"xiaoming"</span>,</span><br><span class="line">    book: &#123;</span><br><span class="line">        title: <span class="string">"You Don't Know JS"</span>,</span><br><span class="line">        price: <span class="string">"45"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">let</span> b = JSON.parse(JSON.stringify(a));</span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"xiaoming"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"45"</span>&#125;</span><br><span class="line">// &#125; </span><br><span class="line"></span><br><span class="line">a.name = <span class="string">"change"</span>;</span><br><span class="line">a.book.price = <span class="string">"55"</span>;</span><br><span class="line">console.log(a);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"change"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"55"</span>&#125;</span><br><span class="line">// &#125; </span><br><span class="line"></span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"xiaoming"</span>,</span><br><span class="line">// 	book: &#123;title: <span class="string">"You Don't Know JS"</span>, price: <span class="string">"45"</span>&#125;</span><br><span class="line">// &#125;</span><br></pre></td></tr></table></figure>
+
+<p>完全改变变量 a 之后对 b 没有任何影响，这就是深拷贝的魔力。</p>
+<p>我们看下对数组深拷贝效果如何。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> a = [0, <span class="string">"1"</span>, [2, 3]];</span><br><span class="line"><span class="built_in">let</span> b = JSON.parse(JSON.stringify( a.slice(1) ));</span><br><span class="line">console.log(b);</span><br><span class="line">// [<span class="string">"1"</span>, [2, 3]]</span><br><span class="line"></span><br><span class="line">a[1] = <span class="string">"99"</span>;</span><br><span class="line">a[2][0] = 4;</span><br><span class="line">console.log(a);</span><br><span class="line">// [0, <span class="string">"99"</span>, [4, 3]]</span><br><span class="line"></span><br><span class="line">console.log(b);</span><br><span class="line">//  [<span class="string">"1"</span>, [2, 3]]</span><br></pre></td></tr></table></figure>
+
+<p>对数组深拷贝之后，改变原数组不会影响到拷贝之后的数组。</p>
+<p>但是该方法有以下几个问题。</p>
+<p>1、会忽略 undefined<br>2、会忽略 symbol<br>3、不能序列化函数<br>4、不能解决循环引用的对象<br>5、不能正确处理new Date()<br>6、不能处理正则</p>
+<h4 id="undefined、symbol-和函数这三种情况，会直接忽略。"><a href="#undefined、symbol-和函数这三种情况，会直接忽略。" class="headerlink" title="undefined、symbol 和函数这三种情况，会直接忽略。"></a>undefined、symbol 和函数这三种情况，会直接忽略。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'xiaoming'</span>,</span><br><span class="line">    a: undefined,</span><br><span class="line">    b: Symbol(<span class="string">'xiaoming'</span>),</span><br><span class="line">    c: <span class="function"><span class="title">function</span></span>() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log(obj);</span><br><span class="line">// &#123;</span><br><span class="line">// 	name: <span class="string">"xiaoming"</span>, </span><br><span class="line">// 	a: undefined, </span><br><span class="line">//  b: Symbol(xiaoming), </span><br><span class="line">//  c: ƒ ()</span><br><span class="line">// &#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> b = JSON.parse(JSON.stringify(obj));</span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;name: <span class="string">"xiaoming"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="循环引用情况下，会报错。"><a href="#循环引用情况下，会报错。" class="headerlink" title="循环引用情况下，会报错。"></a>循环引用情况下，会报错。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">    a: 1,</span><br><span class="line">    b: &#123;</span><br><span class="line">        c: 2,</span><br><span class="line">   		d: 3</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.a = obj.b;</span><br><span class="line">obj.b.c = obj.a;</span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> b = JSON.parse(JSON.stringify(obj));</span><br><span class="line">// Uncaught TypeError: Converting circular structure to JSON</span><br></pre></td></tr></table></figure>
+
+<h4 id="new-Date-情况下，转换结果不正确。"><a href="#new-Date-情况下，转换结果不正确。" class="headerlink" title="new Date 情况下，转换结果不正确。"></a>new Date 情况下，转换结果不正确。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">new Date();</span><br><span class="line">// Mon Nov 23 2020 22:59:31 GMT+0800 (中国标准时间)</span><br><span class="line"></span><br><span class="line">JSON.stringify(new Date());</span><br><span class="line">// <span class="string">""</span>2020-11-23T14:59:53.815Z<span class="string">""</span></span><br><span class="line"></span><br><span class="line">JSON.parse(JSON.stringify(new Date()));</span><br><span class="line">// <span class="string">"2020-11-23T15:00:12.230Z"</span></span><br></pre></td></tr></table></figure>
+<p>解决方法转成字符串或者时间戳就好了。</p>
+<h4 id="正则情况下"><a href="#正则情况下" class="headerlink" title="正则情况下"></a>正则情况下</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> obj = &#123;</span><br><span class="line">    name: <span class="string">"xiaoming"</span>,</span><br><span class="line">    a: /<span class="string">'123'</span>/</span><br><span class="line">&#125;</span><br><span class="line">console.log(obj);</span><br><span class="line">// &#123;name: <span class="string">"xiaoming"</span>, a: /<span class="string">'123'</span>/&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> b = JSON.parse(JSON.stringify(obj));</span><br><span class="line">console.log(b);</span><br><span class="line">// &#123;name: <span class="string">"xiaoming"</span>, a: &#123;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PS：为什么会存在这些问题可以学习一下 JSON。</p>
+<p>除了上面介绍的深拷贝方法，常用的还有jQuery.extend() 和 lodash.cloneDeep()。</p>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><img src="/2020/11/23/js-copy/03.png" class title="This is an image">
           
         
       </div>
@@ -171,16 +234,37 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HTTP-02/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/11/23/js-cloneDeep/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          如何实现一个深拷贝
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/11/23/image-lazyload/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">图片懒加载从简单到复杂</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -195,611 +279,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HTTP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HTTP/">HTTP灵魂之问(上篇)</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/HTTP/" class="archive-article-date">
-  	<time datetime="2020-10-25T02:51:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>这篇文章就是为了帮助大家树立完整的 HTTP 知识体系，并达到一定的深度，从容地应对各种灵魂之问，也同时提升自己作为一个 web 开发的专业素养吧。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HTTP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、赋值（Copy）"><span class="toc-number">1.</span> <span class="toc-text">一、赋值（Copy）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、浅拷贝（Shallow-Copy）"><span class="toc-number">2.</span> <span class="toc-text">二、浅拷贝（Shallow Copy）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、什么是浅拷贝"><span class="toc-number">2.1.</span> <span class="toc-text">1、什么是浅拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、浅拷贝使用场景"><span class="toc-number">2.2.</span> <span class="toc-text">2、浅拷贝使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Object-assign"><span class="toc-number">2.2.1.</span> <span class="toc-text">Object.assign()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#展开语法-Spread"><span class="toc-number">2.2.2.</span> <span class="toc-text">展开语法 Spread</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Array-prototype-slice"><span class="toc-number">2.2.3.</span> <span class="toc-text">Array.prototype.slice()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、深拷贝（Deep-Copy）"><span class="toc-number">3.</span> <span class="toc-text">三、深拷贝（Deep Copy）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、什么是深拷贝"><span class="toc-number">3.1.</span> <span class="toc-text">1、什么是深拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、深拷贝使用场景"><span class="toc-number">3.2.</span> <span class="toc-text">2、深拷贝使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined、symbol-和函数这三种情况，会直接忽略。"><span class="toc-number">3.2.1.</span> <span class="toc-text">undefined、symbol 和函数这三种情况，会直接忽略。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#循环引用情况下，会报错。"><span class="toc-number">3.2.2.</span> <span class="toc-text">循环引用情况下，会报错。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#new-Date-情况下，转换结果不正确。"><span class="toc-number">3.2.3.</span> <span class="toc-text">new Date 情况下，转换结果不正确。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#正则情况下"><span class="toc-number">3.2.4.</span> <span class="toc-text">正则情况下</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、总结"><span class="toc-number">4.</span> <span class="toc-text">四、总结</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-  
-    <article id="post-URL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/URL/">三次握手和四次挥手</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/URL/" class="archive-article-date">
-  	<time datetime="2020-10-25T02:36:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>三次握手和四次挥手是各个公司常见的考点，也具有一定的水平区分度，也被一些面试官作为热身题。很多小伙伴说这个问题刚开始回答的挺好，但是后面越回答越冒冷汗，最后就歇菜了。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/URL/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-brower" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/brower/">浏览器灵魂之问</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/25/brower/" class="archive-article-date">
-  	<time datetime="2020-10-25T00:55:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>作为一个合格的前端工程师，浏览器相关的工作原理是我们进行性能优化的基石,必须牢牢掌握才能面对瞬息万变的实际场景，针对性地给出实际方案，而不是背诵各种开发军规和性能优化的条例，这样很难发现真正的问题所在, 更无法真正地解决问题。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/brower/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-nginx-base" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/21/nginx-base/">Nginx基础配置</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/10/21/nginx-base/" class="archive-article-date">
-  	<time datetime="2020-10-21T14:06:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <h2 id="Nginx介绍"><a href="#Nginx介绍" class="headerlink" title="Nginx介绍"></a>Nginx介绍</h2><p>作为一个前端，我相信你一定听说过Nginx。因为它在最近两年实在是太火了，作为一个前端如果不会Nginx，都不敢跟别人说自己是大前端。那Nginx到底是什么？我们还是引用官方的介绍吧：</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/21/nginx-base/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-write-webpack" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/23/write-webpack/">手写webpack核心原理</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/08/23/write-webpack/" class="archive-article-date">
-  	<time datetime="2020-08-23T11:08:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>手写webpack核心原理，再也不怕面试官问我webpack原理</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/23/write-webpack/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-webpack-advanced" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/18/webpack-advanced/">Webpack-进阶篇</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/07/18/webpack-advanced/" class="archive-article-date">
-  	<time datetime="2020-07-18T07:30:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>解锁Webpack系列(进阶篇)</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/18/webpack-advanced/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-webpack-base" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/14/webpack-base/">Webpack--基础篇</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/07/14/webpack-base/" class="archive-article-date">
-  	<time datetime="2020-07-14T14:46:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>解锁Webpack系列(基础篇)</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/14/webpack-base/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-react-proxy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/24/react-proxy/">react项目跨域配置代理</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/05/24/react-proxy/" class="archive-article-date">
-  	<time datetime="2020-05-24T15:23:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>create-react-app项目中跨域配置代理,2.0版本以上</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/24/react-proxy/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hexo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/17/hexo/">Hexo</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/05/17/hexo/" class="archive-article-date">
-  	<time datetime="2020-05-17T04:45:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>hexo引用本地图片无法显示</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/17/hexo/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -822,8 +327,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
