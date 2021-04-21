@@ -6,15 +6,30 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Zerle</title>
+  <title>vue2脚手架webpack3升级webpack4全过程 | Zerle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Zerle">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="vue2脚手架目前使用的是webpack3, 基于脚手架升级到webpack4 1.常规安装12npm install -g vue-clivue init webpack demo 2.webpack升级到webpack4版本，安装webpack-cli等插件。12&quot;webpack&quot;: &quot;^4.8.1&quot;,&quot;webpack-cli&quot;: &quot;^2.1.3&quot; 3.npm run dev 报错  这个是因">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue2脚手架webpack3升级webpack4全过程">
+<meta property="og:url" content="http://yoursite.com/2021/04/21/vue2-cli/index.html">
 <meta property="og:site_name" content="Zerle">
+<meta property="og:description" content="vue2脚手架目前使用的是webpack3, 基于脚手架升级到webpack4 1.常规安装12npm install -g vue-clivue init webpack demo 2.webpack升级到webpack4版本，安装webpack-cli等插件。12&quot;webpack&quot;: &quot;^4.8.1&quot;,&quot;webpack-cli&quot;: &quot;^2.1.3&quot; 3.npm run dev 报错  这个是因">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/01.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/02.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/03.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/04.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/05.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/06.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/09.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/07.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/08.png">
+<meta property="og:image" content="http://yoursite.com/2021/04/21/vue2-cli/10.png">
+<meta property="article:published_time" content="2021-04-21T14:47:58.000Z">
+<meta property="article:modified_time" content="2021-04-21T15:35:17.683Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/04/21/vue2-cli/01.png">
   
     <link rel="alternative" href="/atom.xml" title="Zerle" type="application/atom+xml">
   
@@ -134,20 +149,26 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-vue2-cli" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-vue2-cli" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/21/vue2-cli/">vue2脚手架webpack3升级webpack4全过程</a>
+    <h1 class="article-title" itemprop="name">
+      vue2脚手架webpack3升级webpack4全过程
     </h1>
   
 
         <!--显示阅读次数-->
+        
+            <br/>
+            <a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+            <span class="icon-sort"></span>
+            <span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+                    阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+            </span>
+            </a>
         
         
         <a href="/2021/04/21/vue2-cli/" class="archive-article-date">
@@ -161,7 +182,50 @@
           
           
             <p>vue2脚手架目前使用的是webpack3, 基于脚手架升级到webpack4</p>
-            
+<h2 id="1-常规安装"><a href="#1-常规安装" class="headerlink" title="1.常规安装"></a>1.常规安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g vue-cli</span><br><span class="line">vue init webpack demo</span><br></pre></td></tr></table></figure>
+<h2 id="2-webpack升级到webpack4版本，安装webpack-cli等插件。"><a href="#2-webpack升级到webpack4版本，安装webpack-cli等插件。" class="headerlink" title="2.webpack升级到webpack4版本，安装webpack-cli等插件。"></a>2.webpack升级到webpack4版本，安装webpack-cli等插件。</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"webpack"</span>: <span class="string">"^4.8.1"</span>,</span><br><span class="line"><span class="string">"webpack-cli"</span>: <span class="string">"^2.1.3"</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-npm-run-dev-报错"><a href="#3-npm-run-dev-报错" class="headerlink" title="3.npm run dev 报错"></a>3.npm run dev 报错</h2><img src="/2021/04/21/vue2-cli/01.png" class title="This is an image">
+
+<p>这个是因为 webpack 和 webpack-dev-server 版本不兼容导致的，升级一下就好了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"webpack-dev-server"</span>: <span class="string">"^3.1.4"</span>,</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-再次启动，报错"><a href="#4-再次启动，报错" class="headerlink" title="4.再次启动，报错"></a>4.再次启动，报错</h2><img src="/2021/04/21/vue2-cli/02.png" class title="This is an image">
+
+<p>这里是因为 html-webpack-plugin 版本不兼容导致的,更新下版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"html-webpack-plugin"</span>: <span class="string">"^3.2.0"</span>,</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-然后再次启动"><a href="#5-然后再次启动" class="headerlink" title="5.然后再次启动"></a>5.然后再次启动</h2><img src="/2021/04/21/vue2-cli/03.png" class title="This is an image">
+
+<h2 id="6-升级一下-eslint-和-eslint-loader"><a href="#6-升级一下-eslint-和-eslint-loader" class="headerlink" title="6.升级一下 eslint 和 eslint-loader"></a>6.升级一下 eslint 和 eslint-loader</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"eslint"</span>: <span class="string">"^4.19.1"</span>,</span><br><span class="line"><span class="string">"eslint-loader"</span>: <span class="string">"^2.0.0"</span>,</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-继续"><a href="#7-继续" class="headerlink" title="7.继续"></a>7.继续</h2><img src="/2021/04/21/vue2-cli/04.png" class title="This is an image">
+
+<h2 id="8-升级-vue-loader"><a href="#8-升级-vue-loader" class="headerlink" title="8.升级 vue-loader"></a>8.升级 vue-loader</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"vue-loader"</span>: <span class="string">"^15.0.10"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="9-这里再次运行报错会很多"><a href="#9-这里再次运行报错会很多" class="headerlink" title="9.这里再次运行报错会很多"></a>9.这里再次运行报错会很多</h2><img src="/2021/04/21/vue2-cli/05.png" class title="This is an image">
+
+<h2 id="10-这里是因为最新版的-vue-loader-需要加一个新的配置-VueLoaderPlugin"><a href="#10-这里是因为最新版的-vue-loader-需要加一个新的配置-VueLoaderPlugin" class="headerlink" title="10.这里是因为最新版的 vue-loader 需要加一个新的配置 VueLoaderPlugin"></a>10.这里是因为最新版的 vue-loader 需要加一个新的配置 VueLoaderPlugin</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// webpack.dev.conf.js</span><br><span class="line">// 引入</span><br><span class="line">const &#123; VueLoaderPlugin &#125; = require(<span class="string">'vue-loader'</span>)</span><br><span class="line"></span><br><span class="line">// 在下面的插件中加入</span><br><span class="line">plugins: [</span><br><span class="line">    ...</span><br><span class="line">    new VueLoaderPlugin(),</span><br><span class="line">    ...</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// webpack.prod.conf.js 文件同样</span><br><span class="line">// 引入</span><br><span class="line">const &#123; VueLoaderPlugin &#125; = require(<span class="string">'vue-loader'</span>)</span><br><span class="line"></span><br><span class="line">// 在下面的插件中加入</span><br><span class="line">plugins: [</span><br><span class="line">    ...</span><br><span class="line">    new VueLoaderPlugin(),</span><br><span class="line">    ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="11-再次运行"><a href="#11-再次运行" class="headerlink" title="11.再次运行"></a>11.再次运行</h2><img src="/2021/04/21/vue2-cli/06.png" class title="This is an image">
+
+<h2 id="12-webpack4-需要指定打包的模式-mode-，指定一下就好，可以在-package-json-的命令中指定，也可以写入配置"><a href="#12-webpack4-需要指定打包的模式-mode-，指定一下就好，可以在-package-json-的命令中指定，也可以写入配置" class="headerlink" title="12.webpack4 需要指定打包的模式 (mode)，指定一下就好，可以在 package.json 的命令中指定，也可以写入配置"></a>12.webpack4 需要指定打包的模式 (mode)，指定一下就好，可以在 package.json 的命令中指定，也可以写入配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// webpack.dev.conf.js</span><br><span class="line">const webpackConfig = merge(baseWebpackConfig, &#123;</span><br><span class="line">    mode: <span class="string">'development'</span>,</span><br><span class="line">    module: &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// webpack.prod.conf.js </span><br><span class="line">const webpackConfig = merge(baseWebpackConfig, &#123;</span><br><span class="line">    mode: <span class="string">'production'</span>,</span><br><span class="line">    module: &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="13-然后再次运行-npm-run-dev"><a href="#13-然后再次运行-npm-run-dev" class="headerlink" title="13.然后再次运行 npm run dev"></a>13.然后再次运行 npm run dev</h2><img src="/2021/04/21/vue2-cli/09.png" class title="This is an image">
+
+<p>完全没有错误提示，至此， dev 环境的升级就完成了。</p>
+<h2 id="14-然而，运行-npm-run-build-后。。。"><a href="#14-然而，运行-npm-run-build-后。。。" class="headerlink" title="14.然而，运行 npm run build 后。。。"></a>14.然而，运行 npm run build 后。。。</h2><img src="/2021/04/21/vue2-cli/07.png" class title="This is an image">
+
+<p>熟悉的界面又出现了，</p>
+<p>这部分错误是因为 webpack.optimize.CommonsChunkPlugin 已经被弃用，需要使用新的配置 config.optimization.splitChunks</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">// webpack.prod.conf.js</span><br><span class="line">// 在 plugins 同级下添加配置</span><br><span class="line">...</span><br><span class="line">optimization: &#123;</span><br><span class="line">   splitChunks: &#123;</span><br><span class="line">     cacheGroups: &#123;</span><br><span class="line">       vendor: &#123;</span><br><span class="line">         <span class="built_in">test</span>: /[\\/]node_modules[\\/]/,</span><br><span class="line">         name: <span class="string">'vendor'</span>,</span><br><span class="line">         chunks: <span class="string">'all'</span></span><br><span class="line">       &#125;,</span><br><span class="line">       manifest: &#123;</span><br><span class="line">         name: <span class="string">'manifest'</span>,</span><br><span class="line">         minChunks: Infinity</span><br><span class="line">       &#125;,</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;,</span><br><span class="line"> &#125;,</span><br><span class="line"> plugins: [...]</span><br><span class="line"></span><br><span class="line">// 去掉 plugins 中的这部分代码</span><br><span class="line">...</span><br><span class="line">new webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">   name: <span class="string">'vendor'</span>,</span><br><span class="line">   minChunks (module) &#123;</span><br><span class="line">     // any required modules inside node_modules are extracted to vendor</span><br><span class="line">     <span class="built_in">return</span> (</span><br><span class="line">       module.resource &amp;&amp;</span><br><span class="line">       /\.js$/.<span class="built_in">test</span>(module.resource) &amp;&amp;</span><br><span class="line">       module.resource.indexOf(</span><br><span class="line">         path.join(__dirname, <span class="string">'../node_modules'</span>)</span><br><span class="line">       ) === 0</span><br><span class="line">     )</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;),</span><br><span class="line"> // extract webpack runtime and module manifest to its own file <span class="keyword">in</span> order to</span><br><span class="line"> // prevent vendor <span class="built_in">hash</span> from being updated whenever app bundle is updated</span><br><span class="line"> new webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">   name: <span class="string">'manifest'</span>,</span><br><span class="line">   minChunks: Infinity</span><br><span class="line"> &#125;),</span><br><span class="line"> // This instance extracts shared chunks from code splitted chunks and bundles them</span><br><span class="line"> // <span class="keyword">in</span> a separate chunk, similar to the vendor chunk</span><br><span class="line"> // see: https://webpack.js.org/plugins/commons-chunk-plugin/<span class="comment">#extra-async-commons-chunk</span></span><br><span class="line"> new webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">   name: <span class="string">'app'</span>,</span><br><span class="line">   async: <span class="string">'vendor-async'</span>,</span><br><span class="line">   children: <span class="literal">true</span>,</span><br><span class="line">   minChunks: 3</span><br><span class="line"> &#125;),</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
+
+<h2 id="15-再次打包"><a href="#15-再次打包" class="headerlink" title="15.再次打包"></a>15.再次打包</h2><img src="/2021/04/21/vue2-cli/08.png" class title="This is an image">
+
+<p>这里是因为官方已经不推荐使用 extract-text-webpack-plugin 提取 css 样式，可以使用 mini-css-extract-plugin 替代</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">// 首先安装 <span class="string">"mini-css-extract-plugin"</span>: <span class="string">"^0.4.0"</span>,</span><br><span class="line">// 并且去掉 package.json 中的包 <span class="string">"extract-text-webpack-plugin"</span>: <span class="string">"^4.0.0-beta.0"</span>,</span><br><span class="line"></span><br><span class="line">// utils.js</span><br><span class="line">// 去掉 extract-text-webpack-plugin</span><br><span class="line">// const ExtractTextPlugin = require(<span class="string">'extract-text-webpack-plugin'</span>)</span><br><span class="line"></span><br><span class="line">// 引入</span><br><span class="line">const MiniCssExtractPlugin = require(<span class="string">'mini-css-extract-plugin'</span>)</span><br><span class="line"></span><br><span class="line">generateLoaders 函数更改配置（*中间的为改动部分）</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (options.extract) &#123;</span><br><span class="line"></span><br><span class="line">// ********************</span><br><span class="line">// 改动在这里</span><br><span class="line">    <span class="built_in">return</span> [MiniCssExtractPlugin.loader].concat(loaders)</span><br><span class="line">// ********************</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">return</span> [<span class="string">'vue-style-loader'</span>].concat(loaders)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// webpack.prod.conf.js</span><br><span class="line"></span><br><span class="line">// 去掉 extract-text-webpack-plugin</span><br><span class="line">// const ExtractTextPlugin = require(<span class="string">'extract-text-webpack-plugin'</span>)</span><br><span class="line"></span><br><span class="line">// 引入</span><br><span class="line">const MiniCssExtractPlugin = require(<span class="string">'mini-css-extract-plugin'</span>)</span><br><span class="line"></span><br><span class="line">// 去掉 plugins 里的配置</span><br><span class="line">new ExtractTextPlugin(&#123;</span><br><span class="line">   filename: utils.assetsPath(<span class="string">'css/[name].[contenthash].css'</span>),</span><br><span class="line">   allChunks: <span class="literal">true</span>,</span><br><span class="line"> &#125;),</span><br><span class="line"></span><br><span class="line">// 然后加入新的插件配置</span><br><span class="line">new MiniCssExtractPlugin(&#123;</span><br><span class="line">   filename: utils.assetsPath(<span class="string">'css/[name].[contenthash:12].css'</span>),</span><br><span class="line">   allChunks: <span class="literal">true</span>,</span><br><span class="line"> &#125;),</span><br></pre></td></tr></table></figure>
+<h2 id="16-再次打包就可以运行了"><a href="#16-再次打包就可以运行了" class="headerlink" title="16.再次打包就可以运行了"></a>16.再次打包就可以运行了</h2><img src="/2021/04/21/vue2-cli/10.png" class title="This is an image">
+
+<p>到此 webpack4 已经升级成功了。</p>
+
           
         
       </div>
@@ -171,16 +235,28 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/04/21/vue2-cli/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2021/02/27/js-design-patterns/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JS常用设计模式</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -195,611 +271,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-js-design-patterns" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/27/js-design-patterns/">JS常用设计模式</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2021/02/27/js-design-patterns/" class="archive-article-date">
-  	<time datetime="2021-02-27T13:39:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <h2 id="1-单例模式"><a href="#1-单例模式" class="headerlink" title="1.单例模式"></a>1.单例模式</h2><h3 id="普通单例模式"><a href="#普通单例模式" class="headerlink" title="普通单例模式"></a>普通单例模式</h3><p>“单例模式” 就是通过类创建实例后，每次创建和获取都返回同一个实例，下面是 “单例模式” 最基本的实现。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/02/27/js-design-patterns/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-常规安装"><span class="toc-number">1.</span> <span class="toc-text">1.常规安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-webpack升级到webpack4版本，安装webpack-cli等插件。"><span class="toc-number">2.</span> <span class="toc-text">2.webpack升级到webpack4版本，安装webpack-cli等插件。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-npm-run-dev-报错"><span class="toc-number">3.</span> <span class="toc-text">3.npm run dev 报错</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-再次启动，报错"><span class="toc-number">4.</span> <span class="toc-text">4.再次启动，报错</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-然后再次启动"><span class="toc-number">5.</span> <span class="toc-text">5.然后再次启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-升级一下-eslint-和-eslint-loader"><span class="toc-number">6.</span> <span class="toc-text">6.升级一下 eslint 和 eslint-loader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-继续"><span class="toc-number">7.</span> <span class="toc-text">7.继续</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-升级-vue-loader"><span class="toc-number">8.</span> <span class="toc-text">8.升级 vue-loader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-这里再次运行报错会很多"><span class="toc-number">9.</span> <span class="toc-text">9.这里再次运行报错会很多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-这里是因为最新版的-vue-loader-需要加一个新的配置-VueLoaderPlugin"><span class="toc-number">10.</span> <span class="toc-text">10.这里是因为最新版的 vue-loader 需要加一个新的配置 VueLoaderPlugin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-再次运行"><span class="toc-number">11.</span> <span class="toc-text">11.再次运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-webpack4-需要指定打包的模式-mode-，指定一下就好，可以在-package-json-的命令中指定，也可以写入配置"><span class="toc-number">12.</span> <span class="toc-text">12.webpack4 需要指定打包的模式 (mode)，指定一下就好，可以在 package.json 的命令中指定，也可以写入配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-然后再次运行-npm-run-dev"><span class="toc-number">13.</span> <span class="toc-text">13.然后再次运行 npm run dev</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-然而，运行-npm-run-build-后。。。"><span class="toc-number">14.</span> <span class="toc-text">14.然而，运行 npm run build 后。。。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-再次打包"><span class="toc-number">15.</span> <span class="toc-text">15.再次打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-再次打包就可以运行了"><span class="toc-number">16.</span> <span class="toc-text">16.再次打包就可以运行了</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-  
-    <article id="post-cross-domain" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/27/cross-domain/">九种 “姿势” 让你彻底解决跨域问题</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2021/02/27/cross-domain/" class="archive-article-date">
-  	<time datetime="2021-02-27T13:07:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <h2 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h2><p>同源策略 SOP（Same origin policy）是一种约定，由 Netscape 公司 1995 年引入浏览器，它是浏览器最核心也最基本的安全功能，如果缺少了同源策略，浏览器很容易受到 XSS、CSRF 等攻击。所谓同源是指 “协议 + 域名 + 端口” 三者相同，即便两个不同的域名指向同一个 ip 地址，也非同源。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/02/27/cross-domain/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-vue2-source" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/16/vue2-source/">Vue2原理解析</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2021/01/16/vue2-source/" class="archive-article-date">
-  	<time datetime="2021-01-16T09:00:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>Vue，现在前端的当红炸子鸡，随着热度指数上升，实在是有必要从源码的角度，对它功能的实现原理一窥究竟。个人觉得看源码主要是看两样东西，从宏观上来说是它的设计思想和实现原理；微观上来说就是编程技巧，也就是俗称的骚操作。我们这次的侧重点是它的实现原理。好吧，让我们推开它那神秘的大门，进入Vue的世界~</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/16/vue2-source/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-wechat" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/27/wechat/">微信小程序入门</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/12/27/wechat/" class="archive-article-date">
-  	<time datetime="2020-12-27T04:27:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>微信⼩程序，简称⼩程序，英⽂名 m Mini Program ，是⼀种不需要下载安装即可使⽤的应⽤，它实现了应⽤“触⼿可及”的梦想，⽤⼾扫⼀扫或搜⼀下即可打开应⽤</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/12/27/wechat/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-js-Object-assign" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/23/js-Object-assign/">Object.assign 原理及其实现</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/11/23/js-Object-assign/" class="archive-article-date">
-  	<time datetime="2020-11-23T15:16:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>本篇文章会先介绍浅拷贝 Object.assign 的实现原理，然后带你手动实现一个浅拷贝。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/23/js-Object-assign/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-js-cloneDeep" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/23/js-cloneDeep/">如何实现一个深拷贝</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/11/23/js-cloneDeep/" class="archive-article-date">
-  	<time datetime="2020-11-23T15:02:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>本文会详细介绍对象、数组、循环引用、引用丢失、Symbol 和递归爆栈等情况下的深拷贝实践，欢迎阅读。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/23/js-cloneDeep/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-js-copy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/23/js-copy/">详细解析赋值、浅拷贝和深拷贝的区别</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/11/23/js-copy/" class="archive-article-date">
-  	<time datetime="2020-11-23T14:48:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <h2 id="一、赋值（Copy）"><a href="#一、赋值（Copy）" class="headerlink" title="一、赋值（Copy）"></a>一、赋值（Copy）</h2><p>赋值是将某一数值或对象赋给某个变量的过程，分为下面 2 部分</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/23/js-copy/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-image-lazyload" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/23/image-lazyload/">图片懒加载从简单到复杂</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/11/23/image-lazyload/" class="archive-article-date">
-  	<time datetime="2020-11-23T14:24:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>图片懒加载是一个很重要的前端性能优化手段。这篇文章将从懒加载的最简单场景开始介绍，逐步增加复杂度，希望能讲清楚常见的图片懒加载场景及在该场景下对应的解决办法。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/23/image-lazyload/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-webpack-tapable" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/22/webpack-tapable/">Webpack 核心模块 tapable 解析</a>
-    </h1>
-  
-
-        <!--显示阅读次数-->
-        
-        
-        <a href="/2020/11/22/webpack-tapable/" class="archive-article-date">
-  	<time datetime="2020-11-22T10:20:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-        
-          
-          
-            <p>Webpack 是一个现代 JavaScript 应用程序的静态模块打包器，是对前端项目实现自动化和优化必不可少的工具，Webpack 的 loader（加载器）和 plugin（插件）是由 Webpack 开发者和社区开发者共同贡献的，而目前又没有比较系统的开发文档，想写加载器和插件必须要懂 Webpack 的原理，即看懂 Webpack 的源码，tapable 则是 Webpack 依赖的核心库，可以说不懂 tapable 就看不懂 Webpack 源码，所以本篇会对 tapable 提供的类进行解析和模拟。</p>
-            
-          
-        
-      </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/22/webpack-tapable/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -822,8 +319,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
