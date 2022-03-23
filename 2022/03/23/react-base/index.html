@@ -11,20 +11,20 @@
   <meta name="description" content="React 作为如今三大框架之一，在进行了短期的学习后，整理了一些笔记，做一下分享,如果有错误，欢迎指出。 一、React 简介1. 什么是 React：1234React 是一款由 Facebook开发的用于构造用户界面的Javascript库。React 与Vue相比，vue的语法简单易上手，适用于小而精的项目，但是 React在组件上的复用性与设计性上会胜于vue一筹，适用于大型的项目。Re">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React快速暴力入门">
-<meta property="og:url" content="http://yoursite.com/2021/12/20/react-base/index.html">
+<meta property="og:url" content="http://yoursite.com/2022/03/23/react-base/index.html">
 <meta property="og:site_name" content="Zerle">
 <meta property="og:description" content="React 作为如今三大框架之一，在进行了短期的学习后，整理了一些笔记，做一下分享,如果有错误，欢迎指出。 一、React 简介1. 什么是 React：1234React 是一款由 Facebook开发的用于构造用户界面的Javascript库。React 与Vue相比，vue的语法简单易上手，适用于小而精的项目，但是 React在组件上的复用性与设计性上会胜于vue一筹，适用于大型的项目。Re">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/2021/12/20/react-base/01.png">
-<meta property="og:image" content="http://yoursite.com/2021/12/20/react-base/02.png">
-<meta property="og:image" content="http://yoursite.com/2021/12/20/react-base/03.png">
-<meta property="og:image" content="http://yoursite.com/2021/12/20/react-base/04.png">
-<meta property="og:image" content="http://yoursite.com/2021/12/20/react-base/01.png">
-<meta property="article:published_time" content="2021-12-20T13:15:53.000Z">
-<meta property="article:modified_time" content="2022-03-23T15:34:17.453Z">
+<meta property="og:image" content="http://yoursite.com/2022/03/23/react-base/01.png">
+<meta property="og:image" content="http://yoursite.com/2022/03/23/react-base/02.png">
+<meta property="og:image" content="http://yoursite.com/2022/03/23/react-base/03.png">
+<meta property="og:image" content="http://yoursite.com/2022/03/23/react-base/04.png">
+<meta property="og:image" content="http://yoursite.com/2022/03/23/react-base/01.png">
+<meta property="article:published_time" content="2022-03-23T15:46:53.000Z">
+<meta property="article:modified_time" content="2022-03-23T15:46:11.259Z">
 <meta property="article:author" content="Lei Zhang">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2021/12/20/react-base/01.png">
+<meta name="twitter:image" content="http://yoursite.com/2022/03/23/react-base/01.png">
   
     <link rel="alternative" href="/atom.xml" title="Zerle" type="application/atom+xml">
   
@@ -166,8 +166,8 @@
             </a>
         
         
-        <a href="/2021/12/20/react-base/" class="archive-article-date">
-  	<time datetime="2021-12-20T13:15:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-12-20</time>
+        <a href="/2022/03/23/react-base/" class="archive-article-date">
+  	<time datetime="2022-03-23T15:46:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-23</time>
 </a>
         
       </header>
@@ -182,12 +182,12 @@
 <h4 id="2-React-的特点"><a href="#2-React-的特点" class="headerlink" title="2. React 的特点"></a>2. React 的特点</h4><ul>
 <li>1.声明式设计 −React 的每个组件都是通过声明创建，使得页面逻辑更加清晰</li>
 </ul>
-<img src="/2021/12/20/react-base/01.png" class title="This is an image">
+<img src="/2022/03/23/react-base/01.png" class title="This is an image">
 
 <ul>
 <li>2.虚拟 DOM −React 每次渲染页面时会创建一个虚拟 DOM，与现有的 DOM 进行对比，有差异的才进行替换重新渲染，提高了效率。</li>
 </ul>
-<img src="/2021/12/20/react-base/02.png" class title="This is an image">
+<img src="/2022/03/23/react-base/02.png" class title="This is an image">
 
 <ul>
 <li>3.JSX − JSX 是 JavaScript 语法的扩展。React 开发不一定使用 JSX ，但我们建议使用它。</li>
@@ -406,7 +406,7 @@
 <li>在绑定事件的时候不要加括号，这会被 jsx 识别为执行函数</li>
 </ul>
 <h3 id="五、组件的生命周期"><a href="#五、组件的生命周期" class="headerlink" title="五、组件的生命周期"></a>五、组件的生命周期</h3><p>对 Vue 熟悉的应该对生命周期并不陌生。<br>组件在挂载到页面上的过程中，期间发生了许多的事情，而生命周期，可以看作是一个组件的执行流程，我们可以通过在某个流程节点中进行一些操作，而这就是 生命周期钩子（函数）<br>注：生命周期函数只适用于类式组件，并不适用于函数式组件，但是在 React16.8 之后的 Hook，也可以让函数式组件实现类似于生命周期钩子的功能</p>
-<h4 id="1-React-16-之前"><a href="#1-React-16-之前" class="headerlink" title="1. React 16 之前"></a>1. React 16 之前</h4><img src="/2021/12/20/react-base/03.png" class title="This is an image">
+<h4 id="1-React-16-之前"><a href="#1-React-16-之前" class="headerlink" title="1. React 16 之前"></a>1. React 16 之前</h4><img src="/2022/03/23/react-base/03.png" class title="This is an image">
 
 <p>以下是流程：</p>
 <ul>
@@ -440,7 +440,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-React-16-之后"><a href="#2-React-16-之后" class="headerlink" title="2. React 16 之后"></a>2. React 16 之后</h4><img src="/2021/12/20/react-base/04.png" class title="This is an image">
+<h4 id="2-React-16-之后"><a href="#2-React-16-之后" class="headerlink" title="2. React 16 之后"></a>2. React 16 之后</h4><img src="/2022/03/23/react-base/04.png" class title="This is an image">
 
 <ul>
 <li>新旧生命周期对比：<ul>
@@ -547,7 +547,7 @@
 <li>README.md —— 项目信息</li>
 </ul>
 <p>还记得我们的讲组件化的图片吗</p>
-<img src="/2021/12/20/react-base/01.png" class title="This is an image">
+<img src="/2022/03/23/react-base/01.png" class title="This is an image">
 
 <p>其中的 APP 就是根组件，通过我们编写其他的组件如 Header、Aside 等组件，都加装在根组件上。</p>
 <h4 id="4-npm-指令"><a href="#4-npm-指令" class="headerlink" title="4. npm 指令"></a>4. npm 指令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm start       // 使用 webpack-dev-server 启动服务查看应用</span><br><span class="line">npm build       // 打包生成生产文件</span><br><span class="line">npm <span class="built_in">test</span>        // 进行软件测试（不常用）</span><br><span class="line">npm eject       // 将所有的配置文件暴漏出来（不常用且不建议用）</span><br></pre></td></tr></table></figure>
